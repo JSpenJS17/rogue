@@ -1,0 +1,9 @@
+*.o
+*.log
+*.status
+*.me
+*.scr
+*.cat
+*.6
+rogue
+_*
