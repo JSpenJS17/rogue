@@ -1,7 +1,7 @@
 /*
  * Routines to deal with the pack
  *
- * @(#)pack.c	4.40 (Berkeley) 02/05/99
+ * @(#)pack.c   4.40 (Berkeley) 02/05/99
  *
  * Rogue: Exploring the Dungeons of Doom
  * Copyright (C) 1980-1983, 1985, 1999 Michael Toy, Ken Arnold and Glenn Wichman
@@ -17,9 +17,9 @@
 
 /*
  * add_pack:
- *	Pick up an object and add it to the pack.  If the argument is
- *	non-null use it as the linked_list pointer instead of gettting
- *	it off the ground.
+ *  Pick up an object and add it to the pack.  If the argument is
+ *  non-null use it as the linked_list pointer instead of gettting
+ *  it off the ground.
  */
 
 void add_pack (THING *obj, bool silent)
@@ -28,12 +28,14 @@ void add_pack (THING *obj, bool silent)
     bool from_floor;
 
     from_floor = FALSE;
+
     if (obj == NULL)
     {
         if ((obj = find_obj (hero.y, hero.x)) == NULL)
         {
             return;
         }
+
         from_floor = TRUE;
     }
 
@@ -60,6 +62,7 @@ void add_pack (THING *obj, bool silent)
     else
     {
         lp = NULL;
+
         for (op = pack; op != NULL; op = next (op))
         {
             if (op->o_type != obj->o_type)
@@ -71,6 +74,7 @@ void add_pack (THING *obj, bool silent)
                 while (op->o_type == obj->o_type && op->o_which != obj->o_which)
                 {
                     lp = op;
+
                     if (next (op) == NULL)
                     {
                         break;
@@ -80,6 +84,7 @@ void add_pack (THING *obj, bool silent)
                         op = next (op);
                     }
                 }
+
                 if (op->o_type == obj->o_type && op->o_which == obj->o_which)
                 {
                     if (ISMULT (op->o_type))
@@ -88,6 +93,7 @@ void add_pack (THING *obj, bool silent)
                         {
                             return;
                         }
+
                         op->o_count++;
                     dump_it:
                         discard (obj);
@@ -98,11 +104,13 @@ void add_pack (THING *obj, bool silent)
                     else if (obj->o_group)
                     {
                         lp = op;
+
                         while (op->o_type == obj->o_type
                                 && op->o_which == obj->o_which
                                 && op->o_group != obj->o_group)
                         {
                             lp = op;
+
                             if (next (op) == NULL)
                             {
                                 break;
@@ -112,16 +120,19 @@ void add_pack (THING *obj, bool silent)
                                 op = next (op);
                             }
                         }
+
                         if (op->o_type == obj->o_type
                                 && op->o_which == obj->o_which
                                 && op->o_group == obj->o_group)
                         {
                             op->o_count += obj->o_count;
                             inpack--;
+
                             if (!pack_room (from_floor, obj))
                             {
                                 return;
                             }
+
                             goto dump_it;
                         }
                     }
@@ -130,6 +141,7 @@ void add_pack (THING *obj, bool silent)
                         lp = op;
                     }
                 }
+
             out:
                 break;
             }
@@ -146,10 +158,12 @@ void add_pack (THING *obj, bool silent)
                 obj->o_packch = pack_char();
                 next (obj) = next (lp);
                 prev (obj) = lp;
+
                 if (next (lp) != NULL)
                 {
                     prev (next (lp)) = obj;
                 }
+
                 next (lp) = obj;
             }
         }
@@ -171,6 +185,7 @@ void add_pack (THING *obj, bool silent)
     {
         amulet = TRUE;
     }
+
     /*
      * Notify the user
      */
@@ -180,14 +195,15 @@ void add_pack (THING *obj, bool silent)
         {
             addmsg ("you now have ");
         }
+
         msg ("%s (%c)", inv_name (obj, !terse), obj->o_packch);
     }
 }
 
 /*
  * pack_room:
- *	See if there's room in the pack.  If not, print out an
- *	appropriate message
+ *  See if there's room in the pack.  If not, print out an
+ *  appropriate message
  */
 bool pack_room (bool from_floor, THING *obj)
 {
@@ -197,16 +213,21 @@ bool pack_room (bool from_floor, THING *obj)
         {
             addmsg ("there's ");
         }
+
         addmsg ("no room");
+
         if (!terse)
         {
             addmsg (" in your pack");
         }
+
         endmsg();
+
         if (from_floor)
         {
             move_msg (obj);
         }
+
         inpack = MAXPACK;
         return FALSE;
     }
@@ -223,7 +244,7 @@ bool pack_room (bool from_floor, THING *obj)
 
 /*
  * leave_pack:
- *	take an item out of the pack
+ *  take an item out of the pack
  */
 THING *leave_pack (THING *obj, bool newobj, bool all)
 {
@@ -231,14 +252,17 @@ THING *leave_pack (THING *obj, bool newobj, bool all)
 
     inpack--;
     nobj = obj;
+
     if (obj->o_count > 1 && !all)
     {
         last_pick = obj;
         obj->o_count--;
+
         if (obj->o_group)
         {
             inpack++;
         }
+
         if (newobj)
         {
             nobj = new_item();
@@ -254,12 +278,13 @@ THING *leave_pack (THING *obj, bool newobj, bool all)
         pack_used[obj->o_packch - 'a'] = FALSE;
         detach (pack, obj);
     }
+
     return nobj;
 }
 
 /*
  * pack_char:
- *	Return the next unused pack character.
+ *  Return the next unused pack character.
  */
 char pack_char()
 {
@@ -269,20 +294,22 @@ char pack_char()
     {
         continue;
     }
+
     *bp = TRUE;
     return (char) ((int) (bp - pack_used) + 'a');
 }
 
 /*
  * inventory:
- *	List what is in the pack.  Return TRUE if there is something of
- *	the given type.
+ *  List what is in the pack.  Return TRUE if there is something of
+ *  the given type.
  */
 bool inventory (THING *list, int type)
 {
     static char inv_temp[MAXSTR];
 
     n_objs = 0;
+
     for (; list != NULL; list = next (list))
     {
         if (type && type != list->o_type && ! (type == CALLABLE &&
@@ -291,8 +318,10 @@ bool inventory (THING *list, int type)
         {
             continue;
         }
+
         n_objs++;
 #ifdef MASTER
+
         if (!list->o_packch)
         {
             strcpy (inv_temp, "%s");
@@ -300,15 +329,19 @@ bool inventory (THING *list, int type)
         else
 #endif
             sprintf (inv_temp, "%c) %%s", list->o_packch);
+
         msg_esc = TRUE;
+
         if (add_line (inv_temp, inv_name (list, FALSE)) == ESCAPE)
         {
             msg_esc = FALSE;
             msg ("");
             return TRUE;
         }
+
         msg_esc = FALSE;
     }
+
     if (n_objs == 0)
     {
         if (terse)
@@ -317,15 +350,17 @@ bool inventory (THING *list, int type)
         else
             msg (type == 0 ? "you are empty handed" :
                  "you don't have anything appropriate");
+
         return FALSE;
     }
+
     end_line();
     return TRUE;
 }
 
 /*
  * pick_up:
- *	Add something to characters pack.
+ *  Add something to characters pack.
  */
 
 void pick_up (char ch)
@@ -338,6 +373,7 @@ void pick_up (char ch)
     }
 
     obj = find_obj (hero.y, hero.x);
+
     if (move_on)
     {
         move_msg (obj);
@@ -350,15 +386,18 @@ void pick_up (char ch)
             {
                 return;
             }
+
             money (obj->o_goldval);
             detach (lvl_obj, obj);
             discard (obj);
             proom->r_goldval = 0;
             break;
+
         default:
 #ifdef MASTER
             debug ("Where did you pick a '%s' up???", unctrl (ch));
 #endif
+
         case ARMOR:
         case POTION:
         case FOOD:
@@ -374,7 +413,7 @@ void pick_up (char ch)
 
 /*
  * move_msg:
- *	Print out the message if you are just moving onto an object
+ *  Print out the message if you are just moving onto an object
  */
 
 void move_msg (THING *obj)
@@ -383,12 +422,13 @@ void move_msg (THING *obj)
     {
         addmsg ("you ");
     }
+
     msg ("moved onto %s", inv_name (obj, TRUE));
 }
 
 /*
  * picky_inven:
- *	Allow player to inventory a single item
+ *  Allow player to inventory a single item
  */
 
 void picky_inven()
@@ -408,24 +448,27 @@ void picky_inven()
     {
         msg (terse ? "item: " : "which item do you wish to inventory: ");
         mpos = 0;
+
         if ((mch = readchar()) == ESCAPE)
         {
             msg ("");
             return;
         }
+
         for (obj = pack; obj != NULL; obj = next (obj))
             if (mch == obj->o_packch)
             {
                 msg ("%c) %s", mch, inv_name (obj, FALSE));
                 return;
             }
+
         msg ("'%s' not in pack", unctrl (mch));
     }
 }
 
 /*
  * get_item:
- *	Pick something out of a pack for a purpose
+ *  Pick something out of a pack for a purpose
  */
 THING *get_item (char *purpose, int type)
 {
@@ -453,14 +496,18 @@ THING *get_item (char *purpose, int type)
             {
                 addmsg ("which object do you want to ");
             }
+
             addmsg (purpose);
+
             if (terse)
             {
                 addmsg (" what");
             }
+
             msg ("? (* for list): ");
             ch = readchar();
             mpos = 0;
+
             /*
              * Give the poor player a chance to abort the command
              */
@@ -471,22 +518,28 @@ THING *get_item (char *purpose, int type)
                 msg ("");
                 return NULL;
             }
-            n_objs = 1;		/* normal case: person types one char */
+
+            n_objs = 1;     /* normal case: person types one char */
+
             if (ch == '*')
             {
                 mpos = 0;
+
                 if (inventory (pack, type) == 0)
                 {
                     after = FALSE;
                     return NULL;
                 }
+
                 continue;
             }
+
             for (obj = pack; obj != NULL; obj = next (obj))
                 if (obj->o_packch == ch)
                 {
                     break;
                 }
+
             if (obj == NULL)
             {
                 msg ("'%s' is not a valid item", unctrl (ch));
@@ -498,12 +551,13 @@ THING *get_item (char *purpose, int type)
             }
         }
     }
+
     return NULL;
 }
 
 /*
  * money:
- *	Add or subtract gold from the pack
+ *  Add or subtract gold from the pack
  */
 
 void money (int value)
@@ -511,19 +565,21 @@ void money (int value)
     purse += value;
     mvaddch (hero.y, hero.x, floor_ch());
     chat (hero.y, hero.x) = (proom->r_flags & ISGONE) ? PASSAGE : FLOOR;
+
     if (value > 0)
     {
         if (!terse)
         {
             addmsg ("you found ");
         }
+
         msg ("%d gold pieces", value);
     }
 }
 
 /*
  * floor_ch:
- *	Return the appropriate floor character for her room
+ *  Return the appropriate floor character for her room
  */
 char floor_ch()
 {
@@ -531,29 +587,32 @@ char floor_ch()
     {
         return PASSAGE;
     }
+
     return (show_floor() ? FLOOR : ' ');
 }
 
 /*
  * floor_at:
- *	Return the character at hero's position, taking see_floor
- *	into account
+ *  Return the character at hero's position, taking see_floor
+ *  into account
  */
 char floor_at()
 {
     char ch;
 
     ch = chat (hero.y, hero.x);
+
     if (ch == FLOOR)
     {
         ch = floor_ch();
     }
+
     return ch;
 }
 
 /*
  * reset_last:
- *	Reset the last command when the current one is aborted
+ *  Reset the last command when the current one is aborted
  */
 
 void reset_last()

@@ -2,7 +2,7 @@
  * Contains functions for dealing with things that happen in the
  * future.
  *
- * @(#)daemon.c	4.7 (Berkeley) 02/05/99
+ * @(#)daemon.c 4.7 (Berkeley) 02/05/99
  *
  * Rogue: Exploring the Dungeons of Doom
  * Copyright (C) 1980-1983, 1985, 1999 Michael Toy, Ken Arnold and Glenn Wichman
@@ -28,7 +28,7 @@ struct delayed_action d_list[MAXDAEMONS] =
 
 /*
  * d_slot:
- *	Find an empty slot in the daemon/fuse list
+ *  Find an empty slot in the daemon/fuse list
  */
 struct delayed_action *
 d_slot()
@@ -40,6 +40,7 @@ d_slot()
         {
             return dev;
         }
+
 #ifdef MASTER
     debug ("Ran out of fuse slots");
 #endif
@@ -48,7 +49,7 @@ d_slot()
 
 /*
  * find_slot:
- *	Find a particular slot in the table
+ *  Find a particular slot in the table
  */
 struct delayed_action *
 find_slot (void (*func)())
@@ -60,12 +61,13 @@ find_slot (void (*func)())
         {
             return dev;
         }
+
     return NULL;
 }
 
 /*
  * start_daemon:
- *	Start a daemon, takes a function.
+ *  Start a daemon, takes a function.
  */
 void start_daemon (void (*func)(), int arg, int type)
 {
@@ -80,7 +82,7 @@ void start_daemon (void (*func)(), int arg, int type)
 
 /*
  * kill_daemon:
- *	Remove a daemon from the list
+ *  Remove a daemon from the list
  */
 void kill_daemon (void (*func)())
 {
@@ -90,6 +92,7 @@ void kill_daemon (void (*func)())
     {
         return;
     }
+
     /*
      * Take it out of the list
      */
@@ -98,8 +101,8 @@ void kill_daemon (void (*func)())
 
 /*
  * do_daemons:
- *	Run all the daemons that are active with the current flag,
- *	passing the argument to the function.
+ *  Run all the daemons that are active with the current flag,
+ *  passing the argument to the function.
  */
 void do_daemons (int flag)
 {
@@ -109,6 +112,7 @@ void do_daemons (int flag)
      * Loop through the devil list
      */
     for (dev = d_list; dev <= &d_list[MAXDAEMONS - 1]; dev++)
+
         /*
          * Executing each one, giving it the proper arguments
          */
@@ -120,7 +124,7 @@ void do_daemons (int flag)
 
 /*
  * fuse:
- *	Start a fuse to go off in a certain number of turns
+ *  Start a fuse to go off in a certain number of turns
  */
 void fuse (void (*func)(), int arg, int time, int type)
 {
@@ -135,7 +139,7 @@ void fuse (void (*func)(), int arg, int time, int type)
 
 /*
  * lengthen:
- *	Increase the time until a fuse goes off
+ *  Increase the time until a fuse goes off
  */
 void lengthen (void (*func)(), int xtime)
 {
@@ -145,12 +149,13 @@ void lengthen (void (*func)(), int xtime)
     {
         return;
     }
+
     wire->d_time += xtime;
 }
 
 /*
  * extinguish:
- *	Put out a fuse
+ *  Put out a fuse
  */
 void extinguish (void (*func)())
 {
@@ -160,12 +165,13 @@ void extinguish (void (*func)())
     {
         return;
     }
+
     wire->d_type = EMPTY;
 }
 
 /*
  * do_fuses:
- *	Decrement counters and start needed fuses
+ *  Decrement counters and start needed fuses
  */
 void do_fuses (int flag)
 {
@@ -175,6 +181,7 @@ void do_fuses (int flag)
      * Step though the list
      */
     for (wire = d_list; wire <= &d_list[MAXDAEMONS - 1]; wire++)
+
         /*
          * Decrementing counters and starting things we want.  We also need
          * to remove the fuse from the list once it has gone off.

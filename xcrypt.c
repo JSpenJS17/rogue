@@ -35,8 +35,8 @@
  * An excellent reference on the underlying algorithm (and related
  * algorithms) is:
  *
- *	B. Schneier, Applied Cryptography: protocols, algorithms,
- *	and source code in C, John Wiley & Sons, 1994.
+ *  B. Schneier, Applied Cryptography: protocols, algorithms,
+ *  and source code in C, John Wiley & Sons, 1994.
  *
  * Note that in that book's description of DES the lookups for the initial,
  * pbox, and final permutations are inverted (this has been brought to the
@@ -56,33 +56,33 @@ unsigned int md_endian = 0x01020304;
 
 unsigned int xntohl (unsigned int x)
 {
-    if ( * ((char *)&md_endian) == 0x01 )
+    if (* ((char *) &md_endian) == 0x01)
     {
         return (x);
     }
     else
-        return ( ((x & 0x000000ffU) << 24) |
-                 ((x & 0x0000ff00U) <<  8) |
-                 ((x & 0x00ff0000U) >>  8) |
-                 ((x & 0xff000000U) >> 24) );
+        return (((x & 0x000000ffU) << 24) |
+                ((x & 0x0000ff00U) <<  8) |
+                ((x & 0x00ff0000U) >>  8) |
+                ((x & 0xff000000U) >> 24));
 }
 
 unsigned xhtonl (unsigned int x)
 {
-    if ( * ((char *)&md_endian) == 0x01 )
+    if (* ((char *) &md_endian) == 0x01)
     {
         return (x);
     }
     else
-        return ( ((x & 0x000000ffU) << 24) |
-                 ((x & 0x0000ff00U) <<  8) |
-                 ((x & 0x00ff0000U) >>  8) |
-                 ((x & 0xff000000U) >> 24) );
+        return (((x & 0x000000ffU) << 24) |
+                ((x & 0x0000ff00U) <<  8) |
+                ((x & 0x00ff0000U) >>  8) |
+                ((x & 0xff000000U) >> 24));
 }
 
 #define _PASSWORD_EFMT1 '_'
 
-static unsigned char	IP[64] =
+static unsigned char    IP[64] =
 {
     58, 50, 42, 34, 26, 18, 10,  2, 60, 52, 44, 36, 28, 20, 12,  4,
     62, 54, 46, 38, 30, 22, 14,  6, 64, 56, 48, 40, 32, 24, 16,  8,
@@ -90,8 +90,8 @@ static unsigned char	IP[64] =
     61, 53, 45, 37, 29, 21, 13,  5, 63, 55, 47, 39, 31, 23, 15,  7
 };
 
-static unsigned char	inv_key_perm[64];
-static unsigned char	key_perm[56] =
+static unsigned char    inv_key_perm[64];
+static unsigned char    key_perm[56] =
 {
     57, 49, 41, 33, 25, 17,  9,  1, 58, 50, 42, 34, 26, 18,
     10,  2, 59, 51, 43, 35, 27, 19, 11,  3, 60, 52, 44, 36,
@@ -99,13 +99,13 @@ static unsigned char	key_perm[56] =
     14,  6, 61, 53, 45, 37, 29, 21, 13,  5, 28, 20, 12,  4
 };
 
-static unsigned char	key_shifts[16] =
+static unsigned char    key_shifts[16] =
 {
     1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1
 };
 
-static unsigned char	inv_comp_perm[56];
-static unsigned char	comp_perm[48] =
+static unsigned char    inv_comp_perm[56];
+static unsigned char    comp_perm[48] =
 {
     14, 17, 11, 24,  1,  5,  3, 28, 15,  6, 21, 10,
     23, 19, 12,  4, 26,  8, 16,  7, 27, 20, 13,  2,
@@ -114,11 +114,11 @@ static unsigned char	comp_perm[48] =
 };
 
 /*
- *	No E box is used, as it's replaced by some ANDs, shifts, and ORs.
+ *  No E box is used, as it's replaced by some ANDs, shifts, and ORs.
  */
 
-static unsigned char	u_sbox[8][64];
-static unsigned char	sbox[8][64] =
+static unsigned char    u_sbox[8][64];
+static unsigned char    sbox[8][64] =
 {
     {
         14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5,  9,  0,  7,
@@ -170,8 +170,8 @@ static unsigned char	sbox[8][64] =
     }
 };
 
-static unsigned char	un_pbox[32];
-static unsigned char	pbox[32] =
+static unsigned char    un_pbox[32];
+static unsigned char    pbox[32] =
 {
     16,  7, 20, 21, 29, 12, 28, 17,  1, 15, 23, 26,  5, 18, 31, 10,
     2,  8, 24, 14, 32, 27,  3,  9, 19, 13, 30,  6, 22, 11,  4, 25
@@ -189,16 +189,16 @@ static unsigned int bits32[32] =
     0x00000008, 0x00000004, 0x00000002, 0x00000001
 };
 
-static unsigned char	bits8[8] = { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
+static unsigned char    bits8[8] = { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
 
 static unsigned int saltbits;
-static int	old_salt;
+static int  old_salt;
 static unsigned int *bits28, *bits24;
-static unsigned char	init_perm[64], final_perm[64];
+static unsigned char    init_perm[64], final_perm[64];
 static unsigned int en_keysl[16], en_keysr[16];
 static unsigned int de_keysl[16], de_keysr[16];
-static int	des_initialised = 0;
-static unsigned char	m_sbox[4][4096];
+static int  des_initialised = 0;
+static unsigned char    m_sbox[4][4096];
 static unsigned int psbox[4][256];
 static unsigned int ip_maskl[8][256], ip_maskr[8][256];
 static unsigned int fp_maskl[8][256], fp_maskr[8][256];
@@ -206,10 +206,10 @@ static unsigned int key_perm_maskl[8][128], key_perm_maskr[8][128];
 static unsigned int comp_maskl[8][128], comp_maskr[8][128];
 static unsigned int old_rawkey0, old_rawkey1;
 
-static unsigned char	ascii64[] =
+static unsigned char    ascii64[] =
     "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-/*	  0000000000111111111122222222223333333333444444444455555555556666 */
-/*	  0123456789012345678901234567890123456789012345678901234567890123 */
+/*    0000000000111111111122222222223333333333444444444455555555556666 */
+/*    0123456789012345678901234567890123456789012345678901234567890123 */
 
 static __inline int ascii_to_bin (char ch)
 {
@@ -217,33 +217,39 @@ static __inline int ascii_to_bin (char ch)
     {
         return (0);
     }
+
     if (ch >= 'a')
     {
         return (ch - 'a' + 38);
     }
+
     if (ch > 'Z')
     {
         return (0);
     }
+
     if (ch >= 'A')
     {
         return (ch - 'A' + 12);
     }
+
     if (ch > '9')
     {
         return (0);
     }
+
     if (ch >= '.')
     {
         return (ch - '.');
     }
+
     return (0);
 }
 
 static void des_init()
 {
-    int	i, j, b, k, inbit, obit;
-    unsigned int	*p, *il, *ir, *fl, *fr;
+    int i, j, b, k, inbit, obit;
+    unsigned int    *p, *il, *ir, *fl, *fr;
 
     old_rawkey0 = old_rawkey1 = 0;
     saltbits = 0;
@@ -311,9 +317,11 @@ static void des_init()
             * (ir = &ip_maskr[k][i]) = 0;
             * (fl = &fp_maskl[k][i]) = 0;
             * (fr = &fp_maskr[k][i]) = 0;
+
             for (j = 0; j < 8; j++)
             {
                 inbit = 8 * k + j;
+
                 if (i & bits8[j])
                 {
                     if ((obit = init_perm[inbit]) < 32)
@@ -324,6 +332,7 @@ static void des_init()
                     {
                         *ir |= bits32[obit - 32];
                     }
+
                     if ((obit = final_perm[inbit]) < 32)
                     {
                         *fl |= bits32[obit];
@@ -335,19 +344,23 @@ static void des_init()
                 }
             }
         }
+
         for (i = 0; i < 128; i++)
         {
             * (il = &key_perm_maskl[k][i]) = 0;
             * (ir = &key_perm_maskr[k][i]) = 0;
+
             for (j = 0; j < 7; j++)
             {
                 inbit = 8 * k + j;
+
                 if (i & bits8[j + 1])
                 {
                     if ((obit = inv_key_perm[inbit]) == 255)
                     {
                         continue;
                     }
+
                     if (obit < 28)
                     {
                         *il |= bits28[obit];
@@ -358,17 +371,21 @@ static void des_init()
                     }
                 }
             }
+
             * (il = &comp_maskl[k][i]) = 0;
             * (ir = &comp_maskr[k][i]) = 0;
+
             for (j = 0; j < 7; j++)
             {
                 inbit = 7 * k + j;
+
                 if (i & bits8[j + 1])
                 {
                     if ((obit = inv_comp_perm[inbit]) == 255)
                     {
                         continue;
                     }
+
                     if (obit < 24)
                     {
                         *il |= bits24[obit];
@@ -395,6 +412,7 @@ static void des_init()
         for (i = 0; i < 256; i++)
         {
             * (p = &psbox[b][i]) = 0;
+
             for (j = 0; j < 8; j++)
             {
                 if (i & bits8[j])
@@ -409,24 +427,27 @@ static void des_init()
 
 static void setup_salt (int salt)
 {
-    unsigned int	obit, saltbit;
-    int	i;
+    unsigned int    obit, saltbit;
+    int i;
 
     if (salt == old_salt)
     {
         return;
     }
+
     old_salt = salt;
 
     saltbits = 0;
     saltbit = 1;
     obit = 0x800000;
+
     for (i = 0; i < 24; i++)
     {
         if (salt & saltbit)
         {
             saltbits |= obit;
         }
+
         saltbit <<= 1;
         obit >>= 1;
     }
@@ -435,7 +456,7 @@ static void setup_salt (int salt)
 static int des_setkey (const char *key)
 {
     unsigned int k0, k1, rawkey0, rawkey1;
-    int	shifts, round;
+    int shifts, round;
 
     if (!des_initialised)
     {
@@ -457,11 +478,12 @@ static int des_setkey (const char *key)
          */
         return (0);
     }
+
     old_rawkey0 = rawkey0;
     old_rawkey1 = rawkey1;
 
     /*
-     *	Do key permutation and split into two 28-bit subkeys.
+     *  Do key permutation and split into two 28-bit subkeys.
      */
     k0 = key_perm_maskl[0][rawkey0 >> 25]
          | key_perm_maskl[1][ (rawkey0 >> 17) & 0x7f]
@@ -480,12 +502,13 @@ static int des_setkey (const char *key)
          | key_perm_maskr[6][ (rawkey1 >> 9) & 0x7f]
          | key_perm_maskr[7][ (rawkey1 >> 1) & 0x7f];
     /*
-     *	Rotate subkeys and do compression permutation.
+     *  Rotate subkeys and do compression permutation.
      */
     shifts = 0;
+
     for (round = 0; round < 16; round++)
     {
-        unsigned int	t0, t1;
+        unsigned int    t0, t1;
 
         shifts += key_shifts[round];
 
@@ -512,6 +535,7 @@ static int des_setkey (const char *key)
                               | comp_maskr[6][ (t1 >> 7) & 0x7f]
                               | comp_maskr[7][t1 & 0x7f];
     }
+
     return (0);
 }
 
@@ -519,11 +543,11 @@ static int do_des (unsigned int l_in, unsigned int r_in, unsigned int *l_out,
                    unsigned int *r_out, int count)
 {
     /*
-     *	l_in, r_in, l_out, and r_out are in pseudo-"big-endian" format.
+     *  l_in, r_in, l_out, and r_out are in pseudo-"big-endian" format.
      */
-    unsigned int	l, r, *kl, *kr, *kl1, *kr1;
-    unsigned int	f = 0, r48l, r48r;
-    int		round;
+    unsigned int    l, r, *kl, *kr, *kl1, *kr1;
+    unsigned int    f = 0, r48l, r48r;
+    int     round;
 
     if (count == 0)
     {
@@ -548,7 +572,7 @@ static int do_des (unsigned int l_in, unsigned int r_in, unsigned int *l_out,
     }
 
     /*
-     *	Do initial permutation (IP).
+     *  Do initial permutation (IP).
      */
     l = ip_maskl[0][l_in >> 24]
         | ip_maskl[1][ (l_in >> 16) & 0xff]
@@ -575,18 +599,19 @@ static int do_des (unsigned int l_in, unsigned int r_in, unsigned int *l_out,
         kl = kl1;
         kr = kr1;
         round = 16;
+
         while (round--)
         {
             /*
              * Expand R to 48 bits (simulate the E-box).
              */
-            r48l	= ((r & 0x00000001) << 23)
+            r48l    = ((r & 0x00000001) << 23)
                       | ((r & 0xf8000000) >> 9)
                       | ((r & 0x1f800000) >> 11)
                       | ((r & 0x01f80000) >> 13)
                       | ((r & 0x001f8000) >> 15);
 
-            r48r	= ((r & 0x0001f800) << 7)
+            r48r    = ((r & 0x0001f800) << 7)
                       | ((r & 0x00001f80) << 5)
                       | ((r & 0x000001f8) << 3)
                       | ((r & 0x0000001f) << 1)
@@ -613,13 +638,15 @@ static int do_des (unsigned int l_in, unsigned int r_in, unsigned int *l_out,
             l = r;
             r = f;
         }
+
         r = l;
         l = f;
     }
+
     /*
      * Do final permutation (inverse of IP).
      */
-    *l_out	= fp_maskl[0][l >> 24]
+    *l_out  = fp_maskl[0][l >> 24]
               | fp_maskl[1][ (l >> 16) & 0xff]
               | fp_maskl[2][ (l >> 8) & 0xff]
               | fp_maskl[3][l & 0xff]
@@ -627,7 +654,7 @@ static int do_des (unsigned int l_in, unsigned int r_in, unsigned int *l_out,
               | fp_maskl[5][ (r >> 16) & 0xff]
               | fp_maskl[6][ (r >> 8) & 0xff]
               | fp_maskl[7][r & 0xff];
-    *r_out	= fp_maskr[0][l >> 24]
+    *r_out  = fp_maskr[0][l >> 24]
               | fp_maskr[1][ (l >> 16) & 0xff]
               | fp_maskr[2][ (l >> 8) & 0xff]
               | fp_maskr[3][l & 0xff]
@@ -642,7 +669,7 @@ static int des_cipher (const char *in, char *out, int salt, int count)
 {
     unsigned int l_out, r_out, rawl, rawr;
     unsigned int x[2];
-    int	retval;
+    int retval;
 
     if (!des_initialised)
     {
@@ -664,10 +691,10 @@ static int des_cipher (const char *in, char *out, int salt, int count)
 
 char *xcrypt (const char *key, const char *setting)
 {
-    int		i;
-    unsigned int	count, salt, l, r0, r1, keybuf[2];
-    unsigned char		*p, *q;
-    static unsigned char	output[21];
+    int     i;
+    unsigned int    count, salt, l, r0, r1, keybuf[2];
+    unsigned char       *p, *q;
+    static unsigned char    output[21];
 
     if (!des_initialised)
     {
@@ -679,6 +706,7 @@ char *xcrypt (const char *key, const char *setting)
      * and padding with zeros.
      */
     q = (unsigned char *) keybuf;
+
     while ((q - (unsigned char *) keybuf) < sizeof (keybuf))
     {
         if ((*q++ = *key << 1))
@@ -686,6 +714,7 @@ char *xcrypt (const char *key, const char *setting)
             key++;
         }
     }
+
     if (des_setkey ((const char *) keybuf))
     {
         return (NULL);
@@ -695,8 +724,8 @@ char *xcrypt (const char *key, const char *setting)
     {
         /*
          * "new"-style:
-         *	setting - underscore, 4 bytes of count, 4 bytes of salt
-         *	key - unlimited characters
+         *  setting - underscore, 4 bytes of count, 4 bytes of salt
+         *  key - unlimited characters
          */
         for (i = 1, count = 0; i < 5; i++)
         {
@@ -713,14 +742,16 @@ char *xcrypt (const char *key, const char *setting)
             /*
              * Encrypt the key with itself.
              */
-            if (des_cipher ((const char*)keybuf, (char*)keybuf, 0, 1))
+            if (des_cipher ((const char*) keybuf, (char*) keybuf, 0, 1))
             {
                 return (NULL);
             }
+
             /*
              * And XOR with the next 8 characters of the key.
              */
             q = (unsigned char *) keybuf;
+
             while (((q - (unsigned char *) keybuf) < sizeof (keybuf)) &&
                     *key)
             {
@@ -732,7 +763,8 @@ char *xcrypt (const char *key, const char *setting)
                 return (NULL);
             }
         }
-        strncpy ((char *)output, setting, 9);
+
+        strncpy ((char *) output, setting, 9);
 
         /*
          * Double check that we weren't given a short setting.
@@ -742,14 +774,14 @@ char *xcrypt (const char *key, const char *setting)
          * NUL in it.
          */
         output[9] = '\0';
-        p = output + strlen ((const char *)output);
+        p = output + strlen ((const char *) output);
     }
     else
     {
         /*
          * "old"-style:
-         *	setting - 2 bytes of salt
-         *	key - up to 8 characters
+         *  setting - 2 bytes of salt
+         *  key - up to 8 characters
          */
         count = 25;
 
@@ -767,7 +799,9 @@ char *xcrypt (const char *key, const char *setting)
 
         p = output + 2;
     }
+
     setup_salt (salt);
+
     /*
      * Do it.
      */
@@ -775,6 +809,7 @@ char *xcrypt (const char *key, const char *setting)
     {
         return (NULL);
     }
+
     /*
      * Now encode the result...
      */
@@ -796,5 +831,5 @@ char *xcrypt (const char *key, const char *setting)
     *p++ = ascii64[l & 0x3f];
     *p = 0;
 
-    return ((char *)output);
+    return ((char *) output);
 }

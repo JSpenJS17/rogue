@@ -1,7 +1,7 @@
 /*
  * global variable initializaton
  *
- * @(#)init.c	4.31 (Berkeley) 02/05/99
+ * @(#)init.c   4.31 (Berkeley) 02/05/99
  *
  * Rogue: Exploring the Dungeons of Doom
  * Copyright (C) 1980-1983, 1985, 1999 Michael Toy, Ken Arnold and Glenn Wichman
@@ -18,7 +18,7 @@
 
 /*
  * init_player:
- *	Roll her up
+ *  Roll her up
  */
 void init_player()
 {
@@ -133,32 +133,32 @@ static char *sylls[] =
 
 STONE stones[] =
 {
-    { "agate",		 25},
-    { "alexandrite",	 40},
-    { "amethyst",	 50},
-    { "carnelian",	 40},
-    { "diamond",	300},
-    { "emerald",	300},
-    { "germanium",	225},
-    { "granite",	  5},
-    { "garnet",		 50},
-    { "jade",		150},
-    { "kryptonite",	300},
-    { "lapis lazuli",	 50},
-    { "moonstone",	 50},
-    { "obsidian",	 15},
-    { "onyx",		 60},
-    { "opal",		200},
-    { "pearl",		220},
-    { "peridot",	 63},
-    { "ruby",		350},
-    { "sapphire",	285},
-    { "stibotantalite",	200},
-    { "tiger eye",	 50},
-    { "topaz",		 60},
-    { "turquoise",	 70},
-    { "taaffeite",	300},
-    { "zircon",	 	 80},
+    { "agate",       25},
+    { "alexandrite",     40},
+    { "amethyst",    50},
+    { "carnelian",   40},
+    { "diamond",    300},
+    { "emerald",    300},
+    { "germanium",  225},
+    { "granite",      5},
+    { "garnet",      50},
+    { "jade",       150},
+    { "kryptonite", 300},
+    { "lapis lazuli",    50},
+    { "moonstone",   50},
+    { "obsidian",    15},
+    { "onyx",        60},
+    { "opal",       200},
+    { "pearl",      220},
+    { "peridot",     63},
+    { "ruby",       350},
+    { "sapphire",   285},
+    { "stibotantalite", 200},
+    { "tiger eye",   50},
+    { "topaz",       60},
+    { "turquoise",   70},
+    { "taaffeite",  300},
+    { "zircon",      80},
 };
 
 #define NSTONES (sizeof stones / sizeof (STONE))
@@ -232,13 +232,13 @@ char *metal[] =
 
 #define NMETAL (sizeof metal / sizeof (char *))
 int cNMETAL = NMETAL;
-#define MAX3(a,b,c)	(a > b ? (a > c ? a : c) : (b > c ? b : c))
+#define MAX3(a,b,c) (a > b ? (a > c ? a : c) : (b > c ? b : c))
 
 static bool used[MAX3 (NCOLORS, NSTONES, NWOOD)];
 
 /*
  * init_colors:
- *	Initialize the potion color scheme for this time
+ *  Initialize the potion color scheme for this time
  */
 void init_colors()
 {
@@ -248,12 +248,14 @@ void init_colors()
     {
         used[i] = FALSE;
     }
+
     for (i = 0; i < MAXPOTIONS; i++)
     {
         do
         {
             j = rnd (NCOLORS);
         }
+
         until (!used[j]);
         used[j] = TRUE;
         p_colors[i] = rainbow[j];
@@ -262,9 +264,9 @@ void init_colors()
 
 /*
  * init_names:
- *	Generate the names of the various scrolls
+ *  Generate the names of the various scrolls
  */
-#define MAXNAME	40	/* Max number of characters in a name */
+#define MAXNAME 40  /* Max number of characters in a name */
 
 void init_names()
 {
@@ -276,23 +278,29 @@ void init_names()
     {
         cp = prbuf;
         nwords = rnd (3) + 2;
+
         while (nwords--)
         {
             nsyl = rnd (3) + 1;
+
             while (nsyl--)
             {
                 sp = sylls[rnd ((sizeof sylls) / (sizeof (char *)))];
+
                 if (&cp[strlen (sp)] > &prbuf[MAXNAME])
                 {
                     break;
                 }
+
                 while (*sp)
                 {
                     *cp++ = *sp++;
                 }
             }
+
             *cp++ = ' ';
         }
+
         *--cp = '\0';
         s_names[i] = (char *) malloc ((unsigned) strlen (prbuf) + 1);
         strcpy (s_names[i], prbuf);
@@ -301,7 +309,7 @@ void init_names()
 
 /*
  * init_stones:
- *	Initialize the ring stone setting scheme for this time
+ *  Initialize the ring stone setting scheme for this time
  */
 void init_stones()
 {
@@ -311,12 +319,14 @@ void init_stones()
     {
         used[i] = FALSE;
     }
+
     for (i = 0; i < MAXRINGS; i++)
     {
         do
         {
             j = rnd (NSTONES);
         }
+
         until (!used[j]);
         used[j] = TRUE;
         r_stones[i] = stones[j].st_name;
@@ -326,7 +336,7 @@ void init_stones()
 
 /*
  * init_materials:
- *	Initialize the construction materials for wands and staffs
+ *  Initialize the construction materials for wands and staffs
  */
 void init_materials()
 {
@@ -338,16 +348,19 @@ void init_materials()
     {
         used[i] = FALSE;
     }
+
     for (i = 0; i < NMETAL; i++)
     {
         metused[i] = FALSE;
     }
+
     for (i = 0; i < MAXSTICKS; i++)
     {
         for (;;)
             if (rnd (2) == 0)
             {
                 j = rnd (NMETAL);
+
                 if (!metused[j])
                 {
                     ws_type[i] = "wand";
@@ -359,6 +372,7 @@ void init_materials()
             else
             {
                 j = rnd (NWOOD);
+
                 if (!used[j])
                 {
                     ws_type[i] = "staff";
@@ -367,31 +381,32 @@ void init_materials()
                     break;
                 }
             }
+
         ws_made[i] = str;
     }
 }
 
 #ifdef MASTER
-# define	NT	NUMTHINGS, "things"
-# define	MP	MAXPOTIONS, "potions"
-# define	MS	MAXSCROLLS, "scrolls"
-# define	MR	MAXRINGS, "rings"
-# define	MWS	MAXSTICKS, "sticks"
-# define	MW	MAXWEAPONS, "weapons"
-# define	MA	MAXARMORS, "armor"
+# define    NT  NUMTHINGS, "things"
+# define    MP  MAXPOTIONS, "potions"
+# define    MS  MAXSCROLLS, "scrolls"
+# define    MR  MAXRINGS, "rings"
+# define    MWS MAXSTICKS, "sticks"
+# define    MW  MAXWEAPONS, "weapons"
+# define    MA  MAXARMORS, "armor"
 #else
-# define	NT	NUMTHINGS
-# define	MP	MAXPOTIONS
-# define	MS	MAXSCROLLS
-# define	MR	MAXRINGS
-# define	MWS	MAXSTICKS
-# define	MW	MAXWEAPONS
-# define	MA	MAXARMORS
+# define    NT  NUMTHINGS
+# define    MP  MAXPOTIONS
+# define    MS  MAXSCROLLS
+# define    MR  MAXRINGS
+# define    MWS MAXSTICKS
+# define    MW  MAXWEAPONS
+# define    MA  MAXARMORS
 #endif
 
 /*
  * sumprobs:
- *	Sum up the probabilities for items appearing
+ *  Sum up the probabilities for items appearing
  */
 void
 sumprobs (struct obj_info *info, int bound
@@ -406,10 +421,12 @@ sumprobs (struct obj_info *info, int bound
     struct obj_info *endp;
 
     endp = info + bound;
+
     while (++info < endp)
     {
         info->oi_prob += (info - 1)->oi_prob;
     }
+
 #ifdef MASTER
     badcheck (name, start, bound);
 #endif
@@ -417,7 +434,7 @@ sumprobs (struct obj_info *info, int bound
 
 /*
  * init_probs:
- *	Initialize the probabilities for the various items
+ *  Initialize the probabilities for the various items
  */
 void init_probs()
 {
@@ -433,7 +450,7 @@ void init_probs()
 #ifdef MASTER
 /*
  * badcheck:
- *	Check to see if a series of probabilities sums to 100
+ *  Check to see if a series of probabilities sums to 100
  */
 void badcheck (char *name, struct obj_info *info, int bound)
 {
@@ -443,13 +460,17 @@ void badcheck (char *name, struct obj_info *info, int bound)
     {
         return;
     }
+
     printf ("\nBad percentages for %s (bound = %d):\n", name, bound);
+
     for (end = &info[bound]; info < end; info++)
     {
         printf ("%3d%% %s\n", info->oi_prob, info->oi_name);
     }
+
     printf ("[hit RETURN to continue]");
     fflush (stdout);
+
     while (getchar() != '\n')
     {
         continue;
@@ -459,8 +480,8 @@ void badcheck (char *name, struct obj_info *info, int bound)
 
 /*
  * pick_color:
- *	If he is halucinating, pick a random color name and return it,
- *	otherwise return the given color.
+ *  If he is halucinating, pick a random color name and return it,
+ *  otherwise return the given color.
  */
 char *pick_color (char *col)
 {

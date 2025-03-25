@@ -1,7 +1,7 @@
 /*
  * All sorts of miscellaneous routines
  *
- * @(#)misc.c	4.66 (Berkeley) 08/06/83
+ * @(#)misc.c   4.66 (Berkeley) 08/06/83
  *
  * Rogue: Exploring the Dungeons of Doom
  * Copyright (C) 1980-1983, 1985, 1999 Michael Toy, Ken Arnold and Glenn Wichman
@@ -18,7 +18,7 @@
 
 /*
  * look:
- *	A quick glance all around the player
+ *  A quick glance all around the player
  */
 #undef DEBUG
 
@@ -41,25 +41,30 @@ void look (bool wakeup)
     {
         return;
     }
+
     done = TRUE;
 # endif /* DEBUG */
     passcount = 0;
     rp = proom;
+
     if (!ce (oldpos, hero))
     {
         erase_lamp (&oldpos, oldrp);
         oldpos = hero;
         oldrp = rp;
     }
+
     ey = hero.y + 1;
     ex = hero.x + 1;
     sx = hero.x - 1;
     sy = hero.y - 1;
+
     if (door_stop && !firstmove && running)
     {
         sumhero = hero.y + hero.x;
         diffhero = hero.y - hero.x;
     }
+
     pp = INDEX (hero.y, hero.x);
     pch = pp->p_ch;
     pfl = pp->p_flags;
@@ -71,6 +76,7 @@ void look (bool wakeup)
                 {
                     continue;
                 }
+
                 if (!on (player, ISBLIND))
                 {
                     if (y == hero.y && x == hero.x)
@@ -81,16 +87,20 @@ void look (bool wakeup)
 
                 pp = INDEX (y, x);
                 ch = pp->p_ch;
-                if (ch == ' ')		/* nothing need be done with a ' ' */
+
+                if (ch == ' ')      /* nothing need be done with a ' ' */
                 {
                     continue;
                 }
+
                 fp = &pp->p_flags;
+
                 if (pch != DOOR && ch != DOOR)
                     if ((pfl & F_PASS) != (*fp & F_PASS))
                     {
                         continue;
                     }
+
                 if (((*fp & F_PASS) || ch == DOOR) &&
                         ((pfl & F_PASS) || pch == DOOR))
                 {
@@ -111,6 +121,7 @@ void look (bool wakeup)
                     {
                         running = FALSE;
                     }
+
                     continue;
                 }
                 else
@@ -119,6 +130,7 @@ void look (bool wakeup)
                     {
                         wake_monster (y, x);
                     }
+
                     if (see_monst (tp))
                     {
                         if (on (player, ISHALU))
@@ -131,6 +143,7 @@ void look (bool wakeup)
                         }
                     }
                 }
+
                 if (on (player, ISBLIND) && (y != hero.y || x != hero.x))
                 {
                     continue;
@@ -143,7 +156,7 @@ void look (bool wakeup)
                     ch = ' ';
                 }
 
-                if (tp != NULL || ch != CCHAR ( inch() ))
+                if (tp != NULL || ch != CCHAR (inch()))
                 {
                     addch (ch);
                 }
@@ -157,42 +170,57 @@ void look (bool wakeup)
                         {
                             continue;
                         }
+
                     when 'j':
+
                         if (y == sy)
                         {
                             continue;
                         }
+
                     when 'k':
+
                         if (y == ey)
                         {
                             continue;
                         }
+
                     when 'l':
+
                         if (x == sx)
                         {
                             continue;
                         }
+
                     when 'y':
+
                         if ((y + x) - sumhero >= 1)
                         {
                             continue;
                         }
+
                     when 'u':
+
                         if ((y - x) - diffhero >= 1)
                         {
                             continue;
                         }
+
                     when 'n':
+
                         if ((y + x) - sumhero <= -1)
                         {
                             continue;
                         }
+
                     when 'b':
+
                         if ((y - x) - diffhero <= -1)
                         {
                             continue;
                         }
                     }
+
                     switch (ch)
                     {
                     case DOOR:
@@ -200,32 +228,40 @@ void look (bool wakeup)
                         {
                             running = FALSE;
                         }
+
                         break;
+
                     case PASSAGE:
                         if (x == hero.x || y == hero.y)
                         {
                             passcount++;
                         }
+
                         break;
+
                     case FLOOR:
                     case '|':
                     case '-':
                     case ' ':
                         break;
+
                     default:
                         running = FALSE;
                         break;
                     }
                 }
             }
+
     if (door_stop && !firstmove && passcount > 1)
     {
         running = FALSE;
     }
+
     if (!running || !jump)
     {
         mvaddch (hero.y, hero.x, PLAYER);
     }
+
 # ifdef DEBUG
     done = FALSE;
 # endif /* DEBUG */
@@ -233,8 +269,8 @@ void look (bool wakeup)
 
 /*
  * trip_ch:
- *	Return the character appropriate for this space, taking into
- *	account whether or not the player is tripping.
+ *  Return the character appropriate for this space, taking into
+ *  account whether or not the player is tripping.
  */
 int trip_ch (int y, int x, int ch)
 {
@@ -249,19 +285,22 @@ int trip_ch (int y, int x, int ch)
         case DOOR:
         case TRAP:
             break;
+
         default:
             if (y != stairs.y || x != stairs.x || !seenstairs)
             {
                 ch = rnd_thing();
             }
+
             break;
         }
+
     return ch;
 }
 
 /*
  * erase_lamp:
- *	Erase the area shown by a lamp in a dark room.
+ *  Erase the area shown by a lamp in a dark room.
  */
 
 void erase_lamp (coord *pos, struct room *rp)
@@ -277,6 +316,7 @@ void erase_lamp (coord *pos, struct room *rp)
     ey = pos->y + 1;
     ex = pos->x + 1;
     sy = pos->y - 1;
+
     for (x = pos->x - 1; x <= ex; x++)
         for (y = sy; y <= ey; y++)
         {
@@ -284,7 +324,9 @@ void erase_lamp (coord *pos, struct room *rp)
             {
                 continue;
             }
+
             move (y, x);
+
             if (inch() == FLOOR)
             {
                 addch (' ');
@@ -294,7 +336,7 @@ void erase_lamp (coord *pos, struct room *rp)
 
 /*
  * show_floor:
- *	Should we show the floor in her room at this time?
+ *  Should we show the floor in her room at this time?
  */
 bool show_floor()
 {
@@ -310,7 +352,7 @@ bool show_floor()
 
 /*
  * find_obj:
- *	Find the unclaimed object at y, x
+ *  Find the unclaimed object at y, x
  */
 THING *find_obj (int y, int x)
 {
@@ -323,6 +365,7 @@ THING *find_obj (int y, int x)
             return obj;
         }
     }
+
 #ifdef MASTER
     sprintf (prbuf, "Non-object %d,%d", y, x);
     msg (prbuf);
@@ -335,7 +378,7 @@ THING *find_obj (int y, int x)
 
 /*
  * eat:
- *	She wants to eat something, so let her try
+ *  She wants to eat something, so let her try
  */
 
 void eat()
@@ -346,6 +389,7 @@ void eat()
     {
         return;
     }
+
     if (obj->o_type != FOOD)
     {
         if (!terse)
@@ -356,21 +400,27 @@ void eat()
         {
             msg ("that's Inedible!");
         }
+
         return;
     }
+
     if (food_left < 0)
     {
         food_left = 0;
     }
+
     if ((food_left += HUNGERTIME - 200 + rnd (400)) > STOMACHSIZE)
     {
         food_left = STOMACHSIZE;
     }
+
     hungry_state = 0;
+
     if (obj == cur_weapon)
     {
         cur_weapon = NULL;
     }
+
     if (obj->o_which == 1)
     {
         msg ("my, that was a yummy %s", fruit);
@@ -385,12 +435,13 @@ void eat()
     {
         msg ("%s, that tasted good", choose_str ("oh, wow", "yum"));
     }
+
     leave_pack (obj, FALSE, FALSE);
 }
 
 /*
  * check_level:
- *	Check to see if the guy has gone up a level.
+ *  Check to see if the guy has gone up a level.
  */
 
 void check_level()
@@ -402,9 +453,11 @@ void check_level()
         {
             break;
         }
+
     i++;
     olevel = pstats.s_lvl;
     pstats.s_lvl = i;
+
     if (i > olevel)
     {
         add = roll (i - olevel, 10);
@@ -416,8 +469,8 @@ void check_level()
 
 /*
  * chg_str:
- *	used to modify the playes strength.  It keeps track of the
- *	highest it has been, just in case
+ *  used to modify the playes strength.  It keeps track of the
+ *  highest it has been, just in case
  */
 
 void chg_str (int amt)
@@ -428,16 +481,20 @@ void chg_str (int amt)
     {
         return;
     }
+
     add_str (&pstats.s_str, amt);
     comp = pstats.s_str;
+
     if (ISRING (LEFT, R_ADDSTR))
     {
         add_str (&comp, -cur_ring[LEFT]->o_arm);
     }
+
     if (ISRING (RIGHT, R_ADDSTR))
     {
         add_str (&comp, -cur_ring[RIGHT]->o_arm);
     }
+
     if (comp > max_stats.s_str)
     {
         max_stats.s_str = comp;
@@ -446,7 +503,7 @@ void chg_str (int amt)
 
 /*
  * add_str:
- *	Perform the actual add, checking upper and lower bound limits
+ *  Perform the actual add, checking upper and lower bound limits
  */
 void add_str (str_t *sp, int amt)
 {
@@ -462,7 +519,7 @@ void add_str (str_t *sp, int amt)
 
 /*
  * add_haste:
- *	Add a haste to the player
+ *  Add a haste to the player
  */
 bool add_haste (bool potion)
 {
@@ -477,17 +534,19 @@ bool add_haste (bool potion)
     else
     {
         player.t_flags |= ISHASTE;
+
         if (potion)
         {
             fuse (nohaste, 0, rnd (4) + 4, AFTER);
         }
+
         return TRUE;
     }
 }
 
 /*
  * aggravate:
- *	Aggravate all the monsters on this level
+ *  Aggravate all the monsters on this level
  */
 
 void aggravate()
@@ -503,7 +562,7 @@ void aggravate()
 /*
  * vowelstr:
  *      For printfs: if string starts with a vowel, return "n" for an
- *	"an".
+ *  "an".
  */
 char *vowelstr (char *str)
 {
@@ -520,6 +579,7 @@ char *vowelstr (char *str)
     case 'u':
     case 'U':
         return "n";
+
     default:
         return "";
     }
@@ -527,7 +587,7 @@ char *vowelstr (char *str)
 
 /*
  * is_current:
- *	See if the object is one of the currently used items
+ *  See if the object is one of the currently used items
  */
 bool is_current (THING *obj)
 {
@@ -535,6 +595,7 @@ bool is_current (THING *obj)
     {
         return FALSE;
     }
+
     if (obj == cur_armor || obj == cur_weapon || obj == cur_ring[LEFT]
             || obj == cur_ring[RIGHT])
     {
@@ -542,16 +603,18 @@ bool is_current (THING *obj)
         {
             addmsg ("That's already ");
         }
+
         msg ("in use");
         return TRUE;
     }
+
     return FALSE;
 }
 
 /*
  * get_dir:
  *      Set up the direction co_ordinate for use in varios "prefix"
- *	commands
+ *  commands
  */
 bool get_dir()
 {
@@ -575,9 +638,11 @@ bool get_dir()
         {
             prompt = "direction: ";
         }
+
         do
         {
             gotit = TRUE;
+
             switch (dir_ch = readchar())
             {
             case 'h':
@@ -585,26 +650,32 @@ bool get_dir()
                 delta.y =  0;
                 delta.x = -1;
             when 'j':
+
             case'J':
                 delta.y =  1;
                 delta.x =  0;
             when 'k':
+
             case'K':
                 delta.y = -1;
                 delta.x =  0;
             when 'l':
+
             case'L':
                 delta.y =  0;
                 delta.x =  1;
             when 'y':
+
             case'Y':
                 delta.y = -1;
                 delta.x = -1;
             when 'u':
+
             case'U':
                 delta.y = -1;
                 delta.x =  1;
             when 'b':
+
             case'B': delta.y =  1; delta.x = -1;
                     when 'n':
             case'N':
@@ -620,15 +691,19 @@ bool get_dir()
                 gotit = FALSE;
             }
         }
+
         until (gotit);
+
         if (isupper (dir_ch))
         {
             dir_ch = (char) tolower (dir_ch);
         }
+
         last_dir = dir_ch;
         last_delt.y = delta.y;
         last_delt.x = delta.x;
     }
+
     if (on (player, ISHUH) && rnd (5) == 0)
         do
         {
@@ -636,13 +711,14 @@ bool get_dir()
             delta.x = rnd (3) - 1;
         }
         while (delta.y == 0 && delta.x == 0);
+
     mpos = 0;
     return TRUE;
 }
 
 /*
  * sign:
- *	Return the sign of the number
+ *  Return the sign of the number
  */
 int sign (int nm)
 {
@@ -658,7 +734,7 @@ int sign (int nm)
 
 /*
  * spread:
- *	Give a spread around a given number (+/- 20%)
+ *  Give a spread around a given number (+/- 20%)
  */
 int spread (int nm)
 {
@@ -667,7 +743,7 @@ int spread (int nm)
 
 /*
  * call_it:
- *	Call an object something after use.
+ *  Call an object something after use.
  */
 
 void call_it (struct obj_info *info)
@@ -683,12 +759,14 @@ void call_it (struct obj_info *info)
     else if (!info->oi_guess)
     {
         msg (terse ? "call it: " : "what do you want to call it? ");
+
         if (get_str (prbuf, stdscr) == NORM)
         {
             if (info->oi_guess != NULL)
             {
                 free (info->oi_guess);
             }
+
             info->oi_guess = malloc ((unsigned int) strlen (prbuf) + 1);
             strcpy (info->oi_guess, prbuf);
         }
@@ -697,7 +775,7 @@ void call_it (struct obj_info *info)
 
 /*
  * rnd_thing:
- *	Pick a random thing appropriate for this level
+ *  Pick a random thing appropriate for this level
  */
 char rnd_thing()
 {
@@ -715,13 +793,14 @@ char rnd_thing()
     {
         i = rnd (sizeof thing_list / sizeof (char) - 1);
     }
+
     return thing_list[i];
 }
 
 /*
  str str:
- *	Choose the first or second string depending on whether it the
- *	player is tripping
+ *  Choose the first or second string depending on whether it the
+ *  player is tripping
  */
 char *choose_str (char *ts, char *ns)
 {

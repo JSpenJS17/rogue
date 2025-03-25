@@ -1,7 +1,7 @@
 /*
  * Various installation dependent routines
  *
- * @(#)mach_dep.c	4.37 (Berkeley) 05/23/83
+ * @(#)mach_dep.c   4.37 (Berkeley) 05/23/83
  *
  * Rogue: Exploring the Dungeons of Doom
  * Copyright (C) 1980-1983, 1985, 1999 Michael Toy, Ken Arnold and Glenn Wichman
@@ -13,29 +13,29 @@
 /*
  * The various tuneable defines are:
  *
- *	SCOREFILE	Where/if the score file should live.
- *	ALLSCORES	Score file is top ten scores, not top ten
- *			players.  This is only useful when only a few
- *			people will be playing; otherwise the score file
- *			gets hogged by just a few people.
- *	NUMSCORES	Number of scores in the score file (default 10).
- *	NUMNAME		String version of NUMSCORES (first character
- *			should be capitalized) (default "Ten").
- *	MAXLOAD		What (if any) the maximum load average should be
- *			when people are playing.  Since it is divided
- *			by 10, to specify a load limit of 4.0, MAXLOAD
- *			should be "40".	 If defined, then
- *      LOADAV		Should it use it's own routine to get
- *		        the load average?
- *      NAMELIST	If so, where does the system namelist
- *		        hide?
- *	MAXUSERS	What (if any) the maximum user count should be
- *	                when people are playing.  If defined, then
- *      UCOUNT		Should it use it's own routine to count
- *		        users?
- *      UTMP		If so, where does the user list hide?
- *	CHECKTIME	How often/if it should check during the game
- *			for high load average.
+ *  SCOREFILE   Where/if the score file should live.
+ *  ALLSCORES   Score file is top ten scores, not top ten
+ *          players.  This is only useful when only a few
+ *          people will be playing; otherwise the score file
+ *          gets hogged by just a few people.
+ *  NUMSCORES   Number of scores in the score file (default 10).
+ *  NUMNAME     String version of NUMSCORES (first character
+ *          should be capitalized) (default "Ten").
+ *  MAXLOAD     What (if any) the maximum load average should be
+ *          when people are playing.  Since it is divided
+ *          by 10, to specify a load limit of 4.0, MAXLOAD
+ *          should be "40".  If defined, then
+ *      LOADAV      Should it use it's own routine to get
+ *              the load average?
+ *      NAMELIST    If so, where does the system namelist
+ *              hide?
+ *  MAXUSERS    What (if any) the maximum user count should be
+ *                  when people are playing.  If defined, then
+ *      UCOUNT      Should it use it's own routine to count
+ *              users?
+ *      UTMP        If so, where does the user list hide?
+ *  CHECKTIME   How often/if it should check during the game
+ *          for high load average.
  */
 
 #include <signal.h>
@@ -52,8 +52,8 @@
 #define NOOP(x) (x += 0)
 
 # ifndef NUMSCORES
-#	define	NUMSCORES	10
-#	define	NUMNAME		"Ten"
+#   define  NUMSCORES   10
+#   define  NUMNAME     "Ten"
 # endif
 
 unsigned int numscores = NUMSCORES;
@@ -66,22 +66,24 @@ bool allscore = FALSE;
 # endif /* ALLSCORES */
 
 #ifdef CHECKTIME
-static int num_checks;		/* times we've gone over in checkout() */
+static int num_checks;      /* times we've gone over in checkout() */
 #endif /* CHECKTIME */
 
 /*
  * init_check:
- *	Check out too see if it is proper to play the game now
+ *  Check out too see if it is proper to play the game now
  */
 
 void init_check()
 {
 #if defined(MAXLOAD) || defined(MAXUSERS)
+
     if (too_much())
     {
         printf ("Sorry, %s, but the system is too loaded now.\n", whoami);
         printf ("Try again later.  Meanwhile, why not enjoy a%s %s?\n",
                 vowelstr (fruit), fruit);
+
         if (author())
         {
             printf ("However, since you're a good guy, it's up to you\n");
@@ -91,12 +93,13 @@ void init_check()
             exit (1);
         }
     }
+
 #endif
 }
 
 /*
  * open_score:
- *	Open up the score file for future use
+ *  Open up the score file for future use
  */
 
 void open_score()
@@ -127,6 +130,7 @@ void open_score()
         fprintf (stderr, "Could not open %s for writing: %s\n", scorefile, strerror (errno));
         fflush (stderr);
     }
+
 #else
     scoreboard = NULL;
 #endif
@@ -134,7 +138,7 @@ void open_score()
 
 /*
  * setup:
- *	Get starting setup for all games
+ *  Get starting setup for all games
  */
 
 void setup()
@@ -154,22 +158,22 @@ void setup()
     num_checks = 0;
 #endif
 
-    raw();				/* Raw mode */
-    noecho();				/* Echo off */
+    raw();              /* Raw mode */
+    noecho();               /* Echo off */
     keypad (stdscr, 1);
-    getltchars();			/* get the local tty chars */
+    getltchars();           /* get the local tty chars */
 }
 
 /*
  * getltchars:
- *	Get the local tty chars for later use
+ *  Get the local tty chars for later use
  */
 
 void getltchars()
 {
     got_ltc = TRUE;
     orig_dsusp = md_dsuspchar();
-    md_setdsuspchar ( md_suspchar() );
+    md_setdsuspchar (md_suspchar());
 }
 
 /*
@@ -192,13 +196,13 @@ void playltchars (void)
 {
     if (got_ltc)
     {
-        md_setdsuspchar ( md_suspchar() );
+        md_setdsuspchar (md_suspchar());
     }
 }
 
 /*
  * start_score:
- *	Start the scoring sequence
+ *  Start the scoring sequence
  */
 
 void start_score()
@@ -225,6 +229,7 @@ bool is_symlink (char *sp)
     {
         return ((sbuf2.st_mode & S_IFMT) != S_IFREG);
     }
+
 #else
     NOOP (sp);
     return FALSE;
@@ -234,7 +239,7 @@ bool is_symlink (char *sp)
 #if defined(MAXLOAD) || defined(MAXUSERS)
 /*
  * too_much:
- *	See if the system is being used too much for this game
+ *  See if the system is being used too much for this game
  */
 bool too_much()
 {
@@ -246,36 +251,44 @@ bool too_much()
 
 #ifdef MAXLOAD
     md_loadav (avec);
+
     if (avec[1] > (MAXLOAD / 10.0))
     {
         return TRUE;
     }
+
 #endif
 #ifdef MAXUSERS
+
     if (ucount() > MAXUSERS)
     {
         return TRUE;
     }
+
 #endif
     return FALSE;
 }
 
 /*
  * author:
- *	See if a user is an author of the program
+ *  See if a user is an author of the program
  */
 bool author()
 {
 #ifdef MASTER
+
     if (wizard)
     {
         return TRUE;
     }
+
 #endif
+
     switch (md_getuid())
     {
     case -1:
         return TRUE;
+
     default:
         return FALSE;
     }
@@ -285,7 +298,7 @@ bool author()
 #ifdef CHECKTIME
 /*
  * checkout:
- *	Check each CHECKTIME seconds to see if the load is too high
+ *  Check each CHECKTIME seconds to see if the load is too high
  */
 
 checkout (int sig)
@@ -309,6 +322,7 @@ checkout (int sig)
         {
             fatal ("Sorry.  You took too long.  You are dead\n");
         }
+
         checktime = (CHECKTIME * 60) / num_checks;
         chmsg (msgs[num_checks - 1], ((double) checktime / 60.0));
     }
@@ -319,6 +333,7 @@ checkout (int sig)
             num_checks = 0;
             chmsg ("The load has dropped back down.  You have a reprieve");
         }
+
         checktime = (CHECKTIME * 60);
     }
 
@@ -327,8 +342,8 @@ checkout (int sig)
 
 /*
  * chmsg:
- *	checkout()'s version of msg.  If we are in the middle of a
- *	shell, do a printf instead of a msg to a the refresh.
+ *  checkout()'s version of msg.  If we are in the middle of a
+ *  shell, do a printf instead of a msg to a the refresh.
  */
 /* VARARGS1 */
 
@@ -350,7 +365,7 @@ chmsg (char *fmt, int arg)
 #ifdef UCOUNT
 /*
  * ucount:
- *	count number of users on the system
+ *  count number of users on the system
  */
 #include <utmp.h>
 
@@ -375,6 +390,7 @@ int ucount()
         {
             count++;
         }
+
     fclose (utmp);
     return count;
 }
@@ -382,8 +398,8 @@ int ucount()
 
 /*
  * lock_sc:
- *	lock the score file.  If it takes too long, ask the user if
- *	they care to wait.  Return TRUE if the lock is successful.
+ *  lock the score file.  If it takes too long, ask the user if
+ *  they care to wait.  Return TRUE if the lock is successful.
  */
 static FILE *lfd = NULL;
 bool lock_sc()
@@ -394,29 +410,35 @@ bool lock_sc()
     char *lockfile = LOCKFILE;
 
 over:
+
     if ((lfd = fopen (lockfile, "w+")) != NULL)
     {
         return TRUE;
     }
+
     for (cnt = 0; cnt < 5; cnt++)
     {
         md_sleep (1);
+
         if ((lfd = fopen (lockfile, "w+")) != NULL)
         {
             return TRUE;
         }
     }
+
     if (stat (lockfile, &sbuf) < 0)
     {
         lfd = fopen (lockfile, "w+");
         return TRUE;
     }
+
     if (time (NULL) - sbuf.st_mtime > 10)
     {
         if (md_unlink (lockfile) < 0)
         {
             return FALSE;
         }
+
         goto over;
     }
     else
@@ -425,6 +447,7 @@ over:
         printf ("for it to become free so your score can get posted?\n");
         printf ("If so, type \"y\"\n");
         (void) fgets (prbuf, MAXSTR, stdin);
+
         if (prbuf[0] == 'y')
             for (;;)
             {
@@ -432,11 +455,13 @@ over:
                 {
                     return TRUE;
                 }
+
                 if (stat (lockfile, &sbuf) < 0)
                 {
                     lfd = fopen (lockfile, "w+");
                     return TRUE;
                 }
+
                 if (time (NULL) - sbuf.st_mtime > 10)
                 {
                     if (md_unlink (lockfile) < 0)
@@ -444,6 +469,7 @@ over:
                         return FALSE;
                     }
                 }
+
                 md_sleep (1);
             }
         else
@@ -451,6 +477,7 @@ over:
             return FALSE;
         }
     }
+
 #else
     return TRUE;
 #endif
@@ -458,16 +485,18 @@ over:
 
 /*
  * unlock_sc:
- *	Unlock the score file
+ *  Unlock the score file
  */
 
 void unlock_sc()
 {
 #if defined(SCOREFILE) && defined(LOCKFILE)
+
     if (lfd != NULL)
     {
         fclose (lfd);
     }
+
     lfd = NULL;
     md_unlink (LOCKFILE);
 #endif
@@ -475,7 +504,7 @@ void unlock_sc()
 
 /*
  * flush_type:
- *	Flush typeahead for traps, etc.
+ *  Flush typeahead for traps, etc.
  */
 
 void flush_type()

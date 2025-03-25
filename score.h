@@ -1,7 +1,7 @@
 /*
  * Score file structure
  *
- * @(#)score.h	4.6 (Berkeley) 02/05/99
+ * @(#)score.h  4.6 (Berkeley) 02/05/99
  *
  * Rogue: Exploring the Dungeons of Doom
  * Copyright (C) 1980-1983, 1985, 1999 Michael Toy, Ken Arnold and Glenn Wichman
@@ -23,5 +23,5 @@ struct sc_ent
 
 typedef struct sc_ent SCORE;
 
-void	rd_score (SCORE *top_ten);
-void	wr_score (SCORE *top_ten);
+void    rd_score (SCORE *top_ten);
+void    wr_score (SCORE *top_ten);

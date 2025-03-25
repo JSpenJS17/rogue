@@ -1,7 +1,7 @@
 /*
  * Code for one creature to chase another
  *
- * @(#)chase.c	4.57 (Berkeley) 02/05/99
+ * @(#)chase.c  4.57 (Berkeley) 02/05/99
  *
  * Rogue: Exploring the Dungeons of Doom
  * Copyright (C) 1980-1983, 1985, 1999 Michael Toy, Ken Arnold and Glenn Wichman
@@ -14,13 +14,13 @@
 #include <curses.h>
 #include "rogue.h"
 
-#define DRAGONSHOT  5	/* one chance in DRAGONSHOT that a dragon will flame */
+#define DRAGONSHOT  5   /* one chance in DRAGONSHOT that a dragon will flame */
 
-static coord ch_ret;				/* Where chasing takes you */
+static coord ch_ret;                /* Where chasing takes you */
 
 /*
  * runners:
- *	Make all the running monsters move.
+ *  Make all the running monsters move.
  */
 void runners()
 {
@@ -33,18 +33,22 @@ void runners()
     {
         /* remember this in case the monster's "next" is changed */
         next = next (tp);
+
         if (!on (*tp, ISHELD) && on (*tp, ISRUN))
         {
             orig_pos = tp->t_pos;
             wastarget = on (*tp, ISTARGET);
+
             if (move_monst (tp) == -1)
             {
                 continue;
             }
+
             if (on (*tp, ISFLY) && dist_cp (&hero, &tp->t_pos) >= 3)
             {
                 move_monst (tp);
             }
+
             if (wastarget && !ce (orig_pos, tp->t_pos))
             {
                 tp->t_flags &= ~ISTARGET;
@@ -52,6 +56,7 @@ void runners()
             }
         }
     }
+
     if (has_hit)
     {
         endmsg();
@@ -61,7 +66,7 @@ void runners()
 
 /*
  * move_monst:
- *	Execute a single turn of running for a monster
+ *  Execute a single turn of running for a monster
  */
 int move_monst (THING *tp)
 {
@@ -70,19 +75,21 @@ int move_monst (THING *tp)
         {
             return (-1);
         }
+
     if (on (*tp, ISHASTE))
         if (do_chase (tp) == -1)
         {
             return (-1);
         }
+
     tp->t_turn ^= TRUE;
     return (0);
 }
 
 /*
  * relocate:
- *	Make the monster's new location be the specified one, updating
- *	all the relevant state.
+ *  Make the monster's new location be the specified one, updating
+ *  all the relevant state.
  */
 void relocate (THING *th, coord *new_loc)
 {
@@ -100,10 +107,13 @@ void relocate (THING *th, coord *new_loc)
         {
             th->t_dest = find_dest (th);
         }
+
         th->t_pos = *new_loc;
         moat (new_loc->y, new_loc->x) = th;
     }
+
     move (new_loc->y, new_loc->x);
+
     if (see_monst (th))
     {
         addch (th->t_disguise);
@@ -118,24 +128,26 @@ void relocate (THING *th, coord *new_loc)
 
 /*
  * do_chase:
- *	Make one thing chase another.
+ *  Make one thing chase another.
  */
 int do_chase (THING *th)
 {
     register coord *cp;
-    register struct room *rer, *ree;	/* room of chaser, room of chasee */
+    register struct room *rer, *ree;    /* room of chaser, room of chasee */
     register int mindist = 32767, curdist;
-    register bool stoprun = FALSE;	/* TRUE means we are there */
+    register bool stoprun = FALSE;  /* TRUE means we are there */
     register bool door;
     register THING *obj;
-    static coord this;			/* Temporary destination for chaser */
+    static coord this;          /* Temporary destination for chaser */
 
-    rer = th->t_room;		/* Find room of chaser */
+    rer = th->t_room;       /* Find room of chaser */
+
     if (on (*th, ISGREED) && rer->r_goldval == 0)
     {
         th->t_dest = &hero;    /* If gold has been taken, run after hero */
     }
-    if (th->t_dest == &hero)	/* Find room of chasee */
+
+    if (th->t_dest == &hero)    /* Find room of chasee */
     {
         ree = proom;
     }
@@ -143,6 +155,7 @@ int do_chase (THING *th)
     {
         ree = roomin (th->t_dest);
     }
+
     /*
      * We don't count doors as inside rooms for this routine
      */
@@ -153,17 +166,20 @@ int do_chase (THING *th)
      * our goal.
      */
 over:
+
     if (rer != ree)
     {
         for (cp = rer->r_exit; cp < &rer->r_exit[rer->r_nexits]; cp++)
         {
             curdist = dist_cp (th->t_dest, cp);
+
             if (curdist < mindist)
             {
                 this = *cp;
                 mindist = curdist;
             }
         }
+
         if (door)
         {
             rer = &passages[flat (th->t_pos.y, th->t_pos.x) & F_PNUM];
@@ -174,6 +190,7 @@ over:
     else
     {
         this = *th->t_dest;
+
         /*
          * For dragons check and see if (a) the hero is on a straight
          * line from it, and (b) that it is within shooting distance,
@@ -186,22 +203,27 @@ over:
         {
             delta.y = sign (hero.y - th->t_pos.y);
             delta.x = sign (hero.x - th->t_pos.x);
+
             if (has_hit)
             {
                 endmsg();
             }
+
             fire_bolt (&th->t_pos, &delta, "flame");
             running = FALSE;
             count = 0;
             quiet = 0;
+
             if (to_death && !on (*th, ISTARGET))
             {
                 to_death = FALSE;
                 kamikaze = FALSE;
             }
+
             return (0);
         }
     }
+
     /*
      * This now contains what we want to run to this time
      * so we run to it.  If we hit it we either want to fight it
@@ -211,7 +233,7 @@ over:
     {
         if (ce (this, hero))
         {
-            return ( attack (th) );
+            return (attack (th));
         }
         else if (ce (this, *th->t_dest))
         {
@@ -225,6 +247,7 @@ over:
                     th->t_dest = find_dest (th);
                     break;
                 }
+
             if (th->t_type != 'F')
             {
                 stoprun = TRUE;
@@ -238,7 +261,9 @@ over:
             return (0);
         }
     }
+
     relocate (th, &ch_ret);
+
     /*
      * And stop running if need be
      */
@@ -246,12 +271,13 @@ over:
     {
         th->t_flags &= ~ISRUN;
     }
+
     return (0);
 }
 
 /*
  * set_oldch:
- *	Set the oldch character for the monster
+ *  Set the oldch character for the monster
  */
 void set_oldch (THING *tp, coord *cp)
 {
@@ -263,7 +289,8 @@ void set_oldch (THING *tp, coord *cp)
     }
 
     sch = tp->t_oldch;
-    tp->t_oldch = CCHAR ( mvinch (cp->y, cp->x) );
+    tp->t_oldch = CCHAR (mvinch (cp->y, cp->x));
+
     if (!on (player, ISBLIND))
     {
         if ((sch == FLOOR || tp->t_oldch == FLOOR) &&
@@ -280,7 +307,7 @@ void set_oldch (THING *tp, coord *cp)
 
 /*
  * see_monst:
- *	Return TRUE if the hero can see the monster
+ *  Return TRUE if the hero can see the monster
  */
 bool see_monst (THING *mp)
 {
@@ -290,12 +317,15 @@ bool see_monst (THING *mp)
     {
         return FALSE;
     }
+
     if (on (*mp, ISINVIS) && !on (player, CANSEE))
     {
         return FALSE;
     }
+
     y = mp->t_pos.y;
     x = mp->t_pos.x;
+
     if (dist (y, x, hero.y, hero.x) < LAMPDIST)
     {
         if (y != hero.y && x != hero.x &&
@@ -303,18 +333,21 @@ bool see_monst (THING *mp)
         {
             return FALSE;
         }
+
         return TRUE;
     }
+
     if (mp->t_room != proom)
     {
         return FALSE;
     }
-    return ((bool)! (mp->t_room->r_flags & ISDARK));
+
+    return ((bool) ! (mp->t_room->r_flags & ISDARK));
 }
 
 /*
  * runto:
- *	Set a monster running after the hero.
+ *  Set a monster running after the hero.
  */
 void runto (coord *runner)
 {
@@ -324,10 +357,12 @@ void runto (coord *runner)
      * If we couldn't find him, something is funny
      */
 #ifdef MASTER
+
     if ((tp = moat (runner->y, runner->x)) == NULL)
     {
         msg ("couldn't find monster in runto at (%d,%d)", runner->y, runner->x);
     }
+
 #else
     tp = moat (runner->y, runner->x);
 #endif
@@ -341,9 +376,9 @@ void runto (coord *runner)
 
 /*
  * chase:
- *	Find the spot for the chaser(er) to move closer to the
- *	chasee(ee).  Returns TRUE if we want to keep on chasing later
- *	FALSE if we reach the goal.
+ *  Find the spot for the chaser(er) to move closer to the
+ *  chasee(ee).  Returns TRUE if we want to keep on chasing later
+ *  FALSE if we reach the goal.
  */
 bool chase (THING *tp, coord *ee)
 {
@@ -368,6 +403,7 @@ bool chase (THING *tp, coord *ee)
          */
         ch_ret = *rndmove (tp);
         curdist = dist_cp (&ch_ret, ee);
+
         /*
          * Small chance that it will become un-confused
          */
@@ -391,11 +427,14 @@ bool chase (THING *tp, coord *ee)
         ch_ret = *er;
 
         ey = er->y + 1;
+
         if (ey >= NUMLINES - 1)
         {
             ey = NUMLINES - 2;
         }
+
         ex = er->x + 1;
+
         if (ex >= NUMCOLS)
         {
             ex = NUMCOLS - 1;
@@ -407,15 +446,20 @@ bool chase (THING *tp, coord *ee)
             {
                 continue;
             }
+
             tryp.x = x;
+
             for (y = er->y - 1; y <= ey; y++)
             {
                 tryp.y = y;
+
                 if (!diag_ok (er, &tryp))
                 {
                     continue;
                 }
+
                 ch = winat (y, x);
+
                 if (step_ok (ch))
                 {
                     /*
@@ -431,11 +475,13 @@ bool chase (THING *tp, coord *ee)
                                 break;
                             }
                         }
+
                         if (obj != NULL && obj->o_which == S_SCARE)
                         {
                             continue;
                         }
                     }
+
                     /*
                      * It can also be a Xeroc, which we shouldn't step on
                      */
@@ -443,11 +489,13 @@ bool chase (THING *tp, coord *ee)
                     {
                         continue;
                     }
+
                     /*
                      * If we didn't find any scrolls at this place or it
                      * wasn't a scare scroll, then this place counts
                      */
                     thisdist = dist (y, x, ee->y, ee->x);
+
                     if (thisdist < curdist)
                     {
                         plcnt = 1;
@@ -463,13 +511,14 @@ bool chase (THING *tp, coord *ee)
             }
         }
     }
+
     return (bool) (curdist != 0 && !ce (ch_ret, hero));
 }
 
 /*
  * roomin:
- *	Find what room some coordinates are in. NULL means they aren't
- *	in any room.
+ *  Find what room some coordinates are in. NULL means they aren't
+ *  in any room.
  */
 struct room *
 roomin (coord *cp)
@@ -479,6 +528,7 @@ roomin (coord *cp)
 
 
     fp = &flat (cp->y, cp->x);
+
     if (*fp & F_PASS)
     {
         return &passages[*fp & F_PNUM];
@@ -502,7 +552,7 @@ roomin (coord *cp)
 
 /*
  * diag_ok:
- *	Check to see if the move is legal if it is diagonal
+ *  Check to see if the move is legal if it is diagonal
  */
 bool diag_ok (coord *sp, coord *ep)
 {
@@ -510,16 +560,18 @@ bool diag_ok (coord *sp, coord *ep)
     {
         return FALSE;
     }
+
     if (ep->x == sp->x || ep->y == sp->y)
     {
         return TRUE;
     }
+
     return (bool) (step_ok (chat (ep->y, sp->x)) && step_ok (chat (sp->y, ep->x)));
 }
 
 /*
  * cansee:
- *	Returns true if the hero can see a certain coordinate.
+ *  Returns true if the hero can see a certain coordinate.
  */
 bool cansee (int y, int x)
 {
@@ -530,6 +582,7 @@ bool cansee (int y, int x)
     {
         return FALSE;
     }
+
     if (dist (y, x, hero.y, hero.x) < LAMPDIST)
     {
         if (flat (y, x) & F_PASS)
@@ -538,8 +591,10 @@ bool cansee (int y, int x)
             {
                 return FALSE;
             }
+
         return TRUE;
     }
+
     /*
      * We can only see if the hero in the same room as
      * the coordinate and the room is lit or if it is close.
@@ -551,7 +606,7 @@ bool cansee (int y, int x)
 
 /*
  * find_dest:
- *	find the proper destination for the monster
+ *  find the proper destination for the monster
  */
 coord *find_dest (THING *tp)
 {
@@ -563,12 +618,14 @@ coord *find_dest (THING *tp)
     {
         return &hero;
     }
+
     for (obj = lvl_obj; obj != NULL; obj = next (obj))
     {
         if (obj->o_type == SCROLL && obj->o_which == S_SCARE)
         {
             continue;
         }
+
         if (roomin (&obj->o_pos) == tp->t_room && rnd (100) < prob)
         {
             for (tp = mlist; tp != NULL; tp = next (tp))
@@ -576,20 +633,22 @@ coord *find_dest (THING *tp)
                 {
                     break;
                 }
+
             if (tp == NULL)
             {
                 return &obj->o_pos;
             }
         }
     }
+
     return &hero;
 }
 
 /*
  * dist:
- *	Calculate the "distance" between to points.  Actually,
- *	this calculates d^2, not d, but that's good enough for
- *	our purposes, since it's only used comparitively.
+ *  Calculate the "distance" between to points.  Actually,
+ *  this calculates d^2, not d, but that's good enough for
+ *  our purposes, since it's only used comparitively.
  */
 int dist (int y1, int x1, int y2, int x2)
 {
@@ -598,7 +657,7 @@ int dist (int y1, int x1, int y2, int x2)
 
 /*
  * dist_cp:
- *	Call dist() with appropriate arguments for coord pointers
+ *  Call dist() with appropriate arguments for coord pointers
  */
 int dist_cp (coord *c1, coord *c2)
 {

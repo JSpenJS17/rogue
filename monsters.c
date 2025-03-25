@@ -1,7 +1,7 @@
 /*
  * File with various monster functions in it
  *
- * @(#)monsters.c	4.46 (Berkeley) 02/05/99
+ * @(#)monsters.c   4.46 (Berkeley) 02/05/99
  *
  * Rogue: Exploring the Dungeons of Doom
  * Copyright (C) 1980-1983, 1985, 1999 Michael Toy, Ken Arnold and Glenn Wichman
@@ -32,8 +32,8 @@ static char wand_mons[] =
 
 /*
  * randmonster:
- *	Pick a monster to show up.  The lower the level,
- *	the meaner the monster.
+ *  Pick a monster to show up.  The lower the level,
+ *  the meaner the monster.
  */
 char randmonster (bool wander)
 {
@@ -41,25 +41,29 @@ char randmonster (bool wander)
     char *mons;
 
     mons = (wander ? wand_mons : lvl_mons);
+
     do
     {
         d = level + (rnd (10) - 6);
+
         if (d < 0)
         {
             d = rnd (5);
         }
+
         if (d > 25)
         {
             d = rnd (5) + 21;
         }
     }
     while (mons[d] == 0);
+
     return mons[d];
 }
 
 /*
  * new_monster:
- *	Pick a new monster and add it to the list
+ *  Pick a new monster and add it to the list
  */
 
 void new_monster (THING *tp, char type, coord *cp)
@@ -71,12 +75,13 @@ void new_monster (THING *tp, char type, coord *cp)
     {
         lev_add = 0;
     }
+
     attach (mlist, tp);
     tp->t_type = type;
     tp->t_disguise = type;
     tp->t_pos = *cp;
     move (cp->y, cp->x);
-    tp->t_oldch = CCHAR ( inch() );
+    tp->t_oldch = CCHAR (inch());
     tp->t_room = roomin (cp);
     moat (cp->y, cp->x) = tp;
     mp = &monsters[tp->t_type - 'A'];
@@ -87,16 +92,20 @@ void new_monster (THING *tp, char type, coord *cp)
     tp->t_stats.s_str = mp->m_stats.s_str;
     tp->t_stats.s_exp = mp->m_stats.s_exp + lev_add * 10 + exp_add (tp);
     tp->t_flags = mp->m_flags;
+
     if (level > 29)
     {
         tp->t_flags |= ISHASTE;
     }
+
     tp->t_turn = TRUE;
     tp->t_pack = NULL;
+
     if (ISWEARING (R_AGGR))
     {
         runto (cp);
     }
+
     if (type == 'X')
     {
         tp->t_disguise = rnd_thing();
@@ -105,7 +114,7 @@ void new_monster (THING *tp, char type, coord *cp)
 
 /*
  * expadd:
- *	Experience to add for this monster's level/hit points
+ *  Experience to add for this monster's level/hit points
  */
 int exp_add (THING *tp)
 {
@@ -119,6 +128,7 @@ int exp_add (THING *tp)
     {
         mod = tp->t_stats.s_maxhp / 6;
     }
+
     if (tp->t_stats.s_lvl > 9)
     {
         mod *= 20;
@@ -127,12 +137,13 @@ int exp_add (THING *tp)
     {
         mod *= 4;
     }
+
     return mod;
 }
 
 /*
  * wanderer:
- *	Create a new wandering monster and aim it at the player
+ *  Create a new wandering monster and aim it at the player
  */
 
 void wanderer()
@@ -141,15 +152,19 @@ void wanderer()
     static coord cp;
 
     tp = new_item();
+
     do
     {
         find_floor ((struct room *) NULL, &cp, FALSE, TRUE);
     }
     while (roomin (&cp) == proom);
+
     new_monster (tp, randmonster (TRUE), &cp);
+
     if (on (player, SEEMONST))
     {
         standout();
+
         if (!on (player, ISHALU))
         {
             addch (tp->t_type);
@@ -158,20 +173,24 @@ void wanderer()
         {
             addch (rnd (26) + 'A');
         }
+
         standend();
     }
+
     runto (&tp->t_pos);
 #ifdef MASTER
+
     if (wizard)
     {
         msg ("started a wandering %s", monsters[tp->t_type - 'A'].m_name);
     }
+
 #endif
 }
 
 /*
  * wake_monster:
- *	What to do when the hero steps next to a monster
+ *  What to do when the hero steps next to a monster
  */
 THING *wake_monster (int y, int x)
 {
@@ -180,18 +199,23 @@ THING *wake_monster (int y, int x)
     char ch, *mname;
 
 #ifdef MASTER
+
     if ((tp = moat (y, x)) == NULL)
     {
         msg ("can't find monster in wake_monster");
     }
+
 #else
     tp = moat (y, x);
+
     if (tp == NULL)
     {
         endwin(), abort();
     }
+
 #endif
     ch = tp->t_type;
+
     /*
      * Every time he sees mean monster, it might start chasing him
      */
@@ -201,14 +225,17 @@ THING *wake_monster (int y, int x)
         tp->t_dest = &hero;
         tp->t_flags |= ISRUN;
     }
+
     if (ch == 'M' && !on (player, ISBLIND) && !on (player, ISHALU)
             && !on (*tp, ISFOUND) && !on (*tp, ISCANC) && on (*tp, ISRUN))
     {
         rp = proom;
+
         if ((rp != NULL && ! (rp->r_flags & ISDARK))
                 || dist (y, x, hero.y, hero.x) < LAMPDIST)
         {
             tp->t_flags |= ISFOUND;
+
             if (!save (VS_MAGIC))
             {
                 if (on (player, ISHUH))
@@ -219,23 +246,28 @@ THING *wake_monster (int y, int x)
                 {
                     fuse (unconfuse, 0, spread (HUHDURATION), AFTER);
                 }
+
                 player.t_flags |= ISHUH;
                 mname = set_mname (tp);
                 addmsg ("%s", mname);
+
                 if (strcmp (mname, "it") != 0)
                 {
                     addmsg ("'");
                 }
+
                 msg ("s gaze has confused you");
             }
         }
     }
+
     /*
      * Let greedy ones guard gold
      */
     if (on (*tp, ISGREED) && !on (*tp, ISRUN))
     {
         tp->t_flags |= ISRUN;
+
         if (proom->r_goldval)
         {
             tp->t_dest = &proom->r_gold;
@@ -245,12 +277,13 @@ THING *wake_monster (int y, int x)
             tp->t_dest = &hero;
         }
     }
+
     return tp;
 }
 
 /*
  * give_pack:
- *	Give a pack to a monster if it deserves one
+ *  Give a pack to a monster if it deserves one
  */
 
 void give_pack (THING *tp)
@@ -263,7 +296,7 @@ void give_pack (THING *tp)
 
 /*
  * save_throw:
- *	See if a creature save against something
+ *  See if a creature save against something
  */
 int save_throw (int which, THING *tp)
 {
@@ -275,7 +308,7 @@ int save_throw (int which, THING *tp)
 
 /*
  * save:
- *	See if he saves against various nasty things
+ *  See if he saves against various nasty things
  */
 int save (int which)
 {
@@ -285,10 +318,12 @@ int save (int which)
         {
             which -= cur_ring[LEFT]->o_arm;
         }
+
         if (ISRING (RIGHT, R_PROTECT))
         {
             which -= cur_ring[RIGHT]->o_arm;
         }
     }
+
     return save_throw (which, &player);
 }

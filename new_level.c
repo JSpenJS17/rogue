@@ -1,8 +1,8 @@
 /*
  * new_level:
- *	Dig and draw a new level
+ *  Dig and draw a new level
  *
- * @(#)new_level.c	4.38 (Berkeley) 02/05/99
+ * @(#)new_level.c  4.38 (Berkeley) 02/05/99
  *
  * Rogue: Exploring the Dungeons of Doom
  * Copyright (C) 1980-1983, 1985, 1999 Michael Toy, Ken Arnold and Glenn Wichman
@@ -15,9 +15,9 @@
 #include <string.h>
 #include "rogue.h"
 
-#define TREAS_ROOM 20	/* one chance in TREAS_ROOM for a treasure room */
-#define MAXTREAS 10	/* maximum number of treasures in a treasure room */
-#define MINTREAS 2	/* minimum number of treasures in a treasure room */
+#define TREAS_ROOM 20   /* one chance in TREAS_ROOM for a treasure room */
+#define MAXTREAS 10 /* maximum number of treasures in a treasure room */
+#define MINTREAS 2  /* minimum number of treasures in a treasure room */
 
 void new_level()
 {
@@ -26,11 +26,13 @@ void new_level()
     char *sp;
     int i;
 
-    player.t_flags &= ~ISHELD;	/* unhold when you go down just in case */
+    player.t_flags &= ~ISHELD;  /* unhold when you go down just in case */
+
     if (level > max_level)
     {
         max_level = level;
     }
+
     /*
      * Clean things off from last level
      */
@@ -40,7 +42,9 @@ void new_level()
         pp->p_flags = F_REAL;
         pp->p_monst = NULL;
     }
+
     clear();
+
     /*
      * Free up the monsters on the last level
      */
@@ -48,26 +52,31 @@ void new_level()
     {
         free_list (tp->t_pack);
     }
+
     free_list (mlist);
     /*
      * Throw away stuff left on the previous level (if anything)
      */
     free_list (lvl_obj);
-    do_rooms();				/* Draw rooms */
-    do_passages();			/* Draw passages */
+    do_rooms();             /* Draw rooms */
+    do_passages();          /* Draw passages */
     no_food++;
-    put_things();			/* Place objects (if any) */
+    put_things();           /* Place objects (if any) */
+
     /*
      * Place the traps
      */
     if (rnd (10) < level)
     {
         ntraps = rnd (level / 4) + 1;
+
         if (ntraps > MAXTRAPS)
         {
             ntraps = MAXTRAPS;
         }
+
         i = ntraps;
+
         while (i--)
         {
             /*
@@ -81,11 +90,13 @@ void new_level()
                 find_floor ((struct room *) NULL, &stairs, FALSE, FALSE);
             }
             while (chat (stairs.y, stairs.x) != FLOOR);
+
             sp = &flat (stairs.y, stairs.x);
             *sp &= ~F_REAL;
             *sp |= rnd (NTRAPS);
         }
     }
+
     /*
      * Place the staircase down.
      */
@@ -101,10 +112,12 @@ void new_level()
     find_floor ((struct room *) NULL, &hero, FALSE, TRUE);
     enter_room (&hero);
     mvaddch (hero.y, hero.x, PLAYER);
+
     if (on (player, SEEMONST))
     {
         turn_see (FALSE);
     }
+
     if (on (player, ISHALU))
     {
         visuals();
@@ -113,7 +126,7 @@ void new_level()
 
 /*
  * rnd_room:
- *	Pick a room that is really there
+ *  Pick a room that is really there
  */
 int rnd_room()
 {
@@ -124,12 +137,13 @@ int rnd_room()
         rm = rnd (MAXROOMS);
     }
     while (rooms[rm].r_flags & ISGONE);
+
     return rm;
 }
 
 /*
  * put_things:
- *	Put potions and scrolls on this level
+ *  Put potions and scrolls on this level
  */
 
 void put_things()
@@ -145,6 +159,7 @@ void put_things()
     {
         return;
     }
+
     /*
      * check for treasure rooms, and if so, put it in.
      */
@@ -152,6 +167,7 @@ void put_things()
     {
         treas_room();
     }
+
     /*
      * Do MAXOBJ attempts to put things on a level
      */
@@ -169,6 +185,7 @@ void put_things()
             find_floor ((struct room *) NULL, &obj->o_pos, FALSE, FALSE);
             chat (obj->o_pos.y, obj->o_pos.x) = (char) obj->o_type;
         }
+
     /*
      * If he is really deep in the dungeon and he hasn't found the
      * amulet yet, put it somewhere on the ground
@@ -193,9 +210,9 @@ void put_things()
 
 /*
  * treas_room:
- *	Add a treasure room
+ *  Add a treasure room
  */
-#define MAXTRIES 10	/* max number of tries to put down a monster */
+#define MAXTRIES 10 /* max number of tries to put down a monster */
 
 
 void treas_room()
@@ -208,11 +225,14 @@ void treas_room()
 
     rp = &rooms[rnd_room()];
     spots = (rp->r_max.y - 2) * (rp->r_max.x - 2) - MINTREAS;
+
     if (spots > (MAXTREAS - MINTREAS))
     {
         spots = (MAXTREAS - MINTREAS);
     }
+
     num_monst = nm = rnd (spots) + MINTREAS;
+
     while (nm--)
     {
         find_floor (rp, &mp, 2 * MAXTRIES, FALSE);
@@ -230,22 +250,28 @@ void treas_room()
     {
         nm = num_monst + 2;
     }
+
     spots = (rp->r_max.y - 2) * (rp->r_max.x - 2);
+
     if (nm > spots)
     {
         nm = spots;
     }
+
     level++;
+
     while (nm--)
     {
         spots = 0;
+
         if (find_floor (rp, &mp, MAXTRIES, TRUE))
         {
             tp = new_item();
             new_monster (tp, randmonster (FALSE), &mp);
-            tp->t_flags |= ISMEAN;	/* no sloughers in THIS room */
+            tp->t_flags |= ISMEAN;  /* no sloughers in THIS room */
             give_pack (tp);
         }
     }
+
     level--;
 }

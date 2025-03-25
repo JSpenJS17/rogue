@@ -1,7 +1,7 @@
 /*
  * All the daemon and fuse functions are in here
  *
- * @(#)daemons.c	4.24 (Berkeley) 02/05/99
+ * @(#)daemons.c    4.24 (Berkeley) 02/05/99
  *
  * Rogue: Exploring the Dungeons of Doom
  * Copyright (C) 1980-1983, 1985, 1999 Michael Toy, Ken Arnold and Glenn Wichman
@@ -15,7 +15,7 @@
 
 /*
  * doctor:
- *	A healing daemon that restors hit points after rest
+ *  A healing daemon that restors hit points after rest
  */
 void doctor()
 {
@@ -24,6 +24,7 @@ void doctor()
     lv = pstats.s_lvl;
     ohp = pstats.s_hpt;
     quiet++;
+
     if (lv < 8)
     {
         if (quiet + (lv << 1) > 20)
@@ -35,27 +36,31 @@ void doctor()
     {
         pstats.s_hpt += rnd (lv - 7) + 1;
     }
+
     if (ISRING (LEFT, R_REGEN))
     {
         pstats.s_hpt++;
     }
+
     if (ISRING (RIGHT, R_REGEN))
     {
         pstats.s_hpt++;
     }
+
     if (ohp != pstats.s_hpt)
     {
         if (pstats.s_hpt > max_hp)
         {
             pstats.s_hpt = max_hp;
         }
+
         quiet = 0;
     }
 }
 
 /*
  * Swander:
- *	Called when it is time to start rolling for wandering monsters
+ *  Called when it is time to start rolling for wandering monsters
  */
 void swander()
 {
@@ -64,7 +69,7 @@ void swander()
 
 /*
  * rollwand:
- *	Called to roll to see if a wandering monster starts up
+ *  Called to roll to see if a wandering monster starts up
  */
 int between = 0;
 void rollwand()
@@ -78,13 +83,14 @@ void rollwand()
             kill_daemon (rollwand);
             fuse (swander, 0, WANDERTIME, BEFORE);
         }
+
         between = 0;
     }
 }
 
 /*
  * unconfuse:
- *	Release the poor player from his confusion
+ *  Release the poor player from his confusion
  */
 void unconfuse()
 {
@@ -94,7 +100,7 @@ void unconfuse()
 
 /*
  * unsee:
- *	Turn off the ability to see invisible
+ *  Turn off the ability to see invisible
  */
 void unsee()
 {
@@ -105,12 +111,13 @@ void unsee()
         {
             mvaddch (th->t_pos.y, th->t_pos.x, th->t_oldch);
         }
+
     player.t_flags &= ~CANSEE;
 }
 
 /*
  * sight:
- *	He gets his sight back
+ *  He gets his sight back
  */
 void sight()
 {
@@ -118,10 +125,12 @@ void sight()
     {
         extinguish (sight);
         player.t_flags &= ~ISBLIND;
+
         if (! (proom->r_flags & ISGONE))
         {
             enter_room (&hero);
         }
+
         msg (choose_str ("far out!  Everything is all cosmic again",
                          "the veil of darkness lifts"));
     }
@@ -129,7 +138,7 @@ void sight()
 
 /*
  * nohaste:
- *	End the hasting
+ *  End the hasting
  */
 void nohaste()
 {
@@ -139,7 +148,7 @@ void nohaste()
 
 /*
  * stomach:
- *	Digest the hero's food
+ *  Digest the hero's food
  */
 void stomach()
 {
@@ -152,6 +161,7 @@ void stomach()
         {
             death ('s');
         }
+
         /*
          * the hero is fainting
          */
@@ -159,11 +169,14 @@ void stomach()
         {
             return;
         }
+
         no_command += rnd (8) + 4;
         hungry_state = 3;
+
         if (!terse)
             addmsg (choose_str ("the munchies overpower your motor capabilities.  ",
                                 "you feel too weak from lack of food.  "));
+
         msg (choose_str ("You freak out", "You faint"));
     }
     else
@@ -180,6 +193,7 @@ void stomach()
         else if (food_left < 2 * MORETIME && oldfood >= 2 * MORETIME)
         {
             hungry_state = 1;
+
             if (terse)
             {
                 msg (choose_str ("getting the munchies", "getting hungry"));
@@ -189,6 +203,7 @@ void stomach()
                                  "you are starting to get hungry"));
         }
     }
+
     if (hungry_state != orig_hungry)
     {
         player.t_flags &= ~ISRUN;
@@ -200,7 +215,7 @@ void stomach()
 
 /*
  * come_down:
- *	Take the hero down off her acid trip.
+ *  Take the hero down off her acid trip.
  */
 void come_down()
 {
@@ -233,9 +248,11 @@ void come_down()
      * undo the monsters
      */
     seemonst = on (player, SEEMONST);
+
     for (tp = mlist; tp != NULL; tp = next (tp))
     {
         move (tp->t_pos.y, tp->t_pos.x);
+
         if (cansee (tp->t_pos.y, tp->t_pos.x))
             if (!on (*tp, ISINVIS) || on (player, CANSEE))
             {
@@ -252,12 +269,13 @@ void come_down()
             standend();
         }
     }
+
     msg ("Everything looks SO boring now.");
 }
 
 /*
  * visuals:
- *	change the characters for the player
+ *  change the characters for the player
  */
 void visuals()
 {
@@ -268,6 +286,7 @@ void visuals()
     {
         return;
     }
+
     /*
      * change the things
      */
@@ -289,9 +308,11 @@ void visuals()
      * change the monsters
      */
     seemonst = on (player, SEEMONST);
+
     for (tp = mlist; tp != NULL; tp = next (tp))
     {
         move (tp->t_pos.y, tp->t_pos.x);
+
         if (see_monst (tp))
         {
             if (tp->t_type == 'X' && tp->t_disguise != 'X')
@@ -314,7 +335,7 @@ void visuals()
 
 /*
  * land:
- *	Land from a levitation potion
+ *  Land from a levitation potion
  */
 void land()
 {

@@ -5,7 +5,7 @@
  *
  * See the file LICENSE.TXT for full copyright and licensing information.
  *
- * @(#)main.c	4.22 (Berkeley) 02/05/99
+ * @(#)main.c   4.22 (Berkeley) 02/05/99
  */
 
 #include <stdlib.h>
@@ -17,7 +17,7 @@
 
 /*
  * main:
- *	The main program, of course
+ *  The main program, of course
  */
 int main (int argc, char **argv, char **envp)
 {
@@ -27,6 +27,7 @@ int main (int argc, char **argv, char **envp)
     md_init();
 
 #ifdef MASTER
+
     /*
      * Check to see if he is a wizard
      */
@@ -54,12 +55,15 @@ int main (int argc, char **argv, char **envp)
     {
         parse_opts (env);
     }
+
     if (env == NULL || whoami[0] == '\0')
     {
         strucpy (whoami, md_getusername(), (int) strlen (md_getusername()));
     }
+
     lowtime = (int) time (NULL);
 #ifdef MASTER
+
     if (wizard && getenv ("SEED") != NULL)
     {
         dnum = atoi (getenv ("SEED"));
@@ -67,6 +71,7 @@ int main (int argc, char **argv, char **envp)
     else
 #endif
         dnum = lowtime + md_getpid();
+
     seed = dnum;
 
     open_score();
@@ -93,11 +98,13 @@ int main (int argc, char **argv, char **envp)
         }
         else if (strcmp (argv[1], "-d") == 0)
         {
-            dnum = rnd (100);	/* throw away some rnd()s to break patterns */
+            dnum = rnd (100);   /* throw away some rnd()s to break patterns */
+
             while (--dnum)
             {
                 rnd (100);
             }
+
             purse = rnd (100) + 1;
             level = rnd (100) + 1;
             initscr();
@@ -107,13 +114,16 @@ int main (int argc, char **argv, char **envp)
         }
     }
 
-    init_check();			/* check for legal startup */
+    init_check();           /* check for legal startup */
+
     if (argc == 2)
-        if (!restore (argv[1], envp))	/* Note: restore will never return */
+        if (!restore (argv[1], envp))   /* Note: restore will never return */
         {
             my_exit (1);
         }
+
 #ifdef MASTER
+
     if (wizard)
     {
         printf ("Hello %s, welcome to dungeon #%d", whoami, dnum);
@@ -121,15 +131,16 @@ int main (int argc, char **argv, char **envp)
     else
 #endif
         printf ("Hello %s, just a moment while I dig the dungeon...", whoami);
+
     fflush (stdout);
 
-    initscr();				/* Start up cursor package */
-    init_probs();			/* Set up prob tables for objects */
-    init_player();			/* Set up initial player stats */
-    init_names();			/* Set up names of scrolls */
-    init_colors();			/* Set up colors of potions */
-    init_stones();			/* Set up stone settings of rings */
-    init_materials();			/* Set up materials of wands */
+    initscr();              /* Start up cursor package */
+    init_probs();           /* Set up prob tables for objects */
+    init_player();          /* Set up initial player stats */
+    init_names();           /* Set up names of scrolls */
+    init_colors();          /* Set up colors of potions */
+    init_stones();          /* Set up stone settings of rings */
+    init_materials();           /* Set up materials of wands */
     setup();
 
     /*
@@ -151,7 +162,7 @@ int main (int argc, char **argv, char **envp)
 #ifdef MASTER
     noscore = wizard;
 #endif
-    new_level();			/* Draw current level */
+    new_level();            /* Draw current level */
     /*
      * Start up daemons and fuses
      */
@@ -165,7 +176,7 @@ int main (int argc, char **argv, char **envp)
 
 /*
  * endit:
- *	Exit the program abnormally.
+ *  Exit the program abnormally.
  */
 
 void endit (int sig)
@@ -176,7 +187,7 @@ void endit (int sig)
 
 /*
  * fatal:
- *	Exit the program, printing a message.
+ *  Exit the program, printing a message.
  */
 
 void fatal (char *s)
@@ -189,7 +200,7 @@ void fatal (char *s)
 
 /*
  * rnd:
- *	Pick a very random number.
+ *  Pick a very random number.
  */
 int rnd (int range)
 {
@@ -198,7 +209,7 @@ int rnd (int range)
 
 /*
  * roll:
- *	Roll a number of dice
+ *  Roll a number of dice
  */
 int roll (int number, int sides)
 {
@@ -208,12 +219,13 @@ int roll (int number, int sides)
     {
         dtotal += rnd (sides) + 1;
     }
+
     return dtotal;
 }
 
 /*
  * tstp:
- *	Handle stop and start signals
+ *  Handle stop and start signals
  */
 
 void tstp (int ignored)
@@ -252,8 +264,8 @@ void tstp (int ignored)
 
 /*
  * playit:
- *	The main loop of the program.  Loop until the game is over,
- *	refreshing things and looking at the proper times.
+ *  The main loop of the program.  Loop until the game is over,
+ *  refreshing things and looking at the proper times.
  */
 
 void playit()
@@ -287,16 +299,18 @@ void playit()
 
     oldpos = hero;
     oldrp = roomin (&hero);
+
     while (playing)
     {
         command();    /* Command execution */
     }
+
     endit (0);
 }
 
 /*
  * quit:
- *	Have player make certain, then exit.
+ *  Have player make certain, then exit.
  */
 
 void quit (int sig)
@@ -312,8 +326,10 @@ void quit (int sig)
     {
         mpos = 0;
     }
+
     getyx (curscr, oy, ox);
     msg ("really quit?");
+
     if (readchar() == 'y')
     {
         signal (SIGINT, leave);
@@ -339,7 +355,7 @@ void quit (int sig)
 
 /*
  * leave:
- *	Leave quickly, but curteously
+ *  Leave quickly, but curteously
  */
 
 void leave (int sig)
@@ -348,7 +364,7 @@ void leave (int sig)
 
     NOOP (sig);
 
-    setbuf (stdout, buf);	/* throw away pending output */
+    setbuf (stdout, buf);   /* throw away pending output */
 
     if (!isendwin())
     {
@@ -362,7 +378,7 @@ void leave (int sig)
 
 /*
  * shell:
- *	Let them escape for a while
+ *  Let them escape for a while
  */
 
 void shell()
@@ -396,7 +412,7 @@ void shell()
 
 /*
  * my_exit:
- *	Leave the process properly
+ *  Leave the process properly
  */
 
 void my_exit (int st)

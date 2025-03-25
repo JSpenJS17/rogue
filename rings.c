@@ -1,7 +1,7 @@
 /*
  * Routines dealing specifically with rings
  *
- * @(#)rings.c	4.19 (Berkeley) 05/29/83
+ * @(#)rings.c  4.19 (Berkeley) 05/29/83
  *
  * Rogue: Exploring the Dungeons of Doom
  * Copyright (C) 1980-1983, 1985, 1999 Michael Toy, Ken Arnold and Glenn Wichman
@@ -15,7 +15,7 @@
 
 /*
  * ring_on:
- *	Put a ring on a hand
+ *  Put a ring on a hand
  */
 
 void ring_on()
@@ -24,6 +24,7 @@ void ring_on()
     int ring;
 
     obj = get_item ("put on", RING);
+
     /*
      * Make certain that it is somethings that we want to wear
      */
@@ -31,6 +32,7 @@ void ring_on()
     {
         return;
     }
+
     if (obj->o_type != RING)
     {
         if (!terse)
@@ -41,6 +43,7 @@ void ring_on()
         {
             msg ("not a ring");
         }
+
         return;
     }
 
@@ -77,8 +80,10 @@ void ring_on()
         {
             msg ("wearing two");
         }
+
         return;
     }
+
     cur_ring[ring] = obj;
 
     /*
@@ -89,9 +94,11 @@ void ring_on()
     case R_ADDSTR:
         chg_str (obj->o_arm);
         break;
+
     case R_SEEINVIS:
         invis_on();
         break;
+
     case R_AGGR:
         aggravate();
         break;
@@ -101,12 +108,13 @@ void ring_on()
     {
         addmsg ("you are now wearing ");
     }
+
     msg ("%s (%c)", inv_name (obj, TRUE), obj->o_packch);
 }
 
 /*
  * ring_off:
- *	take off a ring
+ *  take off a ring
  */
 
 void ring_off()
@@ -124,6 +132,7 @@ void ring_off()
         {
             msg ("you aren't wearing any rings");
         }
+
         return;
     }
     else if (cur_ring[LEFT] == NULL)
@@ -138,13 +147,16 @@ void ring_off()
     {
         return;
     }
+
     mpos = 0;
     obj = cur_ring[ring];
+
     if (obj == NULL)
     {
         msg ("not wearing such a ring");
         return;
     }
+
     if (dropcheck (obj))
     {
         msg ("was wearing %s(%c)", inv_name (obj, TRUE), obj->o_packch);
@@ -153,7 +165,7 @@ void ring_off()
 
 /*
  * gethand:
- *	Which hand is the hero interested in?
+ *  Which hand is the hero interested in?
  */
 int gethand()
 {
@@ -169,11 +181,14 @@ int gethand()
         {
             msg ("left hand or right hand? ");
         }
+
         if ((c = readchar()) == ESCAPE)
         {
             return -1;
         }
+
         mpos = 0;
+
         if (c == 'l' || c == 'L')
         {
             return LEFT;
@@ -182,6 +197,7 @@ int gethand()
         {
             return RIGHT;
         }
+
         if (terse)
         {
             msg ("L or R");
@@ -195,7 +211,7 @@ int gethand()
 
 /*
  * ring_eat:
- *	How much food does this ring use up?
+ *  How much food does this ring use up?
  */
 int ring_eat (int hand)
 {
@@ -203,33 +219,36 @@ int ring_eat (int hand)
     int eat;
     static int uses[] =
     {
-        1,	/* R_PROTECT */		 1,	/* R_ADDSTR */
-        1,	/* R_SUSTSTR */		-3,	/* R_SEARCH */
-        -5,	/* R_SEEINVIS */	 0,	/* R_NOP */
-        0,	/* R_AGGR */		-3,	/* R_ADDHIT */
-        -3,	/* R_ADDDAM */		 2,	/* R_REGEN */
-        -2,	/* R_DIGEST */		 0,	/* R_TELEPORT */
-        1,	/* R_STEALTH */		 1	/* R_SUSTARM */
+        1,  /* R_PROTECT */      1, /* R_ADDSTR */
+        1,  /* R_SUSTSTR */     -3, /* R_SEARCH */
+        -5, /* R_SEEINVIS */     0, /* R_NOP */
+        0,  /* R_AGGR */        -3, /* R_ADDHIT */
+        -3, /* R_ADDDAM */       2, /* R_REGEN */
+        -2, /* R_DIGEST */       0, /* R_TELEPORT */
+        1,  /* R_STEALTH */      1  /* R_SUSTARM */
     };
 
     if ((ring = cur_ring[hand]) == NULL)
     {
         return 0;
     }
+
     if ((eat = uses[ring->o_which]) < 0)
     {
         eat = (rnd (-eat) == 0);
     }
+
     if (ring->o_which == R_DIGEST)
     {
         eat = -eat;
     }
+
     return eat;
 }
 
 /*
  * ring_num:
- *	Print ring bonuses
+ *  Print ring bonuses
  */
 char *ring_num (THING *obj)
 {
@@ -239,6 +258,7 @@ char *ring_num (THING *obj)
     {
         return "";
     }
+
     switch (obj->o_which)
     {
     case R_PROTECT:
@@ -249,5 +269,6 @@ char *ring_num (THING *obj)
     otherwise:
         return "";
     }
+
     return buf;
 }

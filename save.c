@@ -1,7 +1,7 @@
 /*
  * save and restore routines
  *
- * @(#)save.c	4.33 (Berkeley) 06/01/83
+ * @(#)save.c   4.33 (Berkeley) 06/01/83
  *
  * Rogue: Exploring the Dungeons of Doom
  * Copyright (C) 1980-1983, 1985, 1999 Michael Toy, Ken Arnold and Glenn Wichman
@@ -28,7 +28,7 @@ static STAT sbuf;
 
 /*
  * save_game:
- *	Implement the "save game" command
+ *  Implement the "save game" command
  */
 
 void save_game()
@@ -42,6 +42,7 @@ void save_game()
      */
     mpos = 0;
 over:
+
     if (file_name[0] != '\0')
     {
         for (;;)
@@ -49,6 +50,7 @@ over:
             msg ("save file (%s)? ", file_name);
             c = readchar();
             mpos = 0;
+
             if (c == ESCAPE)
             {
                 msg ("");
@@ -63,6 +65,7 @@ over:
                 msg ("please answer Y or N");
             }
         }
+
         if (c == 'y' || c == 'Y')
         {
             addstr ("Yes\n");
@@ -77,14 +80,17 @@ over:
         mpos = 0;
         msg ("file name: ");
         buf[0] = '\0';
+
         if (get_str (buf, stdscr) == QUIT)
         {
         quit_it:
             msg ("");
             return;
         }
+
         mpos = 0;
     gotfile:
+
         /*
          * test to see if the file exists
          */
@@ -94,10 +100,12 @@ over:
             {
                 msg ("File exists.  Do you wish to overwrite it?");
                 mpos = 0;
+
                 if ((c = readchar()) == ESCAPE)
                 {
                     goto quit_it;
                 }
+
                 if (c == 'y' || c == 'Y')
                 {
                     break;
@@ -111,10 +119,13 @@ over:
                     msg ("Please answer Y or N");
                 }
             }
+
             msg ("file name: %s", buf);
             md_unlink (file_name);
         }
+
         strcpy (file_name, buf);
+
         if ((savef = fopen (file_name, "w")) == NULL)
         {
             msg (strerror (errno));
@@ -128,8 +139,8 @@ over:
 
 /*
  * auto_save:
- *	Automatically save a file.  This is used if a HUP signal is
- *	recieved
+ *  Automatically save a file.  This is used if a HUP signal is
+ *  recieved
  */
 
 void auto_save (int sig)
@@ -138,17 +149,19 @@ void auto_save (int sig)
     NOOP (sig);
 
     md_ignoreallsignals();
+
     if (file_name[0] != '\0' && ((savef = fopen (file_name, "w")) != NULL ||
                                  (md_unlink_open_file (file_name, savef) >= 0 && (savef = fopen (file_name, "w")) != NULL)))
     {
         save_file (savef);
     }
+
     exit (0);
 }
 
 /*
  * save_file:
- *	Write the saved game on the file
+ *  Write the saved game on the file
  */
 
 void save_file (FILE *savef)
@@ -170,8 +183,8 @@ void save_file (FILE *savef)
 
 /*
  * restore:
- *	Restore a saved game from a file with elaborate checks for file
- *	integrity from cheaters
+ *  Restore a saved game from a file with elaborate checks for file
+ *  integrity from cheaters
  */
 bool restore (char *file, char **envp)
 {
@@ -194,16 +207,19 @@ bool restore (char *file, char **envp)
         perror (file);
         return FALSE;
     }
+
     stat (file, &sbuf2);
     syml = is_symlink (file);
 
     fflush (stdout);
     encread (buf, (unsigned) strlen (version) + 1, inf);
+
     if (strcmp (buf, version) != 0)
     {
         printf ("Sorry, saved game is out of date.\n");
         return FALSE;
     }
+
     encread (buf, 80, inf);
     sscanf (buf, "%d x %d\n", &lines, &cols);
 
@@ -217,6 +233,7 @@ bool restore (char *file, char **envp)
         printf ("Current screen only has %d lines. Unable to restore game\n", LINES);
         return (FALSE);
     }
+
     if (cols > COLS)
     {
         endwin();
@@ -243,6 +260,7 @@ bool restore (char *file, char **envp)
         printf ("Cannot unlink file\n");
         return FALSE;
     }
+
     mpos = 0;
     /*    printw(0, 0, "%s: %s", file, ctime(&sbuf2.st_mtime)); */
     /*
@@ -253,6 +271,7 @@ bool restore (char *file, char **envp)
      * defeat multiple restarting from the same place
      */
 #ifdef MASTER
+
     if (!wizard)
 #endif
         if (sbuf2.st_nlink != 1 || syml)
@@ -283,7 +302,7 @@ bool restore (char *file, char **envp)
 
 /*
  * encwrite:
- *	Perform an encrypted write
+ *  Perform an encrypted write
  */
 
 size_t encwrite (char *start, size_t size, FILE *outf)
@@ -305,14 +324,17 @@ size_t encwrite (char *start, size_t size, FILE *outf)
 
         temp = *e1++;
         fb = fb + ((char) (temp * *e2++));
+
         if (*e1 == '\0')
         {
             e1 = encstr;
         }
+
         if (*e2 == '\0')
         {
             e2 = statlist;
         }
+
         size--;
     }
 
@@ -321,7 +343,7 @@ size_t encwrite (char *start, size_t size, FILE *outf)
 
 /*
  * encread:
- *	Perform an encrypted read
+ *  Perform an encrypted read
  */
 size_t encread (char *start, size_t size, FILE *inf)
 {
@@ -345,10 +367,12 @@ size_t encread (char *start, size_t size, FILE *inf)
         *start++ ^= *e1 ^ *e2 ^ fb;
         temp = *e1++;
         fb = fb + (char) (temp * *e2++);
+
         if (*e1 == '\0')
         {
             e1 = encstr;
         }
+
         if (*e2 == '\0')
         {
             e2 = statlist;
@@ -361,7 +385,7 @@ size_t encread (char *start, size_t size, FILE *inf)
 static char scoreline[100];
 /*
  * read_scrore
- *	Read in the score file
+ *  Read in the score file
  */
 void rd_score (SCORE *top_ten)
 {
@@ -389,7 +413,7 @@ void rd_score (SCORE *top_ten)
 
 /*
  * write_scrore
- *	Read in the score file
+ *  Read in the score file
  */
 void wr_score (SCORE *top_ten)
 {

@@ -1,6 +1,6 @@
 /*
  * This file contains misc functions for dealing with armor
- * @(#)armor.c	4.14 (Berkeley) 02/05/99
+ * @(#)armor.c  4.14 (Berkeley) 02/05/99
  *
  * Rogue: Exploring the Dungeons of Doom
  * Copyright (C) 1980-1983, 1985, 1999 Michael Toy, Ken Arnold and Glenn Wichman
@@ -14,7 +14,7 @@
 
 /*
  * wear:
- *	The player wants to wear something, so let him/her put it on.
+ *  The player wants to wear something, so let him/her put it on.
  */
 void wear()
 {
@@ -25,36 +25,43 @@ void wear()
     {
         return;
     }
+
     if (cur_armor != NULL)
     {
         addmsg ("you are already wearing some");
+
         if (!terse)
         {
             addmsg (".  You'll have to take it off first");
         }
+
         endmsg();
         after = FALSE;
         return;
     }
+
     if (obj->o_type != ARMOR)
     {
         msg ("you can't wear that");
         return;
     }
+
     waste_time();
     obj->o_flags |= ISKNOW;
     sp = inv_name (obj, TRUE);
     cur_armor = obj;
+
     if (!terse)
     {
         addmsg ("you are now ");
     }
+
     msg ("wearing %s", sp);
 }
 
 /*
  * take_off:
- *	Get the armor off of the players back
+ *  Get the armor off of the players back
  */
 void take_off()
 {
@@ -63,6 +70,7 @@ void take_off()
     if ((obj = cur_armor) == NULL)
     {
         after = FALSE;
+
         if (terse)
         {
             msg ("not wearing armor");
@@ -71,13 +79,17 @@ void take_off()
         {
             msg ("you aren't wearing any armor");
         }
+
         return;
     }
+
     if (!dropcheck (cur_armor))
     {
         return;
     }
+
     cur_armor = NULL;
+
     if (terse)
     {
         addmsg ("was");
@@ -86,12 +98,13 @@ void take_off()
     {
         addmsg ("you used to be");
     }
+
     msg (" wearing %c) %s", obj->o_packch, inv_name (obj, TRUE));
 }
 
 /*
  * waste_time:
- *	Do nothing but let other things happen
+ *  Do nothing but let other things happen
  */
 void waste_time()
 {

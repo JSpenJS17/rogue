@@ -1,7 +1,7 @@
 /*
  * hero movement commands
  *
- * @(#)move.c	4.49 (Berkeley) 02/05/99
+ * @(#)move.c   4.49 (Berkeley) 02/05/99
  *
  * Rogue: Exploring the Dungeons of Doom
  * Copyright (C) 1980-1983, 1985, 1999 Michael Toy, Ken Arnold and Glenn Wichman
@@ -22,7 +22,7 @@ coord nh;
 
 /*
  * do_run:
- *	Start the hero running
+ *  Start the hero running
  */
 
 void do_run (char ch)
@@ -34,7 +34,7 @@ void do_run (char ch)
 
 /*
  * do_move:
- *	Check to see that a move is legal.  If it is handle the
+ *  Check to see that a move is legal.  If it is handle the
  * consequences (fighting, picking up, etc.)
  */
 
@@ -43,18 +43,21 @@ void do_move (int dy, int dx)
     char ch, fl;
 
     firstmove = FALSE;
+
     if (no_move)
     {
         no_move--;
         msg ("you are still stuck in the bear trap");
         return;
     }
+
     /*
      * Do a confused move (maybe)
      */
     if (on (player, ISHUH) && rnd (5) != 0)
     {
         nh = *rndmove (&player);
+
         if (ce (nh, hero))
         {
             after = FALSE;
@@ -78,18 +81,22 @@ void do_move (int dy, int dx)
     {
         goto hit_bound;
     }
+
     if (!diag_ok (&hero, &nh))
     {
         after = FALSE;
         running = FALSE;
         return;
     }
+
     if (running && ce (hero, nh))
     {
         after = running = FALSE;
     }
+
     fl = flat (nh.y, nh.x);
     ch = winat (nh.y, nh.x);
+
     if (! (fl & F_REAL) && ch == FLOOR)
     {
         if (!on (player, ISLEVIT))
@@ -103,6 +110,7 @@ void do_move (int dy, int dx)
         msg ("you are being held");
         return;
     }
+
     switch (ch)
     {
     case ' ':
@@ -112,7 +120,7 @@ void do_move (int dy, int dx)
         if (passgo && running && (proom->r_flags & ISGONE)
                 && !on (player, ISBLIND))
         {
-            bool	b1, b2;
+            bool    b1, b2;
 
             switch (runch)
             {
@@ -120,10 +128,12 @@ void do_move (int dy, int dx)
             case 'l':
                 b1 = (bool) (hero.y != 1 && turn_ok (hero.y - 1, hero.x));
                 b2 = (bool) (hero.y != NUMLINES - 2 && turn_ok (hero.y + 1, hero.x));
+
                 if (! (b1 ^ b2))
                 {
                     break;
                 }
+
                 if (b1)
                 {
                     runch = 'k';
@@ -134,17 +144,21 @@ void do_move (int dy, int dx)
                     runch = 'j';
                     dy = 1;
                 }
+
                 dx = 0;
                 turnref();
                 goto over;
+
             case 'j':
             case 'k':
                 b1 = (bool) (hero.x != 0 && turn_ok (hero.y, hero.x - 1));
                 b2 = (bool) (hero.x != NUMCOLS - 1 && turn_ok (hero.y, hero.x + 1));
+
                 if (! (b1 ^ b2))
                 {
                     break;
                 }
+
                 if (b1)
                 {
                     runch = 'h';
@@ -155,28 +169,37 @@ void do_move (int dy, int dx)
                     runch = 'l';
                     dx = 1;
                 }
+
                 dy = 0;
                 turnref();
                 goto over;
             }
         }
+
         running = FALSE;
         after = FALSE;
         break;
+
     case DOOR:
         running = FALSE;
+
         if (flat (hero.y, hero.x) & F_PASS)
         {
             enter_room (&nh);
         }
+
         goto move_stuff;
+
     case TRAP:
         ch = be_trapped (&nh);
+
         if (ch == T_DOOR || ch == T_TELEP)
         {
             return;
         }
+
         goto move_stuff;
+
     case PASSAGE:
         /*
          * when you're in a corridor, you don't know if you're in
@@ -186,17 +209,22 @@ void do_move (int dy, int dx)
          */
         proom = roomin (&hero);
         goto move_stuff;
+
     case FLOOR:
         if (! (fl & F_REAL))
         {
             be_trapped (&hero);
         }
+
         goto move_stuff;
+
     case STAIRS:
         seenstairs = TRUE;
+
     /* FALLTHROUGH */
     default:
         running = FALSE;
+
         if (isupper (ch) || moat (nh.y, nh.x))
         {
             fight (&nh, cur_weapon, FALSE);
@@ -207,12 +235,15 @@ void do_move (int dy, int dx)
             {
                 take = ch;
             }
+
         move_stuff:
             mvaddch (hero.y, hero.x, floor_at());
+
             if ((fl & F_PASS) && chat (oldpos.y, oldpos.x) == DOOR)
             {
                 leave_room (&nh);
             }
+
             hero = nh;
         }
     }
@@ -220,7 +251,7 @@ void do_move (int dy, int dx)
 
 /*
  * turn_ok:
- *	Decide whether it is legal to turn onto the given space
+ *  Decide whether it is legal to turn onto the given space
  */
 bool turn_ok (int y, int x)
 {
@@ -233,7 +264,7 @@ bool turn_ok (int y, int x)
 
 /*
  * turnref:
- *	Decide whether to refresh at a passage turning or not
+ *  Decide whether to refresh at a passage turning or not
  */
 
 void turnref()
@@ -241,6 +272,7 @@ void turnref()
     PLACE *pp;
 
     pp = INDEX (hero.y, hero.x);
+
     if (! (pp->p_flags & F_SEEN))
     {
         if (jump)
@@ -249,14 +281,15 @@ void turnref()
             refresh();
             leaveok (stdscr, FALSE);
         }
+
         pp->p_flags |= F_SEEN;
     }
 }
 
 /*
  * door_open:
- *	Called to illuminate a room.  If it is dark, remove anything
- *	that might move.
+ *  Called to illuminate a room.  If it is dark, remove anything
+ *  that might move.
  */
 
 void door_open (struct room *rp)
@@ -274,7 +307,7 @@ void door_open (struct room *rp)
 
 /*
  * be_trapped:
- *	The guy stepped on a trap.... Make him pay.
+ *  The guy stepped on a trap.... Make him pay.
  */
 char be_trapped (coord *tc)
 {
@@ -286,12 +319,14 @@ char be_trapped (coord *tc)
     {
         return T_RUST;    /* anything that's not a door or teleport */
     }
+
     running = FALSE;
     count = FALSE;
     pp = INDEX (tc->y, tc->x);
     pp->p_ch = TRAP;
     tr = pp->p_flags & F_TMASK;
     pp->p_flags |= F_SEEN;
+
     switch (tr)
     {
     case T_DOOR:
@@ -302,6 +337,7 @@ char be_trapped (coord *tc)
         no_move += BEARTIME;
         msg ("you are caught in a bear trap");
     when T_MYST:
+
         switch (rnd (11))
         {
         case 0:
@@ -327,14 +363,17 @@ char be_trapped (coord *tc)
         when 10:
             msg ("you pack turns %s!", rainbow[rnd (cNCOLORS)]);
         }
+
     when T_SLEEP:
         no_command += SLEEPTIME;
         player.t_flags &= ~ISRUN;
         msg ("a strange white mist envelops you and you fall asleep");
     when T_ARROW:
+
         if (swing (pstats.s_lvl - 1, pstats.s_arm, 1))
         {
             pstats.s_hpt -= roll (1, 6);
+
             if (pstats.s_hpt <= 0)
             {
                 msg ("an arrow killed you");
@@ -354,6 +393,7 @@ char be_trapped (coord *tc)
             fall (arrow, FALSE);
             msg ("an arrow shoots past you");
         }
+
     when T_TELEP:
         /*
          * since the hero's leaving, look() won't put a TRAP
@@ -362,6 +402,7 @@ char be_trapped (coord *tc)
         teleport();
         mvaddch (tc->y, tc->x, TRAP);
     when T_DART:
+
         if (!swing (pstats.s_lvl + 1, pstats.s_arm, 1))
         {
             msg ("a small dart whizzes by your ear and vanishes");
@@ -369,28 +410,33 @@ char be_trapped (coord *tc)
         else
         {
             pstats.s_hpt -= roll (1, 4);
+
             if (pstats.s_hpt <= 0)
             {
                 msg ("a poisoned dart killed you");
                 death ('d');
             }
+
             if (!ISWEARING (R_SUSTSTR) && !save (VS_POISON))
             {
                 chg_str (-1);
             }
+
             msg ("a small dart just hit you in the shoulder");
         }
+
     when T_RUST:
         msg ("a gush of water hits you on the head");
         rust_armor (cur_armor);
     }
+
     flush_type();
     return tr;
 }
 
 /*
  * rndmove:
- *	Move in a random direction if the monster/person is confused
+ *  Move in a random direction if the monster/person is confused
  */
 coord *rndmove (THING *who)
 {
@@ -401,6 +447,7 @@ coord *rndmove (THING *who)
 
     y = ret.y = who->t_pos.y + rnd (3) - 1;
     x = ret.x = who->t_pos.x + rnd (3) - 1;
+
     /*
      * Now check to see if that's a legal move.  If not, don't move.
      * (I.e., bump into the wall or whatever)
@@ -409,6 +456,7 @@ coord *rndmove (THING *who)
     {
         return &ret;
     }
+
     if (!diag_ok (&who->t_pos, &ret))
     {
         goto bad;
@@ -416,10 +464,12 @@ coord *rndmove (THING *who)
     else
     {
         ch = winat (y, x);
+
         if (!step_ok (ch))
         {
             goto bad;
         }
+
         if (ch == SCROLL)
         {
             for (obj = lvl_obj; obj != NULL; obj = next (obj))
@@ -427,12 +477,14 @@ coord *rndmove (THING *who)
                 {
                     break;
                 }
+
             if (obj != NULL && obj->o_which == S_SCARE)
             {
                 goto bad;
             }
         }
     }
+
     return &ret;
 
 bad:
@@ -442,8 +494,8 @@ bad:
 
 /*
  * rust_armor:
- *	Rust the given armor, if it is a legal kind to rust, and we
- *	aren't wearing a magic ring.
+ *  Rust the given armor, if it is a legal kind to rust, and we
+ *  aren't wearing a magic ring.
  */
 
 void rust_armor (THING *arm)
@@ -464,6 +516,7 @@ void rust_armor (THING *arm)
     else
     {
         arm->o_arm++;
+
         if (!terse)
         {
             msg ("your armor appears to be weaker now. Oh my!");

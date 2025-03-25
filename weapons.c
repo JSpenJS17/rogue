@@ -1,7 +1,7 @@
 /*
  * Functions for dealing with problems brought about by weapons
  *
- * @(#)weapons.c	4.34 (Berkeley) 02/05/99
+ * @(#)weapons.c    4.34 (Berkeley) 02/05/99
  *
  * Rogue: Exploring the Dungeons of Doom
  * Copyright (C) 1980-1983, 1985, 1999 Michael Toy, Ken Arnold and Glenn Wichman
@@ -21,26 +21,26 @@ int group = 2;
 
 static struct init_weaps
 {
-    char *iw_dam;	/* Damage when wielded */
-    char *iw_hrl;	/* Damage when thrown */
-    char iw_launch;	/* Launching weapon */
-    int iw_flags;	/* Miscellaneous flags */
+    char *iw_dam;   /* Damage when wielded */
+    char *iw_hrl;   /* Damage when thrown */
+    char iw_launch; /* Launching weapon */
+    int iw_flags;   /* Miscellaneous flags */
 } init_dam[MAXWEAPONS] =
 {
-    { "2x4",	"1x3",	NO_WEAPON,	0,		},	/* Mace */
-    { "3x4",	"1x2",	NO_WEAPON,	0,		},	/* Long sword */
-    { "1x1",	"1x1",	NO_WEAPON,	0,		},	/* Bow */
-    { "1x1",	"2x3",	BOW,		ISMANY | ISMISL,	},	/* Arrow */
-    { "1x6",	"1x4",	NO_WEAPON,	ISMISL | ISMISL,	},	/* Dagger */
-    { "4x4",	"1x2",	NO_WEAPON,	0,		},	/* 2h sword */
-    { "1x1",	"1x3",	NO_WEAPON,	ISMANY | ISMISL,	},	/* Dart */
-    { "1x2",	"2x4",	NO_WEAPON,	ISMANY | ISMISL,	},	/* Shuriken */
-    { "2x3",	"1x6",	NO_WEAPON,	ISMISL,		},	/* Spear */
+    { "2x4",    "1x3",  NO_WEAPON,  0,      },  /* Mace */
+    { "3x4",    "1x2",  NO_WEAPON,  0,      },  /* Long sword */
+    { "1x1",    "1x1",  NO_WEAPON,  0,      },  /* Bow */
+    { "1x1",    "2x3",  BOW,        ISMANY | ISMISL,    },  /* Arrow */
+    { "1x6",    "1x4",  NO_WEAPON,  ISMISL | ISMISL,    },  /* Dagger */
+    { "4x4",    "1x2",  NO_WEAPON,  0,      },  /* 2h sword */
+    { "1x1",    "1x3",  NO_WEAPON,  ISMANY | ISMISL,    },  /* Dart */
+    { "1x2",    "2x4",  NO_WEAPON,  ISMANY | ISMISL,    },  /* Shuriken */
+    { "2x3",    "1x6",  NO_WEAPON,  ISMISL,     },  /* Spear */
 };
 
 /*
  * missile:
- *	Fire a missile in a given direction
+ *  Fire a missile in a given direction
  */
 
 void missile (int ydelta, int xdelta)
@@ -54,12 +54,15 @@ void missile (int ydelta, int xdelta)
     {
         return;
     }
+
     if (!dropcheck (obj) || is_current (obj))
     {
         return;
     }
+
     obj = leave_pack (obj, TRUE, FALSE);
     do_motion (obj, ydelta, xdelta);
+
     /*
      * AHA! Here it has hit something.  If it is a wall or a door,
      * or if it misses (combat) the monster, put it on the floor
@@ -73,8 +76,8 @@ void missile (int ydelta, int xdelta)
 
 /*
  * do_motion:
- *	Do the actual motion on the screen done by an object traveling
- *	across the room
+ *  Do the actual motion on the screen done by an object traveling
+ *  across the room
  */
 
 void do_motion (THING *obj, int ydelta, int xdelta)
@@ -85,6 +88,7 @@ void do_motion (THING *obj, int ydelta, int xdelta)
      * Come fly with us ...
      */
     obj->o_pos = hero;
+
     for (;;)
     {
         /*
@@ -93,17 +97,21 @@ void do_motion (THING *obj, int ydelta, int xdelta)
         if (!ce (obj->o_pos, hero) && cansee (unc (obj->o_pos)) && !terse)
         {
             ch = chat (obj->o_pos.y, obj->o_pos.x);
+
             if (ch == FLOOR && !show_floor())
             {
                 ch = ' ';
             }
+
             mvaddch (obj->o_pos.y, obj->o_pos.x, ch);
         }
+
         /*
          * Get the new position
          */
         obj->o_pos.y += ydelta;
         obj->o_pos.x += xdelta;
+
         if (step_ok (ch = winat (obj->o_pos.y, obj->o_pos.x)) && ch != DOOR)
         {
             /*
@@ -115,15 +123,17 @@ void do_motion (THING *obj, int ydelta, int xdelta)
                 mvaddch (obj->o_pos.y, obj->o_pos.x, obj->o_type);
                 refresh();
             }
+
             continue;
         }
+
         break;
     }
 }
 
 /*
  * fall:
- *	Drop an item someplace around here.
+ *  Drop an item someplace around here.
  */
 
 void fall (THING *obj, bool pr)
@@ -136,6 +146,7 @@ void fall (THING *obj, bool pr)
         pp = INDEX (fpos.y, fpos.x);
         pp->p_ch = (char) obj->o_type;
         obj->o_pos = fpos;
+
         if (cansee (fpos.y, fpos.x))
         {
             if (pp->p_monst != NULL)
@@ -147,9 +158,11 @@ void fall (THING *obj, bool pr)
                 mvaddch (fpos.y, fpos.x, obj->o_type);
             }
         }
+
         attach (lvl_obj, obj);
         return;
     }
+
     if (pr)
     {
         if (has_hit)
@@ -157,15 +170,17 @@ void fall (THING *obj, bool pr)
             endmsg();
             has_hit = FALSE;
         }
+
         msg ("the %s vanishes as it hits the ground",
              weap_info[obj->o_which].oi_name);
     }
+
     discard (obj);
 }
 
 /*
  * init_weapon:
- *	Set up the initial goodies for a weapon
+ *  Set up the initial goodies for a weapon
  */
 
 void init_weapon (THING *weap, int which)
@@ -181,6 +196,7 @@ void init_weapon (THING *weap, int which)
     weap->o_flags = iwp->iw_flags;
     weap->o_hplus = 0;
     weap->o_dplus = 0;
+
     if (which == DAGGER)
     {
         weap->o_count = rnd (4) + 2;
@@ -200,7 +216,7 @@ void init_weapon (THING *weap, int which)
 
 /*
  * hit_monster:
- *	Does the missile hit the monster?
+ *  Does the missile hit the monster?
  */
 int hit_monster (int y, int x, THING *obj)
 {
@@ -213,23 +229,25 @@ int hit_monster (int y, int x, THING *obj)
 
 /*
  * num:
- *	Figure out the plus number for armor/weapons
+ *  Figure out the plus number for armor/weapons
  */
 char *num (int n1, int n2, char type)
 {
     static char numbuf[10];
 
     sprintf (numbuf, n1 < 0 ? "%d" : "+%d", n1);
+
     if (type == WEAPON)
     {
         sprintf (&numbuf[strlen (numbuf)], n2 < 0 ? ",%d" : ",+%d", n2);
     }
+
     return numbuf;
 }
 
 /*
  * wield:
- *	Pull out a certain weapon
+ *  Pull out a certain weapon
  */
 
 void wield()
@@ -238,12 +256,15 @@ void wield()
     char *sp;
 
     oweapon = cur_weapon;
+
     if (!dropcheck (cur_weapon))
     {
         cur_weapon = oweapon;
         return;
     }
+
     cur_weapon = oweapon;
+
     if ((obj = get_item ("wield", WEAPON)) == NULL)
     {
     bad:
@@ -256,6 +277,7 @@ void wield()
         msg ("you can't wield armor");
         goto bad;
     }
+
     if (is_current (obj))
     {
         goto bad;
@@ -263,22 +285,25 @@ void wield()
 
     sp = inv_name (obj, TRUE);
     cur_weapon = obj;
+
     if (!terse)
     {
         addmsg ("you are now ");
     }
+
     msg ("wielding %s (%c)", sp, obj->o_packch);
 }
 
 /*
  * fallpos:
- *	Pick a random position around the give (y, x) coordinates
+ *  Pick a random position around the give (y, x) coordinates
  */
 bool fallpos (coord *pos, coord *newpos)
 {
     int y, x, cnt, ch;
 
     cnt = 0;
+
     for (y = pos->y - 1; y <= pos->y + 1; y++)
         for (x = pos->x - 1; x <= pos->x + 1; x++)
         {
@@ -291,6 +316,7 @@ bool fallpos (coord *pos, coord *newpos)
             {
                 continue;
             }
+
             if (((ch = chat (y, x)) == FLOOR || ch == PASSAGE)
                     && rnd (++cnt) == 0)
             {
@@ -298,5 +324,6 @@ bool fallpos (coord *pos, coord *newpos)
                 newpos->x = x;
             }
         }
+
     return (bool) (cnt != 0);
 }

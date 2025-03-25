@@ -1,7 +1,7 @@
 /*
  * Functions for dealing with linked lists of goodies
  *
- * @(#)list.c	4.12 (Berkeley) 02/05/99
+ * @(#)list.c   4.12 (Berkeley) 02/05/99
  *
  * Rogue: Exploring the Dungeons of Doom
  * Copyright (C) 1980-1983, 1985, 1999 Michael Toy, Ken Arnold and Glenn Wichman
@@ -15,12 +15,12 @@
 #include "rogue.h"
 
 #ifdef MASTER
-int total = 0;			/* total dynamic memory bytes */
+int total = 0;          /* total dynamic memory bytes */
 #endif
 
 /*
  * detach:
- *	takes an item out of whatever linked list it might be in
+ *  takes an item out of whatever linked list it might be in
  */
 
 void _detach (THING **list, THING *item)
@@ -29,21 +29,24 @@ void _detach (THING **list, THING *item)
     {
         *list = next (item);
     }
+
     if (prev (item) != NULL)
     {
         item->l_prev->l_next = next (item);
     }
+
     if (next (item) != NULL)
     {
         item->l_next->l_prev = prev (item);
     }
+
     item->l_next = NULL;
     item->l_prev = NULL;
 }
 
 /*
  * _attach:
- *	add an item to the head of a list
+ *  add an item to the head of a list
  */
 
 void _attach (THING **list, THING *item)
@@ -59,12 +62,13 @@ void _attach (THING **list, THING *item)
         item->l_next = NULL;
         item->l_prev = NULL;
     }
+
     *list = item;
 }
 
 /*
  * _free_list:
- *	Throw the whole blamed thing away
+ *  Throw the whole blamed thing away
  */
 
 void _free_list (THING **ptr)
@@ -81,7 +85,7 @@ void _free_list (THING **ptr)
 
 /*
  * discard:
- *	Free up an item
+ *  Free up an item
  */
 
 void discard (THING *item)
@@ -94,13 +98,14 @@ void discard (THING *item)
 
 /*
  * new_item
- *	Get a new item with a specified size
+ *  Get a new item with a specified size
  */
 THING *new_item()
 {
     THING *item;
 
 #ifdef MASTER
+
     if ((item = calloc (1, sizeof * item)) == NULL)
     {
         msg ("ran out of memory after %d items", total);
@@ -109,6 +114,7 @@ THING *new_item()
     {
         total++;
     }
+
 #else
     item = calloc (1, sizeof * item);
 #endif

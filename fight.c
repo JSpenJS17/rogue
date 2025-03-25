@@ -1,7 +1,7 @@
 /*
  * All the fighting gets done here
  *
- * @(#)fight.c	4.67 (Berkeley) 09/06/83
+ * @(#)fight.c  4.67 (Berkeley) 09/06/83
  *
  * Rogue: Exploring the Dungeons of Doom
  * Copyright (C) 1980-1983, 1985, 1999 Michael Toy, Ken Arnold and Glenn Wichman
@@ -16,9 +16,9 @@
 #include <ctype.h>
 #include "rogue.h"
 
-#define	EQSTR(a, b)	(strcmp(a, b) == 0)
+#define EQSTR(a, b) (strcmp(a, b) == 0)
 
-char *h_names[] =  		/* strings for hitting */
+char *h_names[] =       /* strings for hitting */
 {
     " scored an excellent hit on ",
     " hit ",
@@ -30,7 +30,7 @@ char *h_names[] =  		/* strings for hitting */
     " swings and hits "
 };
 
-char *m_names[] =  		/* strings for missing */
+char *m_names[] =       /* strings for missing */
 {
     " miss",
     " swing and miss",
@@ -62,7 +62,7 @@ static int add_dam[] =
 
 /*
  * fight:
- *	The player attacks the monster.
+ *  The player attacks the monster.
  */
 int fight (coord *mp, THING *weap, bool thrown)
 {
@@ -74,10 +74,12 @@ int fight (coord *mp, THING *weap, bool thrown)
      * Find the monster we want to fight
      */
 #ifdef MASTER
+
     if ((tp = moat (mp->y, mp->x)) == NULL)
     {
         debug ("Fight what @ %d,%d", mp->y, mp->x);
     }
+
 #else
     tp = moat (mp->y, mp->x);
 #endif
@@ -92,27 +94,34 @@ int fight (coord *mp, THING *weap, bool thrown)
      * Let him know it was really a xeroc (if it was one).
      */
     ch = '\0';
+
     if (tp->t_type == 'X' && tp->t_disguise != 'X' && !on (player, ISBLIND))
     {
         tp->t_disguise = 'X';
+
         if (on (player, ISHALU))
         {
             ch = (char) (rnd (26) + 'A');
             mvaddch (tp->t_pos.y, tp->t_pos.x, ch);
         }
+
         msg (choose_str ("heavy!  That's a nasty critter!",
                          "wait!  That's a xeroc!"));
+
         if (!thrown)
         {
             return FALSE;
         }
     }
+
     mname = set_mname (tp);
     did_hit = FALSE;
     has_hit = (terse && !to_death);
+
     if (roll_em (&player, tp, weap, thrown))
     {
         did_hit = FALSE;
+
         if (thrown)
         {
             thunk (weap, mname, terse);
@@ -121,6 +130,7 @@ int fight (coord *mp, THING *weap, bool thrown)
         {
             hit ((char *) NULL, mname, terse);
         }
+
         if (on (player, CANHUH))
         {
             did_hit = TRUE;
@@ -130,6 +140,7 @@ int fight (coord *mp, THING *weap, bool thrown)
             has_hit = FALSE;
             msg ("your hands stop glowing %s", pick_color ("red"));
         }
+
         if (tp->t_stats.s_hpt <= 0)
         {
             killed (tp, TRUE);
@@ -138,6 +149,7 @@ int fight (coord *mp, THING *weap, bool thrown)
         {
             msg ("%s appears confused", mname);
         }
+
         did_hit = TRUE;
     }
     else if (thrown)
@@ -148,12 +160,13 @@ int fight (coord *mp, THING *weap, bool thrown)
     {
         miss ((char *) NULL, mname, terse);
     }
+
     return did_hit;
 }
 
 /*
  * attack:
- *	The monster attacks the player
+ *  The monster attacks the player
  */
 int attack (THING *mp)
 {
@@ -167,21 +180,26 @@ int attack (THING *mp)
     running = FALSE;
     count = 0;
     quiet = 0;
+
     if (to_death && !on (*mp, ISTARGET))
     {
         to_death = FALSE;
         kamikaze = FALSE;
     }
+
     if (mp->t_type == 'X' && mp->t_disguise != 'X' && !on (player, ISBLIND))
     {
         mp->t_disguise = 'X';
+
         if (on (player, ISHALU))
         {
             mvaddch (mp->t_pos.y, mp->t_pos.x, rnd (26) + 'A');
         }
     }
+
     mname = set_mname (mp);
     oldhp = pstats.s_hpt;
+
     if (roll_em (mp, &player, (THING *) NULL, FALSE))
     {
         if (mp->t_type != 'I')
@@ -190,13 +208,16 @@ int attack (THING *mp)
             {
                 addmsg (".  ");
             }
+
             hit (mname, (char *) NULL, FALSE);
         }
         else if (has_hit)
         {
             endmsg();
         }
+
         has_hit = FALSE;
+
         if (pstats.s_hpt <= 0)
         {
             death (mp->t_type);    /* Bye bye life ... */
@@ -204,15 +225,18 @@ int attack (THING *mp)
         else if (!kamikaze)
         {
             oldhp -= pstats.s_hpt;
+
             if (oldhp > max_hit)
             {
                 max_hit = oldhp;
             }
+
             if (pstats.s_hpt <= max_hit)
             {
                 to_death = FALSE;
             }
         }
+
         if (!on (*mp, ISCANC))
             switch (mp->t_type)
             {
@@ -226,21 +250,28 @@ int attack (THING *mp)
                  * The ice monster freezes you
                  */
                 player.t_flags &= ~ISRUN;
+
                 if (!no_command)
                 {
                     addmsg ("you are frozen");
+
                     if (!terse)
                     {
                         addmsg (" by the %s", mname);
                     }
+
                     endmsg();
                 }
+
                 no_command += rnd (2) + 2;
+
                 if (no_command > BORE_LEVEL)
                 {
                     death ('h');
                 }
+
             when 'R':
+
                 /*
                  * Rattlesnakes have poisonous bites
                  */
@@ -249,6 +280,7 @@ int attack (THING *mp)
                     if (!ISWEARING (R_SUSTSTR))
                     {
                         chg_str (-1);
+
                         if (!terse)
                         {
                             msg ("you feel a bite in your leg and now feel weaker");
@@ -270,8 +302,11 @@ int attack (THING *mp)
                         }
                     }
                 }
+
             when 'W':
+
             case 'V':
+
                 /*
                  * Wraiths might drain energy levels, and Vampires
                  * can steal max_hp
@@ -286,6 +321,7 @@ int attack (THING *mp)
                         {
                             death ('W');    /* All levels gone */
                         }
+
                         if (--pstats.s_lvl == 0)
                         {
                             pstats.s_exp = 0;
@@ -295,34 +331,42 @@ int attack (THING *mp)
                         {
                             pstats.s_exp = e_levels[pstats.s_lvl - 1] + 1;
                         }
+
                         fewer = roll (1, 10);
                     }
                     else
                     {
                         fewer = roll (1, 3);
                     }
+
                     pstats.s_hpt -= fewer;
                     max_hp -= fewer;
+
                     if (pstats.s_hpt <= 0)
                     {
                         pstats.s_hpt = 1;
                     }
+
                     if (max_hp <= 0)
                     {
                         death (mp->t_type);
                     }
+
                     msg ("you suddenly feel weaker");
                 }
+
             when 'F':
                 /*
                  * Venus Flytrap stops the poor guy from moving
                  */
                 player.t_flags |= ISHELD;
                 sprintf (monsters['F' - 'A'].m_stats.s_dmg, "%dx1", ++vf_hit);
+
                 if (--pstats.s_hpt <= 0)
                 {
                     death ('F');
                 }
+
             when 'L':
                 {
                     /*
@@ -332,16 +376,20 @@ int attack (THING *mp)
 
                     lastpurse = purse;
                     purse -= GOLDCALC;
+
                     if (!save (VS_MAGIC))
                     {
                         purse -= GOLDCALC + GOLDCALC + GOLDCALC + GOLDCALC;
                     }
+
                     if (purse < 0)
                     {
                         purse = 0;
                     }
+
                     remove_mon (&mp->t_pos, mp, FALSE);
                     mp = NULL;
+
                     if (purse != lastpurse)
                     {
                         msg ("your purse feels lighter");
@@ -357,6 +405,7 @@ int attack (THING *mp)
                      * and pick out one we like.
                      */
                     steal = NULL;
+
                     for (nobj = 0, obj = pack; obj != NULL; obj = next (obj))
                         if (obj != cur_armor && obj != cur_weapon
                                 && obj != cur_ring[LEFT] && obj != cur_ring[RIGHT]
@@ -364,6 +413,7 @@ int attack (THING *mp)
                         {
                             steal = obj;
                         }
+
                     if (steal != NULL)
                     {
                         remove_mon (&mp->t_pos, moat (mp->t_pos.y, mp->t_pos.x), FALSE);
@@ -384,22 +434,28 @@ int attack (THING *mp)
             addmsg (".  ");
             has_hit = FALSE;
         }
+
         if (mp->t_type == 'F')
         {
             pstats.s_hpt -= vf_hit;
+
             if (pstats.s_hpt <= 0)
             {
                 death (mp->t_type);    /* Bye bye life ... */
             }
         }
+
         miss (mname, (char *) NULL, FALSE);
     }
+
     if (fight_flush && !to_death)
     {
         flush_type();
     }
+
     count = 0;
     status();
+
     if (mp == NULL)
     {
         return (-1);
@@ -412,7 +468,7 @@ int attack (THING *mp)
 
 /*
  * set_mname:
- *	return the monster name for the given monster
+ *  return the monster name for the given monster
  */
 char *set_mname (THING *tp)
 {
@@ -428,6 +484,7 @@ char *set_mname (THING *tp)
     {
         move (tp->t_pos.y, tp->t_pos.x);
         ch = toascii (inch());
+
         if (!isupper (ch))
         {
             ch = rnd (26);
@@ -436,19 +493,21 @@ char *set_mname (THING *tp)
         {
             ch -= 'A';
         }
+
         mname = monsters[ch].m_name;
     }
     else
     {
         mname = monsters[tp->t_type - 'A'].m_name;
     }
+
     strcpy (&tbuf[4], mname);
     return tbuf;
 }
 
 /*
  * swing:
- *	Returns true if the swing hits
+ *  Returns true if the swing hits
  */
 int swing (int at_lvl, int op_arm, int wplus)
 {
@@ -460,7 +519,7 @@ int swing (int at_lvl, int op_arm, int wplus)
 
 /*
  * roll_em:
- *	Roll several attacks
+ *  Roll several attacks
  */
 bool roll_em (THING *thatt, THING *thdef, THING *weap, bool hurl)
 {
@@ -474,6 +533,7 @@ bool roll_em (THING *thatt, THING *thdef, THING *weap, bool hurl)
 
     att = &thatt->t_stats;
     def = &thdef->t_stats;
+
     if (weap == NULL)
     {
         cp = att->s_dmg;
@@ -484,6 +544,7 @@ bool roll_em (THING *thatt, THING *thdef, THING *weap, bool hurl)
     {
         hplus = (weap == NULL ? 0 : weap->o_hplus);
         dplus = (weap == NULL ? 0 : weap->o_dplus);
+
         if (weap == cur_weapon)
         {
             if (ISRING (LEFT, R_ADDDAM))
@@ -494,6 +555,7 @@ bool roll_em (THING *thatt, THING *thdef, THING *weap, bool hurl)
             {
                 hplus += cur_ring[LEFT]->o_arm;
             }
+
             if (ISRING (RIGHT, R_ADDDAM))
             {
                 dplus += cur_ring[RIGHT]->o_arm;
@@ -503,7 +565,9 @@ bool roll_em (THING *thatt, THING *thdef, THING *weap, bool hurl)
                 hplus += cur_ring[RIGHT]->o_arm;
             }
         }
+
         cp = weap->o_damage;
+
         if (hurl)
         {
             if ((weap->o_flags & ISMISL) && cur_weapon != NULL &&
@@ -519,6 +583,7 @@ bool roll_em (THING *thatt, THING *thdef, THING *weap, bool hurl)
             }
         }
     }
+
     /*
      * If the creature being attacked is not running (alseep or held)
      * then the attacker gets a plus four bonus to hit.
@@ -527,63 +592,77 @@ bool roll_em (THING *thatt, THING *thdef, THING *weap, bool hurl)
     {
         hplus += 4;
     }
+
     def_arm = def->s_arm;
+
     if (def == &pstats)
     {
         if (cur_armor != NULL)
         {
             def_arm = cur_armor->o_arm;
         }
+
         if (ISRING (LEFT, R_PROTECT))
         {
             def_arm -= cur_ring[LEFT]->o_arm;
         }
+
         if (ISRING (RIGHT, R_PROTECT))
         {
             def_arm -= cur_ring[RIGHT]->o_arm;
         }
     }
+
     while (cp != NULL && *cp != '\0')
     {
         ndice = atoi (cp);
+
         if ((cp = strchr (cp, 'x')) == NULL)
         {
             break;
         }
+
         nsides = atoi (++cp);
+
         if (swing (att->s_lvl, def_arm, hplus + str_plus[att->s_str]))
         {
             int proll;
 
             proll = roll (ndice, nsides);
 #ifdef MASTER
+
             if (ndice + nsides > 0 && proll <= 0)
             {
                 debug ("Damage for %dx%d came out %d, dplus = %d, add_dam = %d, def_arm = %d", ndice, nsides, proll, dplus, add_dam[att->s_str], def_arm);
             }
+
 #endif
             damage = dplus + proll + add_dam[att->s_str];
             def->s_hpt -= max (0, damage);
             did_hit = TRUE;
         }
+
         if ((cp = strchr (cp, '/')) == NULL)
         {
             break;
         }
+
         cp++;
     }
+
     return did_hit;
 }
 
 /*
  * prname:
- *	The print name of a combatant
+ *  The print name of a combatant
  */
 char *prname (char *mname, bool upper)
 {
     static char tbuf[MAXSTR];
 
     *tbuf = '\0';
+
     if (mname == 0)
     {
         strcpy (tbuf, "you");
@@ -592,16 +671,18 @@ char *prname (char *mname, bool upper)
     {
         strcpy (tbuf, mname);
     }
+
     if (upper)
     {
         *tbuf = (char) toupper (*tbuf);
     }
+
     return tbuf;
 }
 
 /*
  * thunk:
- *	A missile hits a monster
+ *  A missile hits a monster
  */
 void thunk (THING *weap, char *mname, bool noend)
 {
@@ -609,6 +690,7 @@ void thunk (THING *weap, char *mname, bool noend)
     {
         return;
     }
+
     if (weap->o_type == WEAPON)
     {
         addmsg ("the %s hits ", weap_info[weap->o_which].oi_name);
@@ -617,7 +699,9 @@ void thunk (THING *weap, char *mname, bool noend)
     {
         addmsg ("you hit ");
     }
+
     addmsg ("%s", mname);
+
     if (!noend)
     {
         endmsg();
@@ -626,7 +710,7 @@ void thunk (THING *weap, char *mname, bool noend)
 
 /*
  * hit:
- *	Print a message to indicate a succesful hit
+ *  Print a message to indicate a succesful hit
  */
 
 void hit (char *er, char *ee, bool noend)
@@ -639,7 +723,9 @@ void hit (char *er, char *ee, bool noend)
     {
         return;
     }
+
     addmsg (prname (er, TRUE));
+
     if (terse)
     {
         s = " hit";
@@ -647,17 +733,22 @@ void hit (char *er, char *ee, bool noend)
     else
     {
         i = rnd (4);
+
         if (er != NULL)
         {
             i += 4;
         }
+
         s = h_names[i];
     }
+
     addmsg (s);
+
     if (!terse)
     {
         addmsg (prname (ee, FALSE));
     }
+
     if (!noend)
     {
         endmsg();
@@ -666,7 +757,7 @@ void hit (char *er, char *ee, bool noend)
 
 /*
  * miss:
- *	Print a message to indicate a poor swing
+ *  Print a message to indicate a poor swing
  */
 void miss (char *er, char *ee, bool noend)
 {
@@ -677,7 +768,9 @@ void miss (char *er, char *ee, bool noend)
     {
         return;
     }
+
     addmsg (prname (er, TRUE));
+
     if (terse)
     {
         i = 0;
@@ -686,15 +779,19 @@ void miss (char *er, char *ee, bool noend)
     {
         i = rnd (4);
     }
+
     if (er != NULL)
     {
         i += 4;
     }
+
     addmsg (m_names[i]);
+
     if (!terse)
     {
         addmsg (" %s", prname (ee, FALSE));
     }
+
     if (!noend)
     {
         endmsg();
@@ -703,7 +800,7 @@ void miss (char *er, char *ee, bool noend)
 
 /*
  * bounce:
- *	A missile misses a monster
+ *  A missile misses a monster
  */
 void bounce (THING *weap, char *mname, bool noend)
 {
@@ -711,6 +808,7 @@ void bounce (THING *weap, char *mname, bool noend)
     {
         return;
     }
+
     if (weap->o_type == WEAPON)
     {
         addmsg ("the %s misses ", weap_info[weap->o_which].oi_name);
@@ -719,7 +817,9 @@ void bounce (THING *weap, char *mname, bool noend)
     {
         addmsg ("you missed ");
     }
+
     addmsg (mname);
+
     if (!noend)
     {
         endmsg();
@@ -728,7 +828,7 @@ void bounce (THING *weap, char *mname, bool noend)
 
 /*
  * remove_mon:
- *	Remove a monster from the screen
+ *  Remove a monster from the screen
  */
 void remove_mon (coord *mp, THING *tp, bool waskill)
 {
@@ -739,6 +839,7 @@ void remove_mon (coord *mp, THING *tp, bool waskill)
         nexti = next (obj);
         obj->o_pos = tp->t_pos;
         detach (tp->t_pack, obj);
+
         if (waskill)
         {
             fall (obj, FALSE);
@@ -748,24 +849,28 @@ void remove_mon (coord *mp, THING *tp, bool waskill)
             discard (obj);
         }
     }
+
     moat (mp->y, mp->x) = NULL;
     mvaddch (mp->y, mp->x, tp->t_oldch);
     detach (mlist, tp);
+
     if (on (*tp, ISTARGET))
     {
         kamikaze = FALSE;
         to_death = FALSE;
+
         if (fight_flush)
         {
             flush_type();
         }
     }
+
     discard (tp);
 }
 
 /*
  * killed:
- *	Called to put a monster to death
+ *  Called to put a monster to death
  */
 void killed (THING *tp, bool pr)
 {
@@ -791,18 +896,22 @@ void killed (THING *tp, bool pr)
                 gold = new_item();
                 gold->o_type = GOLD;
                 gold->o_goldval = GOLDCALC;
+
                 if (save (VS_MAGIC))
                     gold->o_goldval += GOLDCALC + GOLDCALC
                                        + GOLDCALC + GOLDCALC;
+
                 attach (tp->t_pack, gold);
             }
         }
     }
+
     /*
      * Get rid of the monster.
      */
     mname = set_mname (tp);
     remove_mon (&tp->t_pos, tp, TRUE);
+
     if (pr)
     {
         if (has_hit)
@@ -816,14 +925,18 @@ void killed (THING *tp, bool pr)
             {
                 addmsg ("you have ");
             }
+
             addmsg ("defeated ");
         }
+
         msg (mname);
     }
+
     /*
      * Do adjustments if he went up a level
      */
     check_level();
+
     if (fight_flush)
     {
         flush_type();
