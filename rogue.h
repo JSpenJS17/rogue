@@ -122,7 +122,7 @@
 #define LEFT        0
 #define RIGHT       1
 #define BOLT_LENGTH 6
-#define LAMPDIST    100
+#define LAMPDIST    3
 #ifdef MASTER
 #ifndef PASSWD
 #define PASSWD      "mTBellIQOsLNA"
