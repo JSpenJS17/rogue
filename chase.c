@@ -129,6 +129,7 @@ void relocate (THING *th, coord *new_loc)
 /*
  * do_chase:
  *  Make one thing chase another.
+ *  Returns -1 if the monster cannot move.
  */
 int do_chase (THING *th)
 {
@@ -141,6 +142,17 @@ int do_chase (THING *th)
     static coord this;          /* Temporary destination for chaser */
 
     rer = th->t_room;       /* Find room of chaser */
+
+    /* Move speed check */
+    if (th->t_stats.s_movectr != 0)
+    {
+        th->t_stats.s_movectr--;
+        return -1;
+    }
+    else {
+        /* reset the move counter */
+        th->t_stats.s_movectr = th->t_stats.s_movespd;
+    }
 
     if (on (*th, ISGREED) && rer->r_goldval == 0)
     {
@@ -520,8 +532,7 @@ bool chase (THING *tp, coord *ee)
  *  Find what room some coordinates are in. NULL means they aren't
  *  in any room.
  */
-struct room *
-roomin (coord *cp)
+struct room* roomin (coord *cp)
 {
     register struct room *rp;
     register char *fp;

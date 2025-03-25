@@ -85,9 +85,13 @@ void new_monster (THING *tp, char type, coord *cp)
     tp->t_room = roomin (cp);
     moat (cp->y, cp->x) = tp;
     mp = &monsters[tp->t_type - 'A'];
+    
     tp->t_stats.s_lvl = mp->m_stats.s_lvl + lev_add;
     tp->t_stats.s_maxhp = tp->t_stats.s_hpt = roll (tp->t_stats.s_lvl, 8);
     tp->t_stats.s_arm = mp->m_stats.s_arm - lev_add;
+    tp->t_stats.s_movespd = mp->m_stats.s_movespd;
+    tp->t_stats.s_movectr = mp->m_stats.s_movectr;
+
     strcpy (tp->t_stats.s_dmg, mp->m_stats.s_dmg);
     tp->t_stats.s_str = mp->m_stats.s_str;
     tp->t_stats.s_exp = mp->m_stats.s_exp + lev_add * 10 + exp_add (tp);
