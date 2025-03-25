@@ -21,7 +21,7 @@
  */
 #define MAXROOMS    9
 #define MAXTHINGS   9
-#define MAXOBJ      9
+#define MAXOBJ      12  /* number of object spawn attempts per level */
 #define MAXPACK     23
 #define MAXTRAPS    10
 #define AMULETLEVEL 26
@@ -122,7 +122,7 @@
 #define LEFT        0
 #define RIGHT       1
 #define BOLT_LENGTH 6
-#define LAMPDIST    3
+#define LAMPDIST    100
 #ifdef MASTER
 #ifndef PASSWD
 #define PASSWD      "mTBellIQOsLNA"
