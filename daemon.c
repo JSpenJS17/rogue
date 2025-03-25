@@ -20,7 +20,8 @@
 
 #define _X_ { EMPTY }
 
-struct delayed_action d_list[MAXDAEMONS] = {
+struct delayed_action d_list[MAXDAEMONS] =
+{
     _X_, _X_, _X_, _X_, _X_, _X_, _X_, _X_, _X_, _X_,
     _X_, _X_, _X_, _X_, _X_, _X_, _X_, _X_, _X_, _X_,
 };
@@ -34,11 +35,13 @@ d_slot()
 {
     register struct delayed_action *dev;
 
-    for (dev = d_list; dev <= &d_list[MAXDAEMONS-1]; dev++)
+    for (dev = d_list; dev <= &d_list[MAXDAEMONS - 1]; dev++)
         if (dev->d_type == EMPTY)
+        {
             return dev;
+        }
 #ifdef MASTER
-    debug("Ran out of fuse slots");
+    debug ("Ran out of fuse slots");
 #endif
     return NULL;
 }
@@ -48,13 +51,15 @@ d_slot()
  *	Find a particular slot in the table
  */
 struct delayed_action *
-find_slot(void (*func)())
+find_slot (void (*func)())
 {
     register struct delayed_action *dev;
 
-    for (dev = d_list; dev <= &d_list[MAXDAEMONS-1]; dev++)
+    for (dev = d_list; dev <= &d_list[MAXDAEMONS - 1]; dev++)
         if (dev->d_type != EMPTY && func == dev->d_func)
+        {
             return dev;
+        }
     return NULL;
 }
 
@@ -62,8 +67,7 @@ find_slot(void (*func)())
  * start_daemon:
  *	Start a daemon, takes a function.
  */
-void
-start_daemon(void (*func)(), int arg, int type)
+void start_daemon (void (*func)(), int arg, int type)
 {
     register struct delayed_action *dev;
 
@@ -78,13 +82,14 @@ start_daemon(void (*func)(), int arg, int type)
  * kill_daemon:
  *	Remove a daemon from the list
  */
-void
-kill_daemon(void (*func)())
+void kill_daemon (void (*func)())
 {
     register struct delayed_action *dev;
 
-    if ((dev = find_slot(func)) == NULL)
+    if ((dev = find_slot (func)) == NULL)
+    {
         return;
+    }
     /*
      * Take it out of the list
      */
@@ -96,28 +101,28 @@ kill_daemon(void (*func)())
  *	Run all the daemons that are active with the current flag,
  *	passing the argument to the function.
  */
-void
-do_daemons(int flag)
+void do_daemons (int flag)
 {
     register struct delayed_action *dev;
 
     /*
      * Loop through the devil list
      */
-    for (dev = d_list; dev <= &d_list[MAXDAEMONS-1]; dev++)
+    for (dev = d_list; dev <= &d_list[MAXDAEMONS - 1]; dev++)
         /*
          * Executing each one, giving it the proper arguments
          */
         if (dev->d_type == flag && dev->d_time == DAEMON)
-            (*dev->d_func)(dev->d_arg);
+        {
+            (*dev->d_func) (dev->d_arg);
+        }
 }
 
 /*
  * fuse:
  *	Start a fuse to go off in a certain number of turns
  */
-void
-fuse(void (*func)(), int arg, int time, int type)
+void fuse (void (*func)(), int arg, int time, int type)
 {
     register struct delayed_action *wire;
 
@@ -132,13 +137,14 @@ fuse(void (*func)(), int arg, int time, int type)
  * lengthen:
  *	Increase the time until a fuse goes off
  */
-void
-lengthen(void (*func)(), int xtime)
+void lengthen (void (*func)(), int xtime)
 {
     register struct delayed_action *wire;
 
-    if ((wire = find_slot(func)) == NULL)
+    if ((wire = find_slot (func)) == NULL)
+    {
         return;
+    }
     wire->d_time += xtime;
 }
 
@@ -146,13 +152,14 @@ lengthen(void (*func)(), int xtime)
  * extinguish:
  *	Put out a fuse
  */
-void
-extinguish(void (*func)())
+void extinguish (void (*func)())
 {
     register struct delayed_action *wire;
 
-    if ((wire = find_slot(func)) == NULL)
+    if ((wire = find_slot (func)) == NULL)
+    {
         return;
+    }
     wire->d_type = EMPTY;
 }
 
@@ -160,15 +167,14 @@ extinguish(void (*func)())
  * do_fuses:
  *	Decrement counters and start needed fuses
  */
-void
-do_fuses(int flag)
+void do_fuses (int flag)
 {
     register struct delayed_action *wire;
 
     /*
      * Step though the list
      */
-    for (wire = d_list; wire <= &d_list[MAXDAEMONS-1]; wire++)
+    for (wire = d_list; wire <= &d_list[MAXDAEMONS - 1]; wire++)
         /*
          * Decrementing counters and starting things we want.  We also need
          * to remove the fuse from the list once it has gone off.
@@ -176,6 +182,6 @@ do_fuses(int flag)
         if (flag == wire->d_type && wire->d_time > 0 && --wire->d_time == 0)
         {
             wire->d_type = EMPTY;
-            (*wire->d_func)(wire->d_arg);
+            (*wire->d_func) (wire->d_arg);
         }
 }

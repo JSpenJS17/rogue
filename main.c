@@ -19,8 +19,7 @@
  * main:
  *	The main program, of course
  */
-int
-main(int argc, char **argv, char **envp)
+int main (int argc, char **argv, char **envp)
 {
     char *env;
     int lowtime;
@@ -32,7 +31,7 @@ main(int argc, char **argv, char **envp)
      * Check to see if he is a wizard
      */
     if (argc >= 2 && argv[1][0] == '\0')
-        if (strcmp(PASSWD, md_crypt(md_getpass("wizard's password: "), "mT")) == 0)
+        if (strcmp (PASSWD, md_crypt (md_getpass ("wizard's password: "), "mT")) == 0)
         {
             wizard = TRUE;
             player.t_flags |= SEEMONST;
@@ -46,19 +45,25 @@ main(int argc, char **argv, char **envp)
      * get home and options from environment
      */
 
-    strncpy(home, md_gethomedir(), MAXSTR);
+    strncpy (home, md_gethomedir(), MAXSTR);
 
-    strcpy(file_name, home);
-    strcat(file_name, "rogue.save");
+    strcpy (file_name, home);
+    strcat (file_name, "rogue.save");
 
-    if ((env = getenv("ROGUEOPTS")) != NULL)
-        parse_opts(env);
+    if ((env = getenv ("ROGUEOPTS")) != NULL)
+    {
+        parse_opts (env);
+    }
     if (env == NULL || whoami[0] == '\0')
-        strucpy(whoami, md_getusername(), (int) strlen(md_getusername()));
-    lowtime = (int) time(NULL);
+    {
+        strucpy (whoami, md_getusername(), (int) strlen (md_getusername()));
+    }
+    lowtime = (int) time (NULL);
 #ifdef MASTER
-    if (wizard && getenv("SEED") != NULL)
-        dnum = atoi(getenv("SEED"));
+    if (wizard && getenv ("SEED") != NULL)
+    {
+        dnum = atoi (getenv ("SEED"));
+    }
     else
 #endif
         dnum = lowtime + md_getpid();
@@ -80,37 +85,43 @@ main(int argc, char **argv, char **envp)
 
     if (argc == 2)
     {
-        if (strcmp(argv[1], "-s") == 0)
+        if (strcmp (argv[1], "-s") == 0)
         {
             noscore = TRUE;
-            score(0, -1, 0);
-            exit(0);
+            score (0, -1, 0);
+            exit (0);
         }
-        else if (strcmp(argv[1], "-d") == 0)
+        else if (strcmp (argv[1], "-d") == 0)
         {
-            dnum = rnd(100);	/* throw away some rnd()s to break patterns */
+            dnum = rnd (100);	/* throw away some rnd()s to break patterns */
             while (--dnum)
-                rnd(100);
-            purse = rnd(100) + 1;
-            level = rnd(100) + 1;
+            {
+                rnd (100);
+            }
+            purse = rnd (100) + 1;
+            level = rnd (100) + 1;
             initscr();
             getltchars();
-            death(death_monst());
-            exit(0);
+            death (death_monst());
+            exit (0);
         }
     }
 
     init_check();			/* check for legal startup */
     if (argc == 2)
-        if (!restore(argv[1], envp))	/* Note: restore will never return */
-            my_exit(1);
+        if (!restore (argv[1], envp))	/* Note: restore will never return */
+        {
+            my_exit (1);
+        }
 #ifdef MASTER
     if (wizard)
-        printf("Hello %s, welcome to dungeon #%d", whoami, dnum);
+    {
+        printf ("Hello %s, welcome to dungeon #%d", whoami, dnum);
+    }
     else
 #endif
-        printf("Hello %s, just a moment while I dig the dungeon...", whoami);
-    fflush(stdout);
+        printf ("Hello %s, just a moment while I dig the dungeon...", whoami);
+    fflush (stdout);
 
     initscr();				/* Start up cursor package */
     init_probs();			/* Set up prob tables for objects */
@@ -126,17 +137,17 @@ main(int argc, char **argv, char **envp)
      */
     if (LINES < NUMLINES || COLS < NUMCOLS)
     {
-        printf("\nSorry, the screen must be at least %dx%d\n", NUMLINES, NUMCOLS);
+        printf ("\nSorry, the screen must be at least %dx%d\n", NUMLINES, NUMCOLS);
         endwin();
-        my_exit(1);
+        my_exit (1);
     }
 
     /*
      * Set up windows
      */
-    hw = newwin(LINES, COLS, 0, 0);
-    idlok(stdscr, TRUE);
-    idlok(hw, TRUE);
+    hw = newwin (LINES, COLS, 0, 0);
+    idlok (stdscr, TRUE);
+    idlok (hw, TRUE);
 #ifdef MASTER
     noscore = wizard;
 #endif
@@ -144,12 +155,12 @@ main(int argc, char **argv, char **envp)
     /*
      * Start up daemons and fuses
      */
-    start_daemon(runners, 0, AFTER);
-    start_daemon(doctor, 0, AFTER);
-    fuse(swander, 0, WANDERTIME, AFTER);
-    start_daemon(stomach, 0, AFTER);
+    start_daemon (runners, 0, AFTER);
+    start_daemon (doctor, 0, AFTER);
+    fuse (swander, 0, WANDERTIME, AFTER);
+    start_daemon (stomach, 0, AFTER);
     playit();
-    return(0);
+    return (0);
 }
 
 /*
@@ -157,11 +168,10 @@ main(int argc, char **argv, char **envp)
  *	Exit the program abnormally.
  */
 
-void
-endit(int sig)
+void endit (int sig)
 {
-    NOOP(sig);
-    fatal("Okay, bye bye!\n");
+    NOOP (sig);
+    fatal ("Okay, bye bye!\n");
 }
 
 /*
@@ -169,36 +179,35 @@ endit(int sig)
  *	Exit the program, printing a message.
  */
 
-void
-fatal(char *s)
+void fatal (char *s)
 {
-    mvaddstr(LINES - 2, 0, s);
+    mvaddstr (LINES - 2, 0, s);
     refresh();
     endwin();
-    my_exit(0);
+    my_exit (0);
 }
 
 /*
  * rnd:
  *	Pick a very random number.
  */
-int
-rnd(int range)
+int rnd (int range)
 {
-    return range == 0 ? 0 : abs((int) RN) % range;
+    return range == 0 ? 0 : abs ((int) RN) % range;
 }
 
 /*
  * roll:
  *	Roll a number of dice
  */
-int
-roll(int number, int sides)
+int roll (int number, int sides)
 {
     int dtotal = 0;
 
     while (number--)
-        dtotal += rnd(sides)+1;
+    {
+        dtotal += rnd (sides) + 1;
+    }
     return dtotal;
 }
 
@@ -207,22 +216,21 @@ roll(int number, int sides)
  *	Handle stop and start signals
  */
 
-void
-tstp(int ignored)
+void tstp (int ignored)
 {
     int y, x;
     int oy, ox;
 
-    NOOP(ignored);
+    NOOP (ignored);
 
     /*
      * leave nicely
      */
-    getyx(curscr, oy, ox);
-    mvcur(0, COLS - 1, LINES - 1, 0);
+    getyx (curscr, oy, ox);
+    mvcur (0, COLS - 1, LINES - 1, 0);
     endwin();
     resetltchars();
-    fflush(stdout);
+    fflush (stdout);
     md_tstpsignal();
 
     /*
@@ -231,13 +239,13 @@ tstp(int ignored)
     md_tstpresume();
     raw();
     noecho();
-    keypad(stdscr,1);
+    keypad (stdscr, 1);
     playltchars();
-    clearok(curscr, TRUE);
-    wrefresh(curscr);
-    getyx(curscr, y, x);
-    mvcur(y, x, oy, ox);
-    fflush(stdout);
+    clearok (curscr, TRUE);
+    wrefresh (curscr);
+    getyx (curscr, y, x);
+    mvcur (y, x, oy, ox);
+    fflush (stdout);
     curscr->_cury = oy;
     curscr->_curx = ox;
 }
@@ -248,8 +256,7 @@ tstp(int ignored)
  *	refreshing things and looking at the proper times.
  */
 
-void
-playit()
+void playit()
 {
     char *opts;
 
@@ -265,20 +272,26 @@ playit()
     }
 
     if (md_hasclreol())
+    {
         inv_type = INV_CLEAR;
+    }
 
     /*
      * parse environment declaration of options
      */
-    if ((opts = getenv("ROGUEOPTS")) != NULL)
-        parse_opts(opts);
+    if ((opts = getenv ("ROGUEOPTS")) != NULL)
+    {
+        parse_opts (opts);
+    }
 
 
     oldpos = hero;
-    oldrp = roomin(&hero);
+    oldrp = roomin (&hero);
     while (playing)
-        command();			/* Command execution */
-    endit(0);
+    {
+        command();    /* Command execution */
+    }
+    endit (0);
 }
 
 /*
@@ -286,36 +299,37 @@ playit()
  *	Have player make certain, then exit.
  */
 
-void
-quit(int sig)
+void quit (int sig)
 {
     int oy, ox;
 
-    NOOP(sig);
+    NOOP (sig);
 
     /*
      * Reset the signal in case we got here via an interrupt
      */
     if (!q_comm)
+    {
         mpos = 0;
-    getyx(curscr, oy, ox);
-    msg("really quit?");
+    }
+    getyx (curscr, oy, ox);
+    msg ("really quit?");
     if (readchar() == 'y')
     {
-        signal(SIGINT, leave);
+        signal (SIGINT, leave);
         clear();
-        mvprintw(LINES - 2, 0, "You quit with %d gold pieces", purse);
-        move(LINES - 1, 0);
+        mvprintw (LINES - 2, 0, "You quit with %d gold pieces", purse);
+        move (LINES - 1, 0);
         refresh();
-        score(purse, 1, 0);
-        my_exit(0);
+        score (purse, 1, 0);
+        my_exit (0);
     }
     else
     {
-        move(0, 0);
+        move (0, 0);
         clrtoeol();
         status();
-        move(oy, ox);
+        move (oy, ox);
         refresh();
         mpos = 0;
         count = 0;
@@ -328,23 +342,22 @@ quit(int sig)
  *	Leave quickly, but curteously
  */
 
-void
-leave(int sig)
+void leave (int sig)
 {
     static char buf[BUFSIZ];
 
-    NOOP(sig);
+    NOOP (sig);
 
-    setbuf(stdout, buf);	/* throw away pending output */
+    setbuf (stdout, buf);	/* throw away pending output */
 
     if (!isendwin())
     {
-        mvcur(0, COLS - 1, LINES - 1, 0);
+        mvcur (0, COLS - 1, LINES - 1, 0);
         endwin();
     }
 
-    putchar('\n');
-    my_exit(0);
+    putchar ('\n');
+    my_exit (0);
 }
 
 /*
@@ -352,34 +365,33 @@ leave(int sig)
  *	Let them escape for a while
  */
 
-void
-shell()
+void shell()
 {
     /*
      * Set the terminal back to original mode
      */
-    move(LINES-1, 0);
+    move (LINES - 1, 0);
     refresh();
     endwin();
     resetltchars();
-    putchar('\n');
+    putchar ('\n');
     in_shell = TRUE;
     after = FALSE;
-    fflush(stdout);
+    fflush (stdout);
     /*
      * Fork and do a shell
      */
     md_shellescape();
 
-    printf("\n[Press return to continue]");
-    fflush(stdout);
+    printf ("\n[Press return to continue]");
+    fflush (stdout);
     noecho();
     raw();
-    keypad(stdscr,1);
+    keypad (stdscr, 1);
     playltchars();
     in_shell = FALSE;
-    wait_for('\n');
-    clearok(stdscr, TRUE);
+    wait_for ('\n');
+    clearok (stdscr, TRUE);
 }
 
 /*
@@ -387,10 +399,9 @@ shell()
  *	Leave the process properly
  */
 
-void
-my_exit(int st)
+void my_exit (int st)
 {
     resetltchars();
-    exit(st);
+    exit (st);
 }
 

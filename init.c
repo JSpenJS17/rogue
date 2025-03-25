@@ -20,8 +20,7 @@
  * init_player:
  *	Roll her up
  */
-void
-init_player()
+void init_player()
 {
     register THING *obj;
 
@@ -33,7 +32,7 @@ init_player()
     obj = new_item();
     obj->o_type = FOOD;
     obj->o_count = 1;
-    add_pack(obj, TRUE);
+    add_pack (obj, TRUE);
     /*
      * And his suit of armor
      */
@@ -44,33 +43,33 @@ init_player()
     obj->o_flags |= ISKNOW;
     obj->o_count = 1;
     cur_armor = obj;
-    add_pack(obj, TRUE);
+    add_pack (obj, TRUE);
     /*
      * Give him his weaponry.  First a mace.
      */
     obj = new_item();
-    init_weapon(obj, MACE);
+    init_weapon (obj, MACE);
     obj->o_hplus = 1;
     obj->o_dplus = 1;
     obj->o_flags |= ISKNOW;
-    add_pack(obj, TRUE);
+    add_pack (obj, TRUE);
     cur_weapon = obj;
     /*
      * Now a +1 bow
      */
     obj = new_item();
-    init_weapon(obj, BOW);
+    init_weapon (obj, BOW);
     obj->o_hplus = 1;
     obj->o_flags |= ISKNOW;
-    add_pack(obj, TRUE);
+    add_pack (obj, TRUE);
     /*
      * Now some arrows
      */
     obj = new_item();
-    init_weapon(obj, ARROW);
-    obj->o_count = rnd(15) + 25;
+    init_weapon (obj, ARROW);
+    obj->o_count = rnd (15) + 25;
     obj->o_flags |= ISKNOW;
-    add_pack(obj, TRUE);
+    add_pack (obj, TRUE);
 }
 
 /*
@@ -78,7 +77,8 @@ init_player()
  * potions and scrolls
  */
 
-char *rainbow[] = {
+char *rainbow[] =
+{
     "amber",
     "aquamarine",
     "black",
@@ -111,7 +111,8 @@ char *rainbow[] = {
 #define NCOLORS (sizeof rainbow / sizeof (char *))
 int cNCOLORS = NCOLORS;
 
-static char *sylls[] = {
+static char *sylls[] =
+{
     "a", "ab", "ag", "aks", "ala", "an", "app", "arg", "arze", "ash",
     "bek", "bie", "bit", "bjor", "blu", "bot", "bu", "byt", "comp",
     "con", "cos", "cre", "dalf", "dan", "den", "do", "e", "eep", "el",
@@ -130,7 +131,8 @@ static char *sylls[] = {
     "zok", "zon", "zum",
 };
 
-STONE stones[] = {
+STONE stones[] =
+{
     { "agate",		 25},
     { "alexandrite",	 40},
     { "amethyst",	 50},
@@ -162,7 +164,8 @@ STONE stones[] = {
 #define NSTONES (sizeof stones / sizeof (STONE))
 int cNSTONES = NSTONES;
 
-char *wood[] = {
+char *wood[] =
+{
     "avocado wood",
     "balsa",
     "bamboo",
@@ -201,7 +204,8 @@ char *wood[] = {
 #define NWOOD (sizeof wood / sizeof (char *))
 int cNWOOD = NWOOD;
 
-char *metal[] = {
+char *metal[] =
+{
     "aluminum",
     "beryllium",
     "bone",
@@ -230,23 +234,26 @@ char *metal[] = {
 int cNMETAL = NMETAL;
 #define MAX3(a,b,c)	(a > b ? (a > c ? a : c) : (b > c ? b : c))
 
-static bool used[MAX3(NCOLORS, NSTONES, NWOOD)];
+static bool used[MAX3 (NCOLORS, NSTONES, NWOOD)];
 
 /*
  * init_colors:
  *	Initialize the potion color scheme for this time
  */
-void
-init_colors()
+void init_colors()
 {
     register int i, j;
 
     for (i = 0; i < NCOLORS; i++)
+    {
         used[i] = FALSE;
+    }
     for (i = 0; i < MAXPOTIONS; i++)
     {
         do
-            j = rnd(NCOLORS);
+        {
+            j = rnd (NCOLORS);
+        }
         until (!used[j]);
         used[j] = TRUE;
         p_colors[i] = rainbow[j];
@@ -259,8 +266,7 @@ init_colors()
  */
 #define MAXNAME	40	/* Max number of characters in a name */
 
-void
-init_names()
+void init_names()
 {
     register int nsyl;
     register char *cp, *sp;
@@ -269,23 +275,27 @@ init_names()
     for (i = 0; i < MAXSCROLLS; i++)
     {
         cp = prbuf;
-        nwords = rnd(3) + 2;
+        nwords = rnd (3) + 2;
         while (nwords--)
         {
-            nsyl = rnd(3) + 1;
+            nsyl = rnd (3) + 1;
             while (nsyl--)
             {
-                sp = sylls[rnd((sizeof sylls) / (sizeof (char *)))];
-                if (&cp[strlen(sp)] > &prbuf[MAXNAME])
+                sp = sylls[rnd ((sizeof sylls) / (sizeof (char *)))];
+                if (&cp[strlen (sp)] > &prbuf[MAXNAME])
+                {
                     break;
+                }
                 while (*sp)
+                {
                     *cp++ = *sp++;
+                }
             }
             *cp++ = ' ';
         }
         *--cp = '\0';
-        s_names[i] = (char *) malloc((unsigned) strlen(prbuf)+1);
-        strcpy(s_names[i], prbuf);
+        s_names[i] = (char *) malloc ((unsigned) strlen (prbuf) + 1);
+        strcpy (s_names[i], prbuf);
     }
 }
 
@@ -293,17 +303,20 @@ init_names()
  * init_stones:
  *	Initialize the ring stone setting scheme for this time
  */
-void
-init_stones()
+void init_stones()
 {
     register int i, j;
 
     for (i = 0; i < NSTONES; i++)
+    {
         used[i] = FALSE;
+    }
     for (i = 0; i < MAXRINGS; i++)
     {
         do
-            j = rnd(NSTONES);
+        {
+            j = rnd (NSTONES);
+        }
         until (!used[j]);
         used[j] = TRUE;
         r_stones[i] = stones[j].st_name;
@@ -315,23 +328,26 @@ init_stones()
  * init_materials:
  *	Initialize the construction materials for wands and staffs
  */
-void
-init_materials()
+void init_materials()
 {
     register int i, j;
     register char *str;
     static bool metused[NMETAL];
 
     for (i = 0; i < NWOOD; i++)
+    {
         used[i] = FALSE;
+    }
     for (i = 0; i < NMETAL; i++)
+    {
         metused[i] = FALSE;
+    }
     for (i = 0; i < MAXSTICKS; i++)
     {
         for (;;)
-            if (rnd(2) == 0)
+            if (rnd (2) == 0)
             {
-                j = rnd(NMETAL);
+                j = rnd (NMETAL);
                 if (!metused[j])
                 {
                     ws_type[i] = "wand";
@@ -342,7 +358,7 @@ init_materials()
             }
             else
             {
-                j = rnd(NWOOD);
+                j = rnd (NWOOD);
                 if (!used[j])
                 {
                     ws_type[i] = "staff";
@@ -378,11 +394,11 @@ init_materials()
  *	Sum up the probabilities for items appearing
  */
 void
-sumprobs(struct obj_info *info, int bound
+sumprobs (struct obj_info *info, int bound
 #ifdef MASTER
-         , char *name
+          , char *name
 #endif
-        )
+         )
 {
 #ifdef MASTER
     struct obj_info *start = info;
@@ -391,9 +407,11 @@ sumprobs(struct obj_info *info, int bound
 
     endp = info + bound;
     while (++info < endp)
+    {
         info->oi_prob += (info - 1)->oi_prob;
+    }
 #ifdef MASTER
-    badcheck(name, start, bound);
+    badcheck (name, start, bound);
 #endif
 }
 
@@ -401,16 +419,15 @@ sumprobs(struct obj_info *info, int bound
  * init_probs:
  *	Initialize the probabilities for the various items
  */
-void
-init_probs()
+void init_probs()
 {
-    sumprobs(things, NT);
-    sumprobs(pot_info, MP);
-    sumprobs(scr_info, MS);
-    sumprobs(ring_info, MR);
-    sumprobs(ws_info, MWS);
-    sumprobs(weap_info, MW);
-    sumprobs(arm_info, MA);
+    sumprobs (things, NT);
+    sumprobs (pot_info, MP);
+    sumprobs (scr_info, MS);
+    sumprobs (ring_info, MR);
+    sumprobs (ws_info, MWS);
+    sumprobs (weap_info, MW);
+    sumprobs (arm_info, MA);
 }
 
 #ifdef MASTER
@@ -418,20 +435,25 @@ init_probs()
  * badcheck:
  *	Check to see if a series of probabilities sums to 100
  */
-void
-badcheck(char *name, struct obj_info *info, int bound)
+void badcheck (char *name, struct obj_info *info, int bound)
 {
     register struct obj_info *end;
 
     if (info[bound - 1].oi_prob == 100)
+    {
         return;
-    printf("\nBad percentages for %s (bound = %d):\n", name, bound);
+    }
+    printf ("\nBad percentages for %s (bound = %d):\n", name, bound);
     for (end = &info[bound]; info < end; info++)
-        printf("%3d%% %s\n", info->oi_prob, info->oi_name);
-    printf("[hit RETURN to continue]");
-    fflush(stdout);
+    {
+        printf ("%3d%% %s\n", info->oi_prob, info->oi_name);
+    }
+    printf ("[hit RETURN to continue]");
+    fflush (stdout);
     while (getchar() != '\n')
+    {
         continue;
+    }
 }
 #endif
 
@@ -440,8 +462,7 @@ badcheck(char *name, struct obj_info *info, int bound)
  *	If he is halucinating, pick a random color name and return it,
  *	otherwise return the given color.
  */
-char *
-pick_color(char *col)
+char *pick_color (char *col)
 {
-    return (on(player, ISHALU) ? rainbow[rnd(NCOLORS)] : col);
+    return (on (player, ISHALU) ? rainbow[rnd (NCOLORS)] : col);
 }

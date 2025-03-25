@@ -126,66 +126,66 @@ extern FILE	*scoreboard;
  * Function types
  */
 
-void    auto_save(int);
+void    auto_save (int);
 void	come_down();
 void	doctor();
 void	end_line();
-void    endit(int sig);
+void    endit (int sig);
 void	fatal();
 void	getltchars();
 void	land();
-void    leave(int);
+void    leave (int);
 void	my_exit();
 void	nohaste();
 void	playit();
-void    playltchars(void);
-void	print_disc(char);
-void    quit(int);
-void    resetltchars(void);
+void    playltchars (void);
+void	print_disc (char);
+void    quit (int);
+void    resetltchars (void);
 void	rollwand();
 void	runners();
 void	set_order();
 void	sight();
 void	stomach();
 void	swander();
-void	tstp(int ignored);
+void	tstp (int ignored);
 void	unconfuse();
 void	unsee();
 void	visuals();
 
-char	add_line(char *fmt, char *arg);
+char	add_line (char *fmt, char *arg);
 
-char	*killname(char monst, bool doart);
-char	*nothing(char type);
-char	*type_name(int type);
+char	*killname (char monst, bool doart);
+char	*nothing (char type);
+char	*type_name (int type);
 
 #ifdef CHECKTIME
 int	checkout();
 #endif
 
-int	md_chmod(char *filename, int mode);
-char	*md_crypt(char *key, char *salt);
+int	md_chmod (char *filename, int mode);
+char	*md_crypt (char *key, char *salt);
 int	md_dsuspchar();
 int	md_erasechar();
 char	*md_gethomedir();
 char	*md_getusername();
 int	md_getuid();
-char	*md_getpass(char *prompt);
+char	*md_getpass (char *prompt);
 int	md_getpid();
-char	*md_getrealname(int uid);
+char	*md_getrealname (int uid);
 void	md_init();
 int	md_killchar();
 void	md_normaluser();
 void	md_raw_standout();
 void	md_raw_standend();
 int	md_readchar();
-int	md_setdsuspchar(int c);
+int	md_setdsuspchar (int c);
 int	md_shellescape();
-void	md_sleep(int s);
+void	md_sleep (int s);
 int	md_suspchar();
 int	md_hasclreol();
-int	md_unlink(char *file);
-int	md_unlink_open_file(char *file, FILE *inf);
+int	md_unlink (char *file);
+int	md_unlink_open_file (char *file, FILE *inf);
 void md_tstpsignal();
 void md_tstphold();
 void md_tstpresume();
@@ -193,5 +193,5 @@ void md_ignoreallsignals();
 void md_onsignal_autosave();
 void md_onsignal_exit();
 void md_onsignal_default();
-int md_issymlink(char *sp);
+int md_issymlink (char *sp);
 

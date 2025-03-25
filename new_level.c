@@ -19,8 +19,7 @@
 #define MAXTREAS 10	/* maximum number of treasures in a treasure room */
 #define MINTREAS 2	/* minimum number of treasures in a treasure room */
 
-void
-new_level()
+void new_level()
 {
     THING *tp;
     PLACE *pp;
@@ -29,11 +28,13 @@ new_level()
 
     player.t_flags &= ~ISHELD;	/* unhold when you go down just in case */
     if (level > max_level)
+    {
         max_level = level;
+    }
     /*
      * Clean things off from last level
      */
-    for (pp = places; pp < &places[MAXCOLS*MAXLINES]; pp++)
+    for (pp = places; pp < &places[MAXCOLS * MAXLINES]; pp++)
     {
         pp->p_ch = ' ';
         pp->p_flags = F_REAL;
@@ -43,13 +44,15 @@ new_level()
     /*
      * Free up the monsters on the last level
      */
-    for (tp = mlist; tp != NULL; tp = next(tp))
-        free_list(tp->t_pack);
-    free_list(mlist);
+    for (tp = mlist; tp != NULL; tp = next (tp))
+    {
+        free_list (tp->t_pack);
+    }
+    free_list (mlist);
     /*
      * Throw away stuff left on the previous level (if anything)
      */
-    free_list(lvl_obj);
+    free_list (lvl_obj);
     do_rooms();				/* Draw rooms */
     do_passages();			/* Draw passages */
     no_food++;
@@ -57,11 +60,13 @@ new_level()
     /*
      * Place the traps
      */
-    if (rnd(10) < level)
+    if (rnd (10) < level)
     {
-        ntraps = rnd(level / 4) + 1;
+        ntraps = rnd (level / 4) + 1;
         if (ntraps > MAXTRAPS)
+        {
             ntraps = MAXTRAPS;
+        }
         i = ntraps;
         while (i--)
         {
@@ -73,45 +78,52 @@ new_level()
              */
             do
             {
-                find_floor((struct room *) NULL, &stairs, FALSE, FALSE);
-            } while (chat(stairs.y, stairs.x) != FLOOR);
-            sp = &flat(stairs.y, stairs.x);
+                find_floor ((struct room *) NULL, &stairs, FALSE, FALSE);
+            }
+            while (chat (stairs.y, stairs.x) != FLOOR);
+            sp = &flat (stairs.y, stairs.x);
             *sp &= ~F_REAL;
-            *sp |= rnd(NTRAPS);
+            *sp |= rnd (NTRAPS);
         }
     }
     /*
      * Place the staircase down.
      */
-    find_floor((struct room *) NULL, &stairs, FALSE, FALSE);
-    chat(stairs.y, stairs.x) = STAIRS;
+    find_floor ((struct room *) NULL, &stairs, FALSE, FALSE);
+    chat (stairs.y, stairs.x) = STAIRS;
     seenstairs = FALSE;
 
-    for (tp = mlist; tp != NULL; tp = next(tp))
-        tp->t_room = roomin(&tp->t_pos);
+    for (tp = mlist; tp != NULL; tp = next (tp))
+    {
+        tp->t_room = roomin (&tp->t_pos);
+    }
 
-    find_floor((struct room *) NULL, &hero, FALSE, TRUE);
-    enter_room(&hero);
-    mvaddch(hero.y, hero.x, PLAYER);
-    if (on(player, SEEMONST))
-        turn_see(FALSE);
-    if (on(player, ISHALU))
+    find_floor ((struct room *) NULL, &hero, FALSE, TRUE);
+    enter_room (&hero);
+    mvaddch (hero.y, hero.x, PLAYER);
+    if (on (player, SEEMONST))
+    {
+        turn_see (FALSE);
+    }
+    if (on (player, ISHALU))
+    {
         visuals();
+    }
 }
 
 /*
  * rnd_room:
  *	Pick a room that is really there
  */
-int
-rnd_room()
+int rnd_room()
 {
     int rm;
 
     do
     {
-        rm = rnd(MAXROOMS);
-    } while (rooms[rm].r_flags & ISGONE);
+        rm = rnd (MAXROOMS);
+    }
+    while (rooms[rm].r_flags & ISGONE);
     return rm;
 }
 
@@ -120,8 +132,7 @@ rnd_room()
  *	Put potions and scrolls on this level
  */
 
-void
-put_things()
+void put_things()
 {
     int i;
     THING *obj;
@@ -131,28 +142,32 @@ put_things()
      * go down into the dungeon.
      */
     if (amulet && level < max_level)
+    {
         return;
+    }
     /*
      * check for treasure rooms, and if so, put it in.
      */
-    if (rnd(TREAS_ROOM) == 0)
+    if (rnd (TREAS_ROOM) == 0)
+    {
         treas_room();
+    }
     /*
      * Do MAXOBJ attempts to put things on a level
      */
     for (i = 0; i < MAXOBJ; i++)
-        if (rnd(100) < 36)
+        if (rnd (100) < 36)
         {
             /*
              * Pick a new object and link it in the list
              */
             obj = new_thing();
-            attach(lvl_obj, obj);
+            attach (lvl_obj, obj);
             /*
              * Put it somewhere
              */
-            find_floor((struct room *) NULL, &obj->o_pos, FALSE, FALSE);
-            chat(obj->o_pos.y, obj->o_pos.x) = (char) obj->o_type;
+            find_floor ((struct room *) NULL, &obj->o_pos, FALSE, FALSE);
+            chat (obj->o_pos.y, obj->o_pos.x) = (char) obj->o_type;
         }
     /*
      * If he is really deep in the dungeon and he hasn't found the
@@ -161,18 +176,18 @@ put_things()
     if (level >= AMULETLEVEL && !amulet)
     {
         obj = new_item();
-        attach(lvl_obj, obj);
+        attach (lvl_obj, obj);
         obj->o_hplus = 0;
         obj->o_dplus = 0;
-        strncpy(obj->o_damage,"0x0",sizeof(obj->o_damage));
-        strncpy(obj->o_hurldmg,"0x0",sizeof(obj->o_hurldmg));
+        strncpy (obj->o_damage, "0x0", sizeof (obj->o_damage));
+        strncpy (obj->o_hurldmg, "0x0", sizeof (obj->o_hurldmg));
         obj->o_arm = 11;
         obj->o_type = AMULET;
         /*
          * Put it somewhere
          */
-        find_floor((struct room *) NULL, &obj->o_pos, FALSE, FALSE);
-        chat(obj->o_pos.y, obj->o_pos.x) = AMULET;
+        find_floor ((struct room *) NULL, &obj->o_pos, FALSE, FALSE);
+        chat (obj->o_pos.y, obj->o_pos.x) = AMULET;
     }
 }
 
@@ -183,8 +198,7 @@ put_things()
 #define MAXTRIES 10	/* max number of tries to put down a monster */
 
 
-void
-treas_room()
+void treas_room()
 {
     int nm;
     THING *tp;
@@ -195,36 +209,42 @@ treas_room()
     rp = &rooms[rnd_room()];
     spots = (rp->r_max.y - 2) * (rp->r_max.x - 2) - MINTREAS;
     if (spots > (MAXTREAS - MINTREAS))
+    {
         spots = (MAXTREAS - MINTREAS);
-    num_monst = nm = rnd(spots) + MINTREAS;
+    }
+    num_monst = nm = rnd (spots) + MINTREAS;
     while (nm--)
     {
-        find_floor(rp, &mp, 2 * MAXTRIES, FALSE);
+        find_floor (rp, &mp, 2 * MAXTRIES, FALSE);
         tp = new_thing();
         tp->o_pos = mp;
-        attach(lvl_obj, tp);
-        chat(mp.y, mp.x) = (char) tp->o_type;
+        attach (lvl_obj, tp);
+        chat (mp.y, mp.x) = (char) tp->o_type;
     }
 
     /*
      * fill up room with monsters from the next level down
      */
 
-    if ((nm = rnd(spots) + MINTREAS) < num_monst + 2)
+    if ((nm = rnd (spots) + MINTREAS) < num_monst + 2)
+    {
         nm = num_monst + 2;
+    }
     spots = (rp->r_max.y - 2) * (rp->r_max.x - 2);
     if (nm > spots)
+    {
         nm = spots;
+    }
     level++;
     while (nm--)
     {
         spots = 0;
-        if (find_floor(rp, &mp, MAXTRIES, TRUE))
+        if (find_floor (rp, &mp, MAXTRIES, TRUE))
         {
             tp = new_item();
-            new_monster(tp, randmonster(FALSE), &mp);
+            new_monster (tp, randmonster (FALSE), &mp);
             tp->t_flags |= ISMEAN;	/* no sloughers in THIS room */
-            give_pack(tp);
+            give_pack (tp);
         }
     }
     level--;

@@ -74,19 +74,22 @@ static int num_checks;		/* times we've gone over in checkout() */
  *	Check out too see if it is proper to play the game now
  */
 
-void
-init_check()
+void init_check()
 {
 #if defined(MAXLOAD) || defined(MAXUSERS)
     if (too_much())
     {
-        printf("Sorry, %s, but the system is too loaded now.\n", whoami);
-        printf("Try again later.  Meanwhile, why not enjoy a%s %s?\n",
-               vowelstr(fruit), fruit);
+        printf ("Sorry, %s, but the system is too loaded now.\n", whoami);
+        printf ("Try again later.  Meanwhile, why not enjoy a%s %s?\n",
+                vowelstr (fruit), fruit);
         if (author())
-            printf("However, since you're a good guy, it's up to you\n");
+        {
+            printf ("However, since you're a good guy, it's up to you\n");
+        }
         else
-            exit(1);
+        {
+            exit (1);
+        }
     }
 #endif
 }
@@ -96,8 +99,7 @@ init_check()
  *	Open up the score file for future use
  */
 
-void
-open_score()
+void open_score()
 {
 #ifdef SCOREFILE
     char *scorefile = SCOREFILE;
@@ -106,22 +108,24 @@ open_score()
      * open()'s will fail.  Just reuse the earlier filehandle.
      */
 
-    if (scoreboard != NULL) {
-        rewind(scoreboard);
+    if (scoreboard != NULL)
+    {
+        rewind (scoreboard);
         return;
     }
 
-    scoreboard = fopen(scorefile, "r+");
+    scoreboard = fopen (scorefile, "r+");
 
     if ((scoreboard == NULL) && (errno == ENOENT))
     {
-        scoreboard = fopen(scorefile, "w+");
-        md_chmod(scorefile,0664);
+        scoreboard = fopen (scorefile, "w+");
+        md_chmod (scorefile, 0664);
     }
 
-    if (scoreboard == NULL) {
-        fprintf(stderr, "Could not open %s for writing: %s\n", scorefile, strerror(errno));
-        fflush(stderr);
+    if (scoreboard == NULL)
+    {
+        fprintf (stderr, "Could not open %s for writing: %s\n", scorefile, strerror (errno));
+        fflush (stderr);
     }
 #else
     scoreboard = NULL;
@@ -133,8 +137,7 @@ open_score()
  *	Get starting setup for all games
  */
 
-void
-setup()
+void setup()
 {
 #ifdef CHECKTIME
     int  checkout();
@@ -147,13 +150,13 @@ setup()
 #endif
 
 #ifdef CHECKTIME
-    md_start_checkout_timer(CHECKTIME*60);
+    md_start_checkout_timer (CHECKTIME * 60);
     num_checks = 0;
 #endif
 
     raw();				/* Raw mode */
     noecho();				/* Echo off */
-    keypad(stdscr,1);
+    keypad (stdscr, 1);
     getltchars();			/* get the local tty chars */
 }
 
@@ -162,23 +165,22 @@ setup()
  *	Get the local tty chars for later use
  */
 
-void
-getltchars()
+void getltchars()
 {
     got_ltc = TRUE;
     orig_dsusp = md_dsuspchar();
-    md_setdsuspchar( md_suspchar() );
+    md_setdsuspchar ( md_suspchar() );
 }
 
 /*
  * resetltchars:
  *      Reset the local tty chars to original values.
  */
-void
-resetltchars(void)
+void resetltchars (void)
 {
-    if (got_ltc) {
-        md_setdsuspchar(orig_dsusp);
+    if (got_ltc)
+    {
+        md_setdsuspchar (orig_dsusp);
     }
 }
 
@@ -186,11 +188,11 @@ resetltchars(void)
  * playltchars:
  *      Set local tty chars to the values we use when playing.
  */
-void
-playltchars(void)
+void playltchars (void)
 {
-    if (got_ltc) {
-        md_setdsuspchar( md_suspchar() );
+    if (got_ltc)
+    {
+        md_setdsuspchar ( md_suspchar() );
     }
 }
 
@@ -199,8 +201,7 @@ playltchars(void)
  *	Start the scoring sequence
  */
 
-void
-start_score()
+void start_score()
 {
 #ifdef CHECKTIME
     md_stop_checkout_timer();
@@ -211,18 +212,21 @@ start_score()
  * is_symlink:
  *      See if the file has a symbolic link
   */
-bool
-is_symlink(char *sp)
+bool is_symlink (char *sp)
 {
 #ifdef S_IFLNK
     struct stat sbuf2;
 
-    if (lstat(sp, &sbuf2) < 0)
+    if (lstat (sp, &sbuf2) < 0)
+    {
         return FALSE;
+    }
     else
+    {
         return ((sbuf2.st_mode & S_IFMT) != S_IFREG);
+    }
 #else
-    NOOP(sp);
+    NOOP (sp);
     return FALSE;
 #endif
 }
@@ -232,8 +236,7 @@ is_symlink(char *sp)
  * too_much:
  *	See if the system is being used too much for this game
  */
-bool
-too_much()
+bool too_much()
 {
 #ifdef MAXLOAD
     double avec[3];
@@ -242,13 +245,17 @@ too_much()
 #endif
 
 #ifdef MAXLOAD
-    md_loadav(avec);
+    md_loadav (avec);
     if (avec[1] > (MAXLOAD / 10.0))
+    {
         return TRUE;
+    }
 #endif
 #ifdef MAXUSERS
     if (ucount() > MAXUSERS)
+    {
         return TRUE;
+    }
 #endif
     return FALSE;
 }
@@ -257,12 +264,13 @@ too_much()
  * author:
  *	See if a user is an author of the program
  */
-bool
-author()
+bool author()
 {
 #ifdef MASTER
     if (wizard)
+    {
         return TRUE;
+    }
 #endif
     switch (md_getuid())
     {
@@ -280,9 +288,10 @@ author()
  *	Check each CHECKTIME seconds to see if the load is too high
  */
 
-checkout(int sig)
+checkout (int sig)
 {
-    static char *msgs[] = {
+    static char *msgs[] =
+    {
         "The load is too high to be playing.  Please leave in %0.1f minutes",
         "Please save your game.  You have %0.1f minutes",
         "Last warning.  You have %0.1f minutes to leave",
@@ -294,24 +303,26 @@ checkout(int sig)
         if (author())
         {
             num_checks = 1;
-            chmsg("The load is rather high, O exaulted one");
+            chmsg ("The load is rather high, O exaulted one");
         }
         else if (num_checks++ == 3)
-            fatal("Sorry.  You took too long.  You are dead\n");
+        {
+            fatal ("Sorry.  You took too long.  You are dead\n");
+        }
         checktime = (CHECKTIME * 60) / num_checks;
-        chmsg(msgs[num_checks - 1], ((double) checktime / 60.0));
+        chmsg (msgs[num_checks - 1], ((double) checktime / 60.0));
     }
     else
     {
         if (num_checks)
         {
             num_checks = 0;
-            chmsg("The load has dropped back down.  You have a reprieve");
+            chmsg ("The load has dropped back down.  You have a reprieve");
         }
         checktime = (CHECKTIME * 60);
     }
 
-    md_start_checkout_timer(checktime);
+    md_start_checkout_timer (checktime);
 }
 
 /*
@@ -321,15 +332,17 @@ checkout(int sig)
  */
 /* VARARGS1 */
 
-chmsg(char *fmt, int arg)
+chmsg (char *fmt, int arg)
 {
     if (!in_shell)
-        msg(fmt, arg);
+    {
+        msg (fmt, arg);
+    }
     else
     {
-        printf(fmt, arg);
-        putchar('\n');
-        fflush(stdout);
+        printf (fmt, arg);
+        putchar ('\n');
+        fflush (stdout);
     }
 }
 #endif
@@ -343,23 +356,26 @@ chmsg(char *fmt, int arg)
 
 struct utmp buf;
 
-int
-ucount()
+int ucount()
 {
     struct utmp *up;
     FILE *utmp;
     int count;
 
-    if ((utmp = fopen(UTMP, "r")) == NULL)
+    if ((utmp = fopen (UTMP, "r")) == NULL)
+    {
         return 0;
+    }
 
     up = &buf;
     count = 0;
 
-    while (fread(up, 1, sizeof (*up), utmp) > 0)
+    while (fread (up, 1, sizeof (*up), utmp) > 0)
         if (buf.ut_name[0] != '\0')
+        {
             count++;
-    fclose(utmp);
+        }
+    fclose (utmp);
     return count;
 }
 #endif
@@ -370,8 +386,7 @@ ucount()
  *	they care to wait.  Return TRUE if the lock is successful.
  */
 static FILE *lfd = NULL;
-bool
-lock_sc()
+bool lock_sc()
 {
 #if defined(SCOREFILE) && defined(LOCKFILE)
     int cnt;
@@ -379,50 +394,62 @@ lock_sc()
     char *lockfile = LOCKFILE;
 
 over:
-    if ((lfd=fopen(lockfile, "w+")) != NULL)
+    if ((lfd = fopen (lockfile, "w+")) != NULL)
+    {
         return TRUE;
+    }
     for (cnt = 0; cnt < 5; cnt++)
     {
-        md_sleep(1);
-        if ((lfd=fopen(lockfile, "w+")) != NULL)
+        md_sleep (1);
+        if ((lfd = fopen (lockfile, "w+")) != NULL)
+        {
             return TRUE;
+        }
     }
-    if (stat(lockfile, &sbuf) < 0)
+    if (stat (lockfile, &sbuf) < 0)
     {
-        lfd=fopen(lockfile, "w+");
+        lfd = fopen (lockfile, "w+");
         return TRUE;
     }
-    if (time(NULL) - sbuf.st_mtime > 10)
+    if (time (NULL) - sbuf.st_mtime > 10)
     {
-        if (md_unlink(lockfile) < 0)
+        if (md_unlink (lockfile) < 0)
+        {
             return FALSE;
+        }
         goto over;
     }
     else
     {
-        printf("The score file is very busy.  Do you want to wait longer\n");
-        printf("for it to become free so your score can get posted?\n");
-        printf("If so, type \"y\"\n");
-        (void) fgets(prbuf, MAXSTR, stdin);
+        printf ("The score file is very busy.  Do you want to wait longer\n");
+        printf ("for it to become free so your score can get posted?\n");
+        printf ("If so, type \"y\"\n");
+        (void) fgets (prbuf, MAXSTR, stdin);
         if (prbuf[0] == 'y')
             for (;;)
             {
-                if ((lfd=fopen(lockfile, "w+")) != 0)
-                    return TRUE;
-                if (stat(lockfile, &sbuf) < 0)
+                if ((lfd = fopen (lockfile, "w+")) != 0)
                 {
-                    lfd=fopen(lockfile, "w+");
                     return TRUE;
                 }
-                if (time(NULL) - sbuf.st_mtime > 10)
+                if (stat (lockfile, &sbuf) < 0)
                 {
-                    if (md_unlink(lockfile) < 0)
+                    lfd = fopen (lockfile, "w+");
+                    return TRUE;
+                }
+                if (time (NULL) - sbuf.st_mtime > 10)
+                {
+                    if (md_unlink (lockfile) < 0)
+                    {
                         return FALSE;
+                    }
                 }
-                md_sleep(1);
+                md_sleep (1);
             }
         else
+        {
             return FALSE;
+        }
     }
 #else
     return TRUE;
@@ -434,14 +461,15 @@ over:
  *	Unlock the score file
  */
 
-void
-unlock_sc()
+void unlock_sc()
 {
 #if defined(SCOREFILE) && defined(LOCKFILE)
     if (lfd != NULL)
-        fclose(lfd);
+    {
+        fclose (lfd);
+    }
     lfd = NULL;
-    md_unlink(LOCKFILE);
+    md_unlink (LOCKFILE);
 #endif
 }
 
@@ -450,8 +478,7 @@ unlock_sc()
  *	Flush typeahead for traps, etc.
  */
 
-void
-flush_type()
+void flush_type()
 {
     flushinp();
 }

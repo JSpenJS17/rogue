@@ -23,15 +23,20 @@ int total = 0;			/* total dynamic memory bytes */
  *	takes an item out of whatever linked list it might be in
  */
 
-void
-_detach(THING **list, THING *item)
+void _detach (THING **list, THING *item)
 {
     if (*list == item)
-        *list = next(item);
-    if (prev(item) != NULL)
-        item->l_prev->l_next = next(item);
-    if (next(item) != NULL)
-        item->l_next->l_prev = prev(item);
+    {
+        *list = next (item);
+    }
+    if (prev (item) != NULL)
+    {
+        item->l_prev->l_next = next (item);
+    }
+    if (next (item) != NULL)
+    {
+        item->l_next->l_prev = prev (item);
+    }
     item->l_next = NULL;
     item->l_prev = NULL;
 }
@@ -41,8 +46,7 @@ _detach(THING **list, THING *item)
  *	add an item to the head of a list
  */
 
-void
-_attach(THING **list, THING *item)
+void _attach (THING **list, THING *item)
 {
     if (*list != NULL)
     {
@@ -63,16 +67,15 @@ _attach(THING **list, THING *item)
  *	Throw the whole blamed thing away
  */
 
-void
-_free_list(THING **ptr)
+void _free_list (THING **ptr)
 {
     THING *item;
 
     while (*ptr != NULL)
     {
         item = *ptr;
-        *ptr = next(item);
-        discard(item);
+        *ptr = next (item);
+        discard (item);
     }
 }
 
@@ -81,31 +84,33 @@ _free_list(THING **ptr)
  *	Free up an item
  */
 
-void
-discard(THING *item)
+void discard (THING *item)
 {
 #ifdef MASTER
     total--;
 #endif
-    free((char *) item);
+    free ((char *) item);
 }
 
 /*
  * new_item
  *	Get a new item with a specified size
  */
-THING *
-new_item()
+THING *new_item()
 {
     THING *item;
 
 #ifdef MASTER
-    if ((item = calloc(1, sizeof *item)) == NULL)
-        msg("ran out of memory after %d items", total);
+    if ((item = calloc (1, sizeof * item)) == NULL)
+    {
+        msg ("ran out of memory after %d items", total);
+    }
     else
+    {
         total++;
+    }
 #else
-    item = calloc(1, sizeof *item);
+    item = calloc (1, sizeof * item);
 #endif
     item->l_next = NULL;
     item->l_prev = NULL;

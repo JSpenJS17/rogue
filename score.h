@@ -10,7 +10,8 @@
  * See the file LICENSE.TXT for full copyright and licensing information.
  */
 
-struct sc_ent {
+struct sc_ent
+{
     unsigned int sc_uid;
     int sc_score;
     unsigned int sc_flags;
@@ -22,5 +23,5 @@ struct sc_ent {
 
 typedef struct sc_ent SCORE;
 
-void	rd_score(SCORE *top_ten);
-void	wr_score(SCORE *top_ten);
+void	rd_score (SCORE *top_ten);
+void	wr_score (SCORE *top_ten);

@@ -16,12 +16,11 @@
  */
 #define MAXMSG	(NUMCOLS - sizeof "--More--")
 
-static char msgbuf[2*MAXMSG+1];
+static char msgbuf[2 * MAXMSG + 1];
 static int newpos = 0;
 
 /* VARARGS1 */
-int
-msg(char *fmt, ...)
+int msg (char *fmt, ...)
 {
     va_list args;
 
@@ -30,7 +29,7 @@ msg(char *fmt, ...)
      */
     if (*fmt == '\0')
     {
-        move(0, 0);
+        move (0, 0);
         clrtoeol();
         mpos = 0;
         return ~ESCAPE;
@@ -38,9 +37,9 @@ msg(char *fmt, ...)
     /*
      * otherwise add to the message and flush it out
      */
-    va_start(args, fmt);
-    doadd(fmt, args);
-    va_end(args);
+    va_start (args, fmt);
+    doadd (fmt, args);
+    va_end (args);
     return endmsg();
 }
 
@@ -49,14 +48,13 @@ msg(char *fmt, ...)
  *	Add things to the current message
  */
 /* VARARGS1 */
-void
-addmsg(char *fmt, ...)
+void addmsg (char *fmt, ...)
 {
     va_list args;
 
-    va_start(args, fmt);
-    doadd(fmt, args);
-    va_end(args);
+    va_start (args, fmt);
+    doadd (fmt, args);
+    va_end (args);
 }
 
 /*
@@ -64,20 +62,23 @@ addmsg(char *fmt, ...)
  *	Display a new msg (giving him a chance to see the previous one
  *	if it is up there with the --More--)
  */
-int
-endmsg()
+int endmsg()
 {
     char ch;
 
     if (save_msg)
-        strcpy(huh, msgbuf);
+    {
+        strcpy (huh, msgbuf);
+    }
     if (mpos)
     {
-        look(FALSE);
-        mvaddstr(0, mpos, "--More--");
+        look (FALSE);
+        mvaddstr (0, mpos, "--More--");
         refresh();
         if (!msg_esc)
-            wait_for(' ');
+        {
+            wait_for (' ');
+        }
         else
         {
             while ((ch = readchar()) != ' ')
@@ -95,9 +96,11 @@ endmsg()
      * All messages should start with uppercase, except ones that
      * start with a pack addressing character
      */
-    if (islower(msgbuf[0]) && !lower_msg && msgbuf[1] != ')')
-        msgbuf[0] = (char) toupper(msgbuf[0]);
-    mvaddstr(0, 0, msgbuf);
+    if (islower (msgbuf[0]) && !lower_msg && msgbuf[1] != ')')
+    {
+        msgbuf[0] = (char) toupper (msgbuf[0]);
+    }
+    mvaddstr (0, 0, msgbuf);
     clrtoeol();
     mpos = newpos;
     newpos = 0;
@@ -110,27 +113,27 @@ endmsg()
  * doadd:
  *	Perform an add onto the message buffer
  */
-void
-doadd(char *fmt, va_list args)
+void doadd (char *fmt, va_list args)
 {
     static char buf[MAXSTR];
 
     /*
      * Do the printf into buf
      */
-    vsprintf(buf, fmt, args);
-    if (strlen(buf) + newpos >= MAXMSG)
+    vsprintf (buf, fmt, args);
+    if (strlen (buf) + newpos >= MAXMSG)
+    {
         endmsg();
-    strcat(msgbuf, buf);
-    newpos = (int) strlen(msgbuf);
+    }
+    strcat (msgbuf, buf);
+    newpos = (int) strlen (msgbuf);
 }
 
 /*
  * step_ok:
  *	Returns true if it is ok to step on ch
  */
-int
-step_ok(int ch)
+int step_ok (int ch)
 {
     switch (ch)
     {
@@ -139,7 +142,7 @@ step_ok(int ch)
     case '-':
         return FALSE;
     default:
-        return (!isalpha(ch));
+        return (!isalpha (ch));
     }
 }
 
@@ -147,8 +150,7 @@ step_ok(int ch)
  * readchar:
  *	Reads and returns a character, checking for gross input errors
  */
-char
-readchar()
+char readchar()
 {
     char ch;
 
@@ -156,19 +158,18 @@ readchar()
 
     if (ch == 3)
     {
-        quit(0);
-        return(27);
+        quit (0);
+        return (27);
     }
 
-    return(ch);
+    return (ch);
 }
 
 /*
  * status:
  *	Display the important stats line.  Keep the cursor where it was.
  */
-void
-status()
+void status()
 {
     register int oy, ox, temp;
     static int hpwidth = 0;
@@ -194,17 +195,21 @@ status()
             && s_hungry == hungry_state
             && !stat_msg
        )
+    {
         return;
+    }
 
     s_arm = temp;
 
-    getyx(stdscr, oy, ox);
+    getyx (stdscr, oy, ox);
     if (s_hp != max_hp)
     {
         temp = max_hp;
         s_hp = max_hp;
         for (hpwidth = 0; temp; hpwidth++)
+        {
             temp /= 10;
+        }
     }
 
     /*
@@ -219,59 +224,61 @@ status()
 
     if (stat_msg)
     {
-        move(0, 0);
-        msg("Level: %d  Gold: %-5d  Hp: %*d(%*d)  Str: %2d(%d)  Arm: %-2d  Exp: %d/%ld  %s",
-            level, purse, hpwidth, pstats.s_hpt, hpwidth, max_hp, pstats.s_str,
-            max_stats.s_str, 10 - s_arm, pstats.s_lvl, pstats.s_exp,
-            state_name[hungry_state]);
+        move (0, 0);
+        msg ("Level: %d  Gold: %-5d  Hp: %*d(%*d)  Str: %2d(%d)  Arm: %-2d  Exp: %d/%ld  %s",
+             level, purse, hpwidth, pstats.s_hpt, hpwidth, max_hp, pstats.s_str,
+             max_stats.s_str, 10 - s_arm, pstats.s_lvl, pstats.s_exp,
+             state_name[hungry_state]);
     }
     else
     {
-        move(STATLINE, 0);
+        move (STATLINE, 0);
 
-        printw("Level: %d  Gold: %-5d  Hp: %*d(%*d)  Str: %2d(%d)  Arm: %-2d  Exp: %d/%d  %s",
-               level, purse, hpwidth, pstats.s_hpt, hpwidth, max_hp, pstats.s_str,
-               max_stats.s_str, 10 - s_arm, pstats.s_lvl, pstats.s_exp,
-               state_name[hungry_state]);
+        printw ("Level: %d  Gold: %-5d  Hp: %*d(%*d)  Str: %2d(%d)  Arm: %-2d  Exp: %d/%d  %s",
+                level, purse, hpwidth, pstats.s_hpt, hpwidth, max_hp, pstats.s_str,
+                max_stats.s_str, 10 - s_arm, pstats.s_lvl, pstats.s_exp,
+                state_name[hungry_state]);
     }
 
     clrtoeol();
-    move(oy, ox);
+    move (oy, ox);
 }
 
 /*
  * wait_for
  *	Sit around until the guy types the right key
  */
-void
-wait_for(int ch)
+void wait_for (int ch)
 {
     register char c;
 
     if (ch == '\n')
         while ((c = readchar()) != '\n' && c != '\r')
+        {
             continue;
+        }
     else
         while (readchar() != ch)
+        {
             continue;
+        }
 }
 
 /*
  * show_win:
  *	Function used to display a window and wait before returning
  */
-void
-show_win(char *message)
+void show_win (char *message)
 {
     WINDOW *win;
 
     win = hw;
-    wmove(win, 0, 0);
-    waddstr(win, message);
-    touchwin(win);
-    wmove(win, hero.y, hero.x);
-    wrefresh(win);
-    wait_for(' ');
-    clearok(curscr, TRUE);
-    touchwin(stdscr);
+    wmove (win, 0, 0);
+    waddstr (win, message);
+    touchwin (win);
+    wmove (win, hero.y, hero.x);
+    wrefresh (win);
+    wait_for (' ');
+    clearok (curscr, TRUE);
+    touchwin (stdscr);
 }
