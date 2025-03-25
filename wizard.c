@@ -29,45 +29,45 @@ whatis(bool insist, int type)
 
     if (pack == NULL)
     {
-	msg("you don't have anything in your pack to identify");
-	return;
+        msg("you don't have anything in your pack to identify");
+        return;
     }
 
     for (;;)
     {
-	obj = get_item("identify", type);
-	if (insist)
-	{
-	    if (n_objs == 0)
-		return;
-	    else if (obj == NULL)
-		msg("you must identify something");
-	    else if (type && obj->o_type != type &&
-	       !(type == R_OR_S && (obj->o_type == RING || obj->o_type == STICK)) )
-		    msg("you must identify a %s", type_name(type));
-	    else
-		break;
-	}
-	else
-	    break;
+        obj = get_item("identify", type);
+        if (insist)
+        {
+            if (n_objs == 0)
+                return;
+            else if (obj == NULL)
+                msg("you must identify something");
+            else if (type && obj->o_type != type &&
+                     !(type == R_OR_S && (obj->o_type == RING || obj->o_type == STICK)) )
+                msg("you must identify a %s", type_name(type));
+            else
+                break;
+        }
+        else
+            break;
     }
 
     if (obj == NULL)
-	return;
+        return;
 
     switch (obj->o_type)
     {
-        case SCROLL:
-	    set_know(obj, scr_info);
-        when POTION:
-	    set_know(obj, pot_info);
-	when STICK:
-	    set_know(obj, ws_info);
-        when WEAPON:
-        case ARMOR:
-	    obj->o_flags |= ISKNOW;
-        when RING:
-	    set_know(obj, ring_info);
+    case SCROLL:
+        set_know(obj, scr_info);
+when POTION:
+        set_know(obj, pot_info);
+when STICK:
+        set_know(obj, ws_info);
+when WEAPON:
+    case ARMOR:
+        obj->o_flags |= ISKNOW;
+when RING:
+        set_know(obj, ring_info);
     }
     msg(inv_name(obj, FALSE));
 }
@@ -87,8 +87,8 @@ set_know(THING *obj, struct obj_info *info)
     guess = &info[obj->o_which].oi_guess;
     if (*guess)
     {
-	free(*guess);
-	*guess = NULL;
+        free(*guess);
+        *guess = NULL;
     }
 }
 
@@ -101,19 +101,19 @@ type_name(int type)
 {
     struct h_list *hp;
     static struct h_list tlist[] = {
-	{POTION, "potion",		FALSE},
-	{SCROLL, "scroll",		FALSE},
-	{FOOD,	 "food",		FALSE},
-	{R_OR_S, "ring, wand or staff",	FALSE},
-	{RING,	 "ring",		FALSE},
-	{STICK,	 "wand or staff",	FALSE},
-	{WEAPON, "weapon",		FALSE},
-	{ARMOR,	 "suit of armor",	FALSE},
+        {POTION, "potion",		FALSE},
+        {SCROLL, "scroll",		FALSE},
+        {FOOD,	 "food",		FALSE},
+        {R_OR_S, "ring, wand or staff",	FALSE},
+        {RING,	 "ring",		FALSE},
+        {STICK,	 "wand or staff",	FALSE},
+        {WEAPON, "weapon",		FALSE},
+        {ARMOR,	 "suit of armor",	FALSE},
     };
 
     for (hp = tlist; hp->h_ch; hp++)
-	if (type == hp->h_ch)
-	    return hp->h_desc;
+        if (type == hp->h_ch)
+            return hp->h_desc;
     /* NOTREACHED */
     return(0);
 }
@@ -141,51 +141,51 @@ create_obj()
     mpos = 0;
     if (obj->o_type == WEAPON || obj->o_type == ARMOR)
     {
-	msg("blessing? (+,-,n)");
-	bless = readchar();
-	mpos = 0;
-	if (bless == '-')
-	    obj->o_flags |= ISCURSED;
-	if (obj->o_type == WEAPON)
-	{
-	    init_weapon(obj, obj->o_which);
-	    if (bless == '-')
-		obj->o_hplus -= rnd(3)+1;
-	    if (bless == '+')
-		obj->o_hplus += rnd(3)+1;
-	}
-	else
-	{
-	    obj->o_arm = a_class[obj->o_which];
-	    if (bless == '-')
-		obj->o_arm += rnd(3)+1;
-	    if (bless == '+')
-		obj->o_arm -= rnd(3)+1;
-	}
+        msg("blessing? (+,-,n)");
+        bless = readchar();
+        mpos = 0;
+        if (bless == '-')
+            obj->o_flags |= ISCURSED;
+        if (obj->o_type == WEAPON)
+        {
+            init_weapon(obj, obj->o_which);
+            if (bless == '-')
+                obj->o_hplus -= rnd(3)+1;
+            if (bless == '+')
+                obj->o_hplus += rnd(3)+1;
+        }
+        else
+        {
+            obj->o_arm = a_class[obj->o_which];
+            if (bless == '-')
+                obj->o_arm += rnd(3)+1;
+            if (bless == '+')
+                obj->o_arm -= rnd(3)+1;
+        }
     }
     else if (obj->o_type == RING)
-	switch (obj->o_which)
-	{
-	    case R_PROTECT:
-	    case R_ADDSTR:
-	    case R_ADDHIT:
-	    case R_ADDDAM:
-		msg("blessing? (+,-,n)");
-		bless = readchar();
-		mpos = 0;
-		if (bless == '-')
-		    obj->o_flags |= ISCURSED;
-		obj->o_arm = (bless == '-' ? -1 : rnd(2) + 1);
-	    when R_AGGR:
-	    case R_TELEPORT:
-		obj->o_flags |= ISCURSED;
-	}
+        switch (obj->o_which)
+        {
+        case R_PROTECT:
+        case R_ADDSTR:
+        case R_ADDHIT:
+        case R_ADDDAM:
+            msg("blessing? (+,-,n)");
+            bless = readchar();
+            mpos = 0;
+            if (bless == '-')
+                obj->o_flags |= ISCURSED;
+            obj->o_arm = (bless == '-' ? -1 : rnd(2) + 1);
+when R_AGGR:
+        case R_TELEPORT:
+            obj->o_flags |= ISCURSED;
+        }
     else if (obj->o_type == STICK)
-	fix_stick(obj);
+        fix_stick(obj);
     else if (obj->o_type == GOLD)
     {
-	msg("how much?");
-	get_num(&obj->o_goldval, stdscr);
+        msg("how much?");
+        get_num(&obj->o_goldval, stdscr);
     }
     add_pack(obj, FALSE);
 }
@@ -205,14 +205,14 @@ teleport()
     find_floor((struct room *) NULL, &c, FALSE, TRUE);
     if (roomin(&c) != proom)
     {
-	leave_room(&hero);
-	hero = c;
-	enter_room(&hero);
+        leave_room(&hero);
+        hero = c;
+        enter_room(&hero);
     }
     else
     {
-	hero = c;
-	look(TRUE);
+        hero = c;
+        look(TRUE);
     }
     mvaddch(hero.y, hero.x, PLAYER);
     /*
@@ -220,9 +220,9 @@ teleport()
      * a Flytrap
      */
     if (on(player, ISHELD)) {
-	player.t_flags &= ~ISHELD;
-	vf_hit = 0;
-	strcpy(monsters['F'-'A'].m_stats.s_dmg, "000x0");
+        player.t_flags &= ~ISHELD;
+        vf_hit = 0;
+        strcpy(monsters['F'-'A'].m_stats.s_dmg, "000x0");
     }
     no_move = 0;
     count = 0;
@@ -245,14 +245,14 @@ passwd()
     mpos = 0;
     sp = buf;
     while ((c = readchar()) != '\n' && c != '\r' && c != ESCAPE)
-	if (c == md_killchar())
-	    sp = buf;
-	else if (c == md_erasechar() && sp > buf)
-	    sp--;
-	else
-	    *sp++ = c;
+        if (c == md_killchar())
+            sp = buf;
+        else if (c == md_erasechar() && sp > buf)
+            sp--;
+        else
+            *sp++ = c;
     if (sp == buf)
-	return FALSE;
+        return FALSE;
     *sp = '\0';
     return (strcmp(PASSWD, md_crypt(buf, "mT")) == 0);
 }
@@ -269,16 +269,16 @@ show_map()
 
     wclear(hw);
     for (y = 1; y < NUMLINES - 1; y++)
-	for (x = 0; x < NUMCOLS; x++)
-	{
-	    real = flat(y, x);
-	    if (!(real & F_REAL))
-		wstandout(hw);
-	    wmove(hw, y, x);
-	    waddch(hw, chat(y, x));
-	    if (!real)
-		wstandend(hw);
-	}
+        for (x = 0; x < NUMCOLS; x++)
+        {
+            real = flat(y, x);
+            if (!(real & F_REAL))
+                wstandout(hw);
+            wmove(hw, y, x);
+            waddch(hw, chat(y, x));
+            if (!real)
+                wstandend(hw);
+        }
     show_win("---More (level map)---");
 }
 #endif

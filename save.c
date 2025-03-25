@@ -45,67 +45,67 @@ save_game()
 over:
     if (file_name[0] != '\0')
     {
-	for (;;)
-	{
-	    msg("save file (%s)? ", file_name);
-	    c = readchar();
-	    mpos = 0;
-	    if (c == ESCAPE)
-	    {
-		msg("");
-		return;
-	    }
-	    else if (c == 'n' || c == 'N' || c == 'y' || c == 'Y')
-		break;
-	    else
-		msg("please answer Y or N");
-	}
-	if (c == 'y' || c == 'Y')
-	{
-	    addstr("Yes\n");
-	    refresh();
-	    strcpy(buf, file_name);
-	    goto gotfile;
-	}
+        for (;;)
+        {
+            msg("save file (%s)? ", file_name);
+            c = readchar();
+            mpos = 0;
+            if (c == ESCAPE)
+            {
+                msg("");
+                return;
+            }
+            else if (c == 'n' || c == 'N' || c == 'y' || c == 'Y')
+                break;
+            else
+                msg("please answer Y or N");
+        }
+        if (c == 'y' || c == 'Y')
+        {
+            addstr("Yes\n");
+            refresh();
+            strcpy(buf, file_name);
+            goto gotfile;
+        }
     }
 
     do
     {
-	mpos = 0;
-	msg("file name: ");
-	buf[0] = '\0';
-	if (get_str(buf, stdscr) == QUIT)
-	{
+        mpos = 0;
+        msg("file name: ");
+        buf[0] = '\0';
+        if (get_str(buf, stdscr) == QUIT)
+        {
 quit_it:
-	    msg("");
-	    return;
-	}
-	mpos = 0;
+            msg("");
+            return;
+        }
+        mpos = 0;
 gotfile:
-	/*
-	 * test to see if the file exists
-	 */
-	if (stat(buf, &sbuf) >= 0)
-	{
-	    for (;;)
-	    {
-		msg("File exists.  Do you wish to overwrite it?");
-		mpos = 0;
-		if ((c = readchar()) == ESCAPE)
-		    goto quit_it;
-		if (c == 'y' || c == 'Y')
-		    break;
-		else if (c == 'n' || c == 'N')
-		    goto over;
-		else
-		    msg("Please answer Y or N");
-	    }
-	    msg("file name: %s", buf);
-	    md_unlink(file_name);
-	}
-	strcpy(file_name, buf);
-	if ((savef = fopen(file_name, "w")) == NULL)
-	    msg(strerror(errno));
+        /*
+         * test to see if the file exists
+         */
+        if (stat(buf, &sbuf) >= 0)
+        {
+            for (;;)
+            {
+                msg("File exists.  Do you wish to overwrite it?");
+                mpos = 0;
+                if ((c = readchar()) == ESCAPE)
+                    goto quit_it;
+                if (c == 'y' || c == 'Y')
+                    break;
+                else if (c == 'n' || c == 'N')
+                    goto over;
+                else
+                    msg("Please answer Y or N");
+            }
+            msg("file name: %s", buf);
+            md_unlink(file_name);
+        }
+        strcpy(file_name, buf);
+        if ((savef = fopen(file_name, "w")) == NULL)
+            msg(strerror(errno));
     } while (savef == NULL);
 
     save_file(savef);
@@ -126,8 +126,8 @@ auto_save(int sig)
 
     md_ignoreallsignals();
     if (file_name[0] != '\0' && ((savef = fopen(file_name, "w")) != NULL ||
-	(md_unlink_open_file(file_name, savef) >= 0 && (savef = fopen(file_name, "w")) != NULL)))
-	    save_file(savef);
+                                 (md_unlink_open_file(file_name, savef) >= 0 && (savef = fopen(file_name, "w")) != NULL)))
+        save_file(savef);
     exit(0);
 }
 
@@ -140,7 +140,7 @@ void
 save_file(FILE *savef)
 {
     char buf[80];
-    mvcur(0, COLS - 1, LINES - 1, 0); 
+    mvcur(0, COLS - 1, LINES - 1, 0);
     putchar('\n');
     endwin();
     resetltchars();
@@ -170,14 +170,14 @@ restore(char *file, char **envp)
     int lines, cols;
 
     if (strcmp(file, "-r") == 0)
-	file = file_name;
+        file = file_name;
 
-	md_tstphold();
+    md_tstphold();
 
-	if ((inf = fopen(file,"r")) == NULL)
+    if ((inf = fopen(file,"r")) == NULL)
     {
-	perror(file);
-	return FALSE;
+        perror(file);
+        return FALSE;
     }
     stat(file, &sbuf2);
     syml = is_symlink(file);
@@ -186,8 +186,8 @@ restore(char *file, char **envp)
     encread(buf, (unsigned) strlen(version) + 1, inf);
     if (strcmp(buf, version) != 0)
     {
-	printf("Sorry, saved game is out of date.\n");
-	return FALSE;
+        printf("Sorry, saved game is out of date.\n");
+        return FALSE;
     }
     encread(buf,80,inf);
     sscanf(buf,"%d x %d\n", &lines, &cols);
@@ -221,18 +221,18 @@ restore(char *file, char **envp)
 
     if (
 #ifdef MASTER
-	!wizard &&
+        !wizard &&
 #endif
         md_unlink_open_file(file, inf) < 0)
     {
-	printf("Cannot unlink file\n");
-	return FALSE;
+        printf("Cannot unlink file\n");
+        return FALSE;
     }
     mpos = 0;
-/*    printw(0, 0, "%s: %s", file, ctime(&sbuf2.st_mtime)); */
-/*
-    printw("%s: %s", file, ctime(&sbuf2.st_mtime));
-*/
+    /*    printw(0, 0, "%s: %s", file, ctime(&sbuf2.st_mtime)); */
+    /*
+        printw("%s: %s", file, ctime(&sbuf2.st_mtime));
+    */
     clearok(stdscr,TRUE);
     /*
      * defeat multiple restarting from the same place
@@ -240,21 +240,21 @@ restore(char *file, char **envp)
 #ifdef MASTER
     if (!wizard)
 #endif
-	if (sbuf2.st_nlink != 1 || syml)
-	{
-	    endwin();
-	    printf("\nCannot restore from a linked file\n");
-	    return FALSE;
-	}
+        if (sbuf2.st_nlink != 1 || syml)
+        {
+            endwin();
+            printf("\nCannot restore from a linked file\n");
+            return FALSE;
+        }
 
     if (pstats.s_hpt <= 0)
     {
-	endwin();
-	printf("\n\"He's dead, Jim\"\n");
-	return FALSE;
+        endwin();
+        printf("\n\"He's dead, Jim\"\n");
+        return FALSE;
     }
 
-	md_tstpresume();
+    md_tstpresume();
 
     environ = envp;
     strcpy(file_name, file);
@@ -284,16 +284,16 @@ encwrite(char *start, size_t size, FILE *outf)
 
     while(size)
     {
-	if (putc(*start++ ^ *e1 ^ *e2 ^ fb, outf) == EOF)
+        if (putc(*start++ ^ *e1 ^ *e2 ^ fb, outf) == EOF)
             break;
 
-	temp = *e1++;
-	fb = fb + ((char) (temp * *e2++));
-	if (*e1 == '\0')
-	    e1 = encstr;
-	if (*e2 == '\0')
-	    e2 = statlist;
-	size--;
+        temp = *e1++;
+        fb = fb + ((char) (temp * *e2++));
+        if (*e1 == '\0')
+            e1 = encstr;
+        if (*e2 == '\0')
+            e2 = statlist;
+        size--;
     }
 
     return(o_size - size);
@@ -314,20 +314,20 @@ encread(char *start, size_t size, FILE *inf)
     fb = 0;
 
     if ((read_size = fread(start,1,size,inf)) == 0 || read_size == -1)
-	return(read_size);
+        return(read_size);
 
     e1 = encstr;
     e2 = statlist;
 
     while (size--)
     {
-	*start++ ^= *e1 ^ *e2 ^ fb;
-	temp = *e1++;
-	fb = fb + (char)(temp * *e2++);
-	if (*e1 == '\0')
-	    e1 = encstr;
-	if (*e2 == '\0')
-	    e2 = statlist;
+        *start++ ^= *e1 ^ *e2 ^ fb;
+        temp = *e1++;
+        fb = fb + (char)(temp * *e2++);
+        if (*e1 == '\0')
+            e1 = encstr;
+        if (*e2 == '\0')
+            e2 = statlist;
     }
 
     return(read_size);
@@ -343,22 +343,22 @@ rd_score(SCORE *top_ten)
 {
     unsigned int i;
 
-	if (scoreboard == NULL)
-		return;
+    if (scoreboard == NULL)
+        return;
 
-	rewind(scoreboard); 
+    rewind(scoreboard);
 
-	for(i = 0; i < numscores; i++)
+    for(i = 0; i < numscores; i++)
     {
         encread(top_ten[i].sc_name, MAXSTR, scoreboard);
         encread(scoreline, 100, scoreboard);
         sscanf(scoreline, " %u %d %u %hu %d %x \n",
-            &top_ten[i].sc_uid, &top_ten[i].sc_score,
-            &top_ten[i].sc_flags, &top_ten[i].sc_monster,
-            &top_ten[i].sc_level, &top_ten[i].sc_time);
+               &top_ten[i].sc_uid, &top_ten[i].sc_score,
+               &top_ten[i].sc_flags, &top_ten[i].sc_monster,
+               &top_ten[i].sc_level, &top_ten[i].sc_time);
     }
 
-	rewind(scoreboard); 
+    rewind(scoreboard);
 }
 
 /*
@@ -370,21 +370,21 @@ wr_score(SCORE *top_ten)
 {
     unsigned int i;
 
-	if (scoreboard == NULL)
-		return;
+    if (scoreboard == NULL)
+        return;
 
-	rewind(scoreboard);
+    rewind(scoreboard);
 
     for(i = 0; i < numscores; i++)
     {
-          memset(scoreline,0,100);
-          encwrite(top_ten[i].sc_name, MAXSTR, scoreboard);
-          sprintf(scoreline, " %u %d %u %hu %d %x \n",
-              top_ten[i].sc_uid, top_ten[i].sc_score,
-              top_ten[i].sc_flags, top_ten[i].sc_monster,
-              top_ten[i].sc_level, top_ten[i].sc_time);
-          encwrite(scoreline,100,scoreboard);
+        memset(scoreline,0,100);
+        encwrite(top_ten[i].sc_name, MAXSTR, scoreboard);
+        sprintf(scoreline, " %u %d %u %hu %d %x \n",
+                top_ten[i].sc_uid, top_ten[i].sc_score,
+                top_ten[i].sc_flags, top_ten[i].sc_monster,
+                top_ten[i].sc_level, top_ten[i].sc_time);
+        encwrite(scoreline,100,scoreboard);
     }
 
-	rewind(scoreboard); 
+    rewind(scoreboard);
 }

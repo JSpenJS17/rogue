@@ -27,11 +27,11 @@ void
 _detach(THING **list, THING *item)
 {
     if (*list == item)
-	*list = next(item);
+        *list = next(item);
     if (prev(item) != NULL)
-	item->l_prev->l_next = next(item);
+        item->l_prev->l_next = next(item);
     if (next(item) != NULL)
-	item->l_next->l_prev = prev(item);
+        item->l_next->l_prev = prev(item);
     item->l_next = NULL;
     item->l_prev = NULL;
 }
@@ -46,14 +46,14 @@ _attach(THING **list, THING *item)
 {
     if (*list != NULL)
     {
-	item->l_next = *list;
-	(*list)->l_prev = item;
-	item->l_prev = NULL;
+        item->l_next = *list;
+        (*list)->l_prev = item;
+        item->l_prev = NULL;
     }
     else
     {
-	item->l_next = NULL;
-	item->l_prev = NULL;
+        item->l_next = NULL;
+        item->l_prev = NULL;
     }
     *list = item;
 }
@@ -70,9 +70,9 @@ _free_list(THING **ptr)
 
     while (*ptr != NULL)
     {
-	item = *ptr;
-	*ptr = next(item);
-	discard(item);
+        item = *ptr;
+        *ptr = next(item);
+        discard(item);
     }
 }
 
@@ -101,9 +101,9 @@ new_item()
 
 #ifdef MASTER
     if ((item = calloc(1, sizeof *item)) == NULL)
-	msg("ran out of memory after %d items", total);
+        msg("ran out of memory after %d items", total);
     else
-	total++;
+        total++;
 #else
     item = calloc(1, sizeof *item);
 #endif

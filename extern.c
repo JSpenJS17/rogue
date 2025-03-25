@@ -63,26 +63,26 @@ char *ws_made[MAXSTICKS];		/* What sticks are made of */
 char *ws_type[MAXSTICKS];		/* Is it a wand or a staff */
 int  orig_dsusp;			/* Original dsusp char */
 char fruit[MAXSTR] =			/* Favorite fruit */
-		{ 's', 'l', 'i', 'm', 'e', '-', 'm', 'o', 'l', 'd', '\0' };
+{ 's', 'l', 'i', 'm', 'e', '-', 'm', 'o', 'l', 'd', '\0' };
 char home[MAXSTR] = { '\0' };		/* User's home directory */
 char *inv_t_name[] = {
-	"Overwrite",
-	"Slow",
-	"Clear"
+    "Overwrite",
+    "Slow",
+    "Clear"
 };
 char l_last_comm = '\0';		/* Last last_comm */
 char l_last_dir = '\0';			/* Last last_dir */
 char last_comm = '\0';			/* Last command typed */
 char last_dir = '\0';			/* Last direction given */
 char *tr_name[] = {			/* Names of the traps */
-	"a trapdoor",
-	"an arrow trap",
-	"a sleeping gas trap",
-	"a beartrap",
-	"a teleport trap",
-	"a poison dart trap",
-	"a rust trap",
-        "a mysterious trap"
+    "a trapdoor",
+    "an arrow trap",
+    "a sleeping gas trap",
+    "a beartrap",
+    "a teleport trap",
+    "a poison dart trap",
+    "a rust trap",
+    "a mysterious trap"
 };
 
 
@@ -97,14 +97,14 @@ int max_level;				/* Deepest player has gone */
 int mpos = 0;				/* Where cursor is on top line */
 int no_food = 0;			/* Number of levels without food */
 int a_class[MAXARMORS] = {		/* Armor class for each armor type */
-	8,	/* LEATHER */
-	7,	/* RING_MAIL */
-	7,	/* STUDDED_LEATHER */
-	6,	/* SCALE_MAIL */
-	5,	/* CHAIN_MAIL */
-	4,	/* SPLINT_MAIL */
-	4,	/* BANDED_MAIL */
-	3,	/* PLATE_MAIL */
+    8,	/* LEATHER */
+    7,	/* RING_MAIL */
+    7,	/* STUDDED_LEATHER */
+    6,	/* SCALE_MAIL */
+    5,	/* CHAIN_MAIL */
+    4,	/* SPLINT_MAIL */
+    4,	/* BANDED_MAIL */
+    3,	/* PLATE_MAIL */
 };
 
 int count = 0;				/* Number of times to repeat command */
@@ -120,27 +120,27 @@ int vf_hit = 0;				/* Number of time flytrap has hit */
 int dnum;				/* Dungeon number */
 int seed;				/* Random number seed */
 int e_levels[] = {
-        10L,
-	20L,
-	40L,
-	80L,
-       160L,
-       320L,
-       640L,
-      1300L,
-      2600L,
-      5200L,
-     13000L,
-     26000L,
-     50000L,
+    10L,
+    20L,
+    40L,
+    80L,
+    160L,
+    320L,
+    640L,
+    1300L,
+    2600L,
+    5200L,
+    13000L,
+    26000L,
+    50000L,
     100000L,
     200000L,
     400000L,
     800000L,
-   2000000L,
-   4000000L,
-   8000000L,
-	 0L
+    2000000L,
+    4000000L,
+    8000000L,
+    0L
 };
 
 coord delta;				/* Change indicated to get_dir() */
@@ -157,7 +157,7 @@ THING *last_pick = NULL;		/* Last object picked in get_item() */
 THING *lvl_obj = NULL;			/* List of objects on this level */
 THING *mlist = NULL;			/* List of monsters on the level */
 THING player;				/* His stats */
-					/* restart of game */
+/* restart of game */
 
 WINDOW *hw = NULL;			/* used as a scratch window */
 
@@ -169,7 +169,8 @@ struct room *oldrp;			/* Roomin(&oldpos) */
 struct room rooms[MAXROOMS];		/* One for each room -- A level */
 struct room passages[MAXPASS] =		/* One for each passage */
 {
-    { {0, 0}, {0, 0}, {0, 0}, 0, ISGONE|ISDARK, 0, {{0,0}} },
+    { {0, 0}, {0, 0}, {0, 0}, 0, ISGONE|ISDARK, 0, {{0,0}}
+    },
     { {0, 0}, {0, 0}, {0, 0}, 0, ISGONE|ISDARK, 0, {{0,0}} },
     { {0, 0}, {0, 0}, {0, 0}, 0, ISGONE|ISDARK, 0, {{0,0}} },
     { {0, 0}, {0, 0}, {0, 0}, 0, ISGONE|ISDARK, 0, {{0,0}} },
@@ -186,37 +187,37 @@ struct room passages[MAXPASS] =		/* One for each passage */
 #define ___ 1
 #define XX 10
 struct monster monsters[26] =
-    {
-/* Name		 CARRY	FLAG    str, exp, lvl, amr, hpt, dmg */
-{ "aquator",	   0,	ISMEAN,	{ XX, 20,   5,   2, ___, "0x0/0x0" } },
-{ "bat",	   0,	ISFLY,	{ XX,  1,   1,   3, ___, "1x2" } },
-{ "centaur",	  15,	0,	{ XX, 17,   4,   4, ___, "1x2/1x5/1x5" } },
-{ "dragon",	 100,	ISMEAN,	{ XX,5000, 10,  -1, ___, "1x8/1x8/3x10" } },
-{ "emu",	   0,	ISMEAN,	{ XX,  2,   1,   7, ___, "1x2" } },
-{ "venus flytrap", 0,	ISMEAN,	{ XX, 80,   8,   3, ___, "%%%x0" } },
-	/* NOTE: the damage is %%% so that xstr won't merge this */
-	/* string with others, since it is written on in the program */
-{ "griffin",	  20,	ISMEAN|ISFLY|ISREGEN, { XX,2000, 13,   2, ___, "4x3/3x5" } },
-{ "hobgoblin",	   0,	ISMEAN,	{ XX,  3,   1,   5, ___, "1x8" } },
-{ "ice monster",   0,	0,	{ XX,  5,   1,   9, ___, "0x0" } },
-{ "jabberwock",   70,	0,	{ XX,3000, 15,   6, ___, "2x12/2x4" } },
-{ "kestrel",	   0,	ISMEAN|ISFLY,	{ XX,  1,   1,   7, ___, "1x4" } },
-{ "leprechaun",	   0,	0,	{ XX, 10,   3,   8, ___, "1x1" } },
-{ "medusa",	  40,	ISMEAN,	{ XX,200,   8,   2, ___, "3x4/3x4/2x5" } },
-{ "nymph",	 100,	0,	{ XX, 37,   3,   9, ___, "0x0" } },
-{ "orc",	  15,	ISGREED,{ XX,  5,   1,   6, ___, "1x8" } },
-{ "phantom",	   0,	ISINVIS,{ XX,120,   8,   3, ___, "4x4" } },
-{ "quagga",	   0,	ISMEAN,	{ XX, 15,   3,   3, ___, "1x5/1x5" } },
-{ "rattlesnake",   0,	ISMEAN,	{ XX,  9,   2,   3, ___, "1x6" } },
-{ "snake",	   0,	ISMEAN,	{ XX,  2,   1,   5, ___, "1x3" } },
-{ "troll",	  50,	ISREGEN|ISMEAN,{ XX, 120, 6, 4, ___, "1x8/1x8/2x6" } },
-{ "black unicorn", 0,	ISMEAN,	{ XX,190,   7,  -2, ___, "1x9/1x9/2x9" } },
-{ "vampire",	  20,	ISREGEN|ISMEAN,{ XX,350,   8,   1, ___, "1x10" } },
-{ "wraith",	   0,	0,	{ XX, 55,   5,   4, ___, "1x6" } },
-{ "xeroc",	  30,	0,	{ XX,100,   7,   7, ___, "4x4" } },
-{ "yeti",	  30,	0,	{ XX, 50,   4,   6, ___, "1x6/1x6" } },
-{ "zombie",	   0,	ISMEAN,	{ XX,  6,   2,   8, ___, "1x8" } }
-    };
+{
+    /* Name		 CARRY	FLAG    str, exp, lvl, amr, hpt, dmg */
+    { "aquator",	   0,	ISMEAN,	{ XX, 20,   5,   2, ___, "0x0/0x0" } },
+    { "bat",	   0,	ISFLY,	{ XX,  1,   1,   3, ___, "1x2" } },
+    { "centaur",	  15,	0,	{ XX, 17,   4,   4, ___, "1x2/1x5/1x5" } },
+    { "dragon",	 100,	ISMEAN,	{ XX,5000, 10,  -1, ___, "1x8/1x8/3x10" } },
+    { "emu",	   0,	ISMEAN,	{ XX,  2,   1,   7, ___, "1x2" } },
+    { "venus flytrap", 0,	ISMEAN,	{ XX, 80,   8,   3, ___, "%%%x0" } },
+    /* NOTE: the damage is %%% so that xstr won't merge this */
+    /* string with others, since it is written on in the program */
+    { "griffin",	  20,	ISMEAN|ISFLY|ISREGEN, { XX,2000, 13,   2, ___, "4x3/3x5" } },
+    { "hobgoblin",	   0,	ISMEAN,	{ XX,  3,   1,   5, ___, "1x8" } },
+    { "ice monster",   0,	0,	{ XX,  5,   1,   9, ___, "0x0" } },
+    { "jabberwock",   70,	0,	{ XX,3000, 15,   6, ___, "2x12/2x4" } },
+    { "kestrel",	   0,	ISMEAN|ISFLY,	{ XX,  1,   1,   7, ___, "1x4" } },
+    { "leprechaun",	   0,	0,	{ XX, 10,   3,   8, ___, "1x1" } },
+    { "medusa",	  40,	ISMEAN,	{ XX,200,   8,   2, ___, "3x4/3x4/2x5" } },
+    { "nymph",	 100,	0,	{ XX, 37,   3,   9, ___, "0x0" } },
+    { "orc",	  15,	ISGREED,{ XX,  5,   1,   6, ___, "1x8" } },
+    { "phantom",	   0,	ISINVIS,{ XX,120,   8,   3, ___, "4x4" } },
+    { "quagga",	   0,	ISMEAN,	{ XX, 15,   3,   3, ___, "1x5/1x5" } },
+    { "rattlesnake",   0,	ISMEAN,	{ XX,  9,   2,   3, ___, "1x6" } },
+    { "snake",	   0,	ISMEAN,	{ XX,  2,   1,   5, ___, "1x3" } },
+    { "troll",	  50,	ISREGEN|ISMEAN,{ XX, 120, 6, 4, ___, "1x8/1x8/2x6" } },
+    { "black unicorn", 0,	ISMEAN,	{ XX,190,   7,  -2, ___, "1x9/1x9/2x9" } },
+    { "vampire",	  20,	ISREGEN|ISMEAN,{ XX,350,   8,   1, ___, "1x10" } },
+    { "wraith",	   0,	0,	{ XX, 55,   5,   4, ___, "1x6" } },
+    { "xeroc",	  30,	0,	{ XX,100,   7,   7, ___, "4x4" } },
+    { "yeti",	  30,	0,	{ XX, 50,   4,   6, ___, "1x6/1x6" } },
+    { "zombie",	   0,	ISMEAN,	{ XX,  6,   2,   8, ___, "1x8" } }
+};
 #undef ___
 #undef XX
 

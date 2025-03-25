@@ -32,13 +32,13 @@ main(int argc, char **argv, char **envp)
      * Check to see if he is a wizard
      */
     if (argc >= 2 && argv[1][0] == '\0')
-	if (strcmp(PASSWD, md_crypt(md_getpass("wizard's password: "), "mT")) == 0)
-	{
-	    wizard = TRUE;
-	    player.t_flags |= SEEMONST;
-	    argv++;
-	    argc--;
-	}
+        if (strcmp(PASSWD, md_crypt(md_getpass("wizard's password: "), "mT")) == 0)
+        {
+            wizard = TRUE;
+            player.t_flags |= SEEMONST;
+            argv++;
+            argc--;
+        }
 
 #endif
 
@@ -52,23 +52,23 @@ main(int argc, char **argv, char **envp)
     strcat(file_name, "rogue.save");
 
     if ((env = getenv("ROGUEOPTS")) != NULL)
-	parse_opts(env);
+        parse_opts(env);
     if (env == NULL || whoami[0] == '\0')
         strucpy(whoami, md_getusername(), (int) strlen(md_getusername()));
     lowtime = (int) time(NULL);
 #ifdef MASTER
     if (wizard && getenv("SEED") != NULL)
-	dnum = atoi(getenv("SEED"));
+        dnum = atoi(getenv("SEED"));
     else
 #endif
-	dnum = lowtime + md_getpid();
+        dnum = lowtime + md_getpid();
     seed = dnum;
 
     open_score();
 
-	/* 
-     * Drop setuid/setgid after opening the scoreboard file. 
-     */ 
+    /*
+     * Drop setuid/setgid after opening the scoreboard file.
+     */
 
     md_normaluser();
 
@@ -76,40 +76,40 @@ main(int argc, char **argv, char **envp)
      * check for print-score option
      */
 
-	md_normaluser(); /* we drop any setgid/setuid priveldges here */
+    md_normaluser(); /* we drop any setgid/setuid priveldges here */
 
     if (argc == 2)
     {
-	if (strcmp(argv[1], "-s") == 0)
-	{
-	    noscore = TRUE;
-	    score(0, -1, 0);
-	    exit(0);
-	}
-	else if (strcmp(argv[1], "-d") == 0)
-	{
-	    dnum = rnd(100);	/* throw away some rnd()s to break patterns */
-	    while (--dnum)
-		rnd(100);
-	    purse = rnd(100) + 1;
-	    level = rnd(100) + 1;
-	    initscr();
-	    getltchars();
-	    death(death_monst());
-	    exit(0);
-	}
+        if (strcmp(argv[1], "-s") == 0)
+        {
+            noscore = TRUE;
+            score(0, -1, 0);
+            exit(0);
+        }
+        else if (strcmp(argv[1], "-d") == 0)
+        {
+            dnum = rnd(100);	/* throw away some rnd()s to break patterns */
+            while (--dnum)
+                rnd(100);
+            purse = rnd(100) + 1;
+            level = rnd(100) + 1;
+            initscr();
+            getltchars();
+            death(death_monst());
+            exit(0);
+        }
     }
 
     init_check();			/* check for legal startup */
     if (argc == 2)
-	if (!restore(argv[1], envp))	/* Note: restore will never return */
-	    my_exit(1);
+        if (!restore(argv[1], envp))	/* Note: restore will never return */
+            my_exit(1);
 #ifdef MASTER
     if (wizard)
-	printf("Hello %s, welcome to dungeon #%d", whoami, dnum);
+        printf("Hello %s, welcome to dungeon #%d", whoami, dnum);
     else
 #endif
-	printf("Hello %s, just a moment while I dig the dungeon...", whoami);
+        printf("Hello %s, just a moment while I dig the dungeon...", whoami);
     fflush(stdout);
 
     initscr();				/* Start up cursor package */
@@ -126,9 +126,9 @@ main(int argc, char **argv, char **envp)
      */
     if (LINES < NUMLINES || COLS < NUMCOLS)
     {
-	printf("\nSorry, the screen must be at least %dx%d\n", NUMLINES, NUMCOLS);
-	endwin();
-	my_exit(1);
+        printf("\nSorry, the screen must be at least %dx%d\n", NUMLINES, NUMCOLS);
+        endwin();
+        my_exit(1);
     }
 
     /*
@@ -192,13 +192,13 @@ rnd(int range)
  * roll:
  *	Roll a number of dice
  */
-int 
+int
 roll(int number, int sides)
 {
     int dtotal = 0;
 
     while (number--)
-	dtotal += rnd(sides)+1;
+        dtotal += rnd(sides)+1;
     return dtotal;
 }
 
@@ -213,7 +213,7 @@ tstp(int ignored)
     int y, x;
     int oy, ox;
 
-	NOOP(ignored);
+    NOOP(ignored);
 
     /*
      * leave nicely
@@ -223,12 +223,12 @@ tstp(int ignored)
     endwin();
     resetltchars();
     fflush(stdout);
-	md_tstpsignal();
+    md_tstpsignal();
 
     /*
      * start back up again
      */
-	md_tstpresume();
+    md_tstpresume();
     raw();
     noecho();
     keypad(stdscr,1);
@@ -259,25 +259,25 @@ playit()
 
     if (baudrate() <= 1200)
     {
-	terse = TRUE;
-	jump = TRUE;
-	see_floor = FALSE;
+        terse = TRUE;
+        jump = TRUE;
+        see_floor = FALSE;
     }
 
     if (md_hasclreol())
-	inv_type = INV_CLEAR;
+        inv_type = INV_CLEAR;
 
     /*
      * parse environment declaration of options
      */
     if ((opts = getenv("ROGUEOPTS")) != NULL)
-	parse_opts(opts);
+        parse_opts(opts);
 
 
     oldpos = hero;
     oldrp = roomin(&hero);
     while (playing)
-	command();			/* Command execution */
+        command();			/* Command execution */
     endit(0);
 }
 
@@ -297,29 +297,29 @@ quit(int sig)
      * Reset the signal in case we got here via an interrupt
      */
     if (!q_comm)
-	mpos = 0;
+        mpos = 0;
     getyx(curscr, oy, ox);
     msg("really quit?");
     if (readchar() == 'y')
     {
-	signal(SIGINT, leave);
-	clear();
-	mvprintw(LINES - 2, 0, "You quit with %d gold pieces", purse);
-	move(LINES - 1, 0);
-	refresh();
-	score(purse, 1, 0);
-	my_exit(0);
+        signal(SIGINT, leave);
+        clear();
+        mvprintw(LINES - 2, 0, "You quit with %d gold pieces", purse);
+        move(LINES - 1, 0);
+        refresh();
+        score(purse, 1, 0);
+        my_exit(0);
     }
     else
     {
-	move(0, 0);
-	clrtoeol();
-	status();
-	move(oy, ox);
-	refresh();
-	mpos = 0;
-	count = 0;
-	to_death = FALSE;
+        move(0, 0);
+        clrtoeol();
+        status();
+        move(oy, ox);
+        refresh();
+        mpos = 0;
+        count = 0;
+        to_death = FALSE;
     }
 }
 
@@ -339,8 +339,8 @@ leave(int sig)
 
     if (!isendwin())
     {
-	mvcur(0, COLS - 1, LINES - 1, 0);
-	endwin();
+        mvcur(0, COLS - 1, LINES - 1, 0);
+        endwin();
     }
 
     putchar('\n');

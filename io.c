@@ -30,10 +30,10 @@ msg(char *fmt, ...)
      */
     if (*fmt == '\0')
     {
-	move(0, 0);
-	clrtoeol();
-	mpos = 0;
-	return ~ESCAPE;
+        move(0, 0);
+        clrtoeol();
+        mpos = 0;
+        return ~ESCAPE;
     }
     /*
      * otherwise add to the message and flush it out
@@ -70,33 +70,33 @@ endmsg()
     char ch;
 
     if (save_msg)
-	strcpy(huh, msgbuf);
+        strcpy(huh, msgbuf);
     if (mpos)
     {
-	look(FALSE);
-	mvaddstr(0, mpos, "--More--");
-	refresh();
-	if (!msg_esc)
-	    wait_for(' ');
-	else
-	{
-	    while ((ch = readchar()) != ' ')
-		if (ch == ESCAPE)
-		{
-		    msgbuf[0] = '\0';
-		    mpos = 0;
-		    newpos = 0;
-		    msgbuf[0] = '\0';
-		    return ESCAPE;
-		}
-	}
+        look(FALSE);
+        mvaddstr(0, mpos, "--More--");
+        refresh();
+        if (!msg_esc)
+            wait_for(' ');
+        else
+        {
+            while ((ch = readchar()) != ' ')
+                if (ch == ESCAPE)
+                {
+                    msgbuf[0] = '\0';
+                    mpos = 0;
+                    newpos = 0;
+                    msgbuf[0] = '\0';
+                    return ESCAPE;
+                }
+        }
     }
     /*
      * All messages should start with uppercase, except ones that
      * start with a pack addressing character
      */
     if (islower(msgbuf[0]) && !lower_msg && msgbuf[1] != ')')
-	msgbuf[0] = (char) toupper(msgbuf[0]);
+        msgbuf[0] = (char) toupper(msgbuf[0]);
     mvaddstr(0, 0, msgbuf);
     clrtoeol();
     mpos = newpos;
@@ -120,7 +120,7 @@ doadd(char *fmt, va_list args)
      */
     vsprintf(buf, fmt, args);
     if (strlen(buf) + newpos >= MAXMSG)
-        endmsg(); 
+        endmsg();
     strcat(msgbuf, buf);
     newpos = (int) strlen(msgbuf);
 }
@@ -134,12 +134,12 @@ step_ok(int ch)
 {
     switch (ch)
     {
-	case ' ':
-	case '|':
-	case '-':
-	    return FALSE;
-	default:
-	    return (!isalpha(ch));
+    case ' ':
+    case '|':
+    case '-':
+        return FALSE;
+    default:
+        return (!isalpha(ch));
     }
 }
 
@@ -156,7 +156,7 @@ readchar()
 
     if (ch == 3)
     {
-	quit(0);
+        quit(0);
         return(27);
     }
 
@@ -181,7 +181,7 @@ status()
     static int s_exp = 0;
     static char *state_name[] =
     {
-	"", "Hungry", "Weak", "Faint"
+        "", "Hungry", "Weak", "Faint"
     };
 
     /*
@@ -190,21 +190,21 @@ status()
      */
     temp = (cur_armor != NULL ? cur_armor->o_arm : pstats.s_arm);
     if (s_hp == pstats.s_hpt && s_exp == pstats.s_exp && s_pur == purse
-	&& s_arm == temp && s_str == pstats.s_str && s_lvl == level
-	&& s_hungry == hungry_state
-	&& !stat_msg
-	)
-	    return;
+            && s_arm == temp && s_str == pstats.s_str && s_lvl == level
+            && s_hungry == hungry_state
+            && !stat_msg
+       )
+        return;
 
     s_arm = temp;
 
     getyx(stdscr, oy, ox);
     if (s_hp != max_hp)
     {
-	temp = max_hp;
-	s_hp = max_hp;
-	for (hpwidth = 0; temp; hpwidth++)
-	    temp /= 10;
+        temp = max_hp;
+        s_hp = max_hp;
+        for (hpwidth = 0; temp; hpwidth++)
+            temp /= 10;
     }
 
     /*
@@ -214,25 +214,25 @@ status()
     s_pur = purse;
     s_hp = pstats.s_hpt;
     s_str = pstats.s_str;
-    s_exp = pstats.s_exp; 
+    s_exp = pstats.s_exp;
     s_hungry = hungry_state;
 
     if (stat_msg)
     {
-	move(0, 0);
+        move(0, 0);
         msg("Level: %d  Gold: %-5d  Hp: %*d(%*d)  Str: %2d(%d)  Arm: %-2d  Exp: %d/%ld  %s",
-	    level, purse, hpwidth, pstats.s_hpt, hpwidth, max_hp, pstats.s_str,
-	    max_stats.s_str, 10 - s_arm, pstats.s_lvl, pstats.s_exp,
-	    state_name[hungry_state]);
+            level, purse, hpwidth, pstats.s_hpt, hpwidth, max_hp, pstats.s_str,
+            max_stats.s_str, 10 - s_arm, pstats.s_lvl, pstats.s_exp,
+            state_name[hungry_state]);
     }
     else
     {
-	move(STATLINE, 0);
-                
+        move(STATLINE, 0);
+
         printw("Level: %d  Gold: %-5d  Hp: %*d(%*d)  Str: %2d(%d)  Arm: %-2d  Exp: %d/%d  %s",
-	    level, purse, hpwidth, pstats.s_hpt, hpwidth, max_hp, pstats.s_str,
-	    max_stats.s_str, 10 - s_arm, pstats.s_lvl, pstats.s_exp,
-	    state_name[hungry_state]);
+               level, purse, hpwidth, pstats.s_hpt, hpwidth, max_hp, pstats.s_str,
+               max_stats.s_str, 10 - s_arm, pstats.s_lvl, pstats.s_exp,
+               state_name[hungry_state]);
     }
 
     clrtoeol();
@@ -250,10 +250,10 @@ wait_for(int ch)
 
     if (ch == '\n')
         while ((c = readchar()) != '\n' && c != '\r')
-	    continue;
+            continue;
     else
         while (readchar() != ch)
-	    continue;
+            continue;
 }
 
 /*

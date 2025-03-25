@@ -50,9 +50,9 @@ missile(int ydelta, int xdelta)
      * Get which thing we are hurling
      */
     if ((obj = get_item("throw", WEAPON)) == NULL)
-	return;
+        return;
     if (!dropcheck(obj) || is_current(obj))
-	return;
+        return;
     obj = leave_pack(obj, TRUE, FALSE);
     do_motion(obj, ydelta, xdelta);
     /*
@@ -60,8 +60,8 @@ missile(int ydelta, int xdelta)
      * or if it misses (combat) the monster, put it on the floor
      */
     if (moat(obj->o_pos.y, obj->o_pos.x) == NULL ||
-	!hit_monster(unc(obj->o_pos), obj))
-	    fall(obj, TRUE);
+            !hit_monster(unc(obj->o_pos), obj))
+        fall(obj, TRUE);
 }
 
 /*
@@ -81,35 +81,35 @@ do_motion(THING *obj, int ydelta, int xdelta)
     obj->o_pos = hero;
     for (;;)
     {
-	/*
-	 * Erase the old one
-	 */
-	if (!ce(obj->o_pos, hero) && cansee(unc(obj->o_pos)) && !terse)
-	{
-	    ch = chat(obj->o_pos.y, obj->o_pos.x);
-	    if (ch == FLOOR && !show_floor())
-		ch = ' ';
-	    mvaddch(obj->o_pos.y, obj->o_pos.x, ch);
-	}
-	/*
-	 * Get the new position
-	 */
-	obj->o_pos.y += ydelta;
-	obj->o_pos.x += xdelta;
-	if (step_ok(ch = winat(obj->o_pos.y, obj->o_pos.x)) && ch != DOOR)
-	{
-	    /*
-	     * It hasn't hit anything yet, so display it
-	     * If it alright.
-	     */
-	    if (cansee(unc(obj->o_pos)) && !terse)
-	    {
-		mvaddch(obj->o_pos.y, obj->o_pos.x, obj->o_type);
-		refresh();
-	    }
-	    continue;
-	}
-	break;
+        /*
+         * Erase the old one
+         */
+        if (!ce(obj->o_pos, hero) && cansee(unc(obj->o_pos)) && !terse)
+        {
+            ch = chat(obj->o_pos.y, obj->o_pos.x);
+            if (ch == FLOOR && !show_floor())
+                ch = ' ';
+            mvaddch(obj->o_pos.y, obj->o_pos.x, ch);
+        }
+        /*
+         * Get the new position
+         */
+        obj->o_pos.y += ydelta;
+        obj->o_pos.x += xdelta;
+        if (step_ok(ch = winat(obj->o_pos.y, obj->o_pos.x)) && ch != DOOR)
+        {
+            /*
+             * It hasn't hit anything yet, so display it
+             * If it alright.
+             */
+            if (cansee(unc(obj->o_pos)) && !terse)
+            {
+                mvaddch(obj->o_pos.y, obj->o_pos.x, obj->o_type);
+                refresh();
+            }
+            continue;
+        }
+        break;
     }
 }
 
@@ -126,28 +126,28 @@ fall(THING *obj, bool pr)
 
     if (fallpos(&obj->o_pos, &fpos))
     {
-	pp = INDEX(fpos.y, fpos.x);
-	pp->p_ch = (char) obj->o_type;
-	obj->o_pos = fpos;
-	if (cansee(fpos.y, fpos.x))
-	{
-	    if (pp->p_monst != NULL)
-		pp->p_monst->t_oldch = (char) obj->o_type;
-	    else
-		mvaddch(fpos.y, fpos.x, obj->o_type);
-	}
-	attach(lvl_obj, obj);
-	return;
+        pp = INDEX(fpos.y, fpos.x);
+        pp->p_ch = (char) obj->o_type;
+        obj->o_pos = fpos;
+        if (cansee(fpos.y, fpos.x))
+        {
+            if (pp->p_monst != NULL)
+                pp->p_monst->t_oldch = (char) obj->o_type;
+            else
+                mvaddch(fpos.y, fpos.x, obj->o_type);
+        }
+        attach(lvl_obj, obj);
+        return;
     }
     if (pr)
     {
-	if (has_hit)
-	{
-	    endmsg();
-	    has_hit = FALSE;
-	}
-	msg("the %s vanishes as it hits the ground",
-	    weap_info[obj->o_which].oi_name);
+        if (has_hit)
+        {
+            endmsg();
+            has_hit = FALSE;
+        }
+        msg("the %s vanishes as it hits the ground",
+            weap_info[obj->o_which].oi_name);
     }
     discard(obj);
 }
@@ -173,18 +173,18 @@ init_weapon(THING *weap, int which)
     weap->o_dplus = 0;
     if (which == DAGGER)
     {
-	weap->o_count = rnd(4) + 2;
-	weap->o_group = group++;
+        weap->o_count = rnd(4) + 2;
+        weap->o_group = group++;
     }
     else if (weap->o_flags & ISMANY)
     {
-	weap->o_count = rnd(8) + 8;
-	weap->o_group = group++;
+        weap->o_count = rnd(8) + 8;
+        weap->o_group = group++;
     }
     else
     {
-	weap->o_count = 1;
-	weap->o_group = 0;
+        weap->o_count = 1;
+        weap->o_group = 0;
     }
 }
 
@@ -213,7 +213,7 @@ num(int n1, int n2, char type)
 
     sprintf(numbuf, n1 < 0 ? "%d" : "+%d", n1);
     if (type == WEAPON)
-	sprintf(&numbuf[strlen(numbuf)], n2 < 0 ? ",%d" : ",+%d", n2);
+        sprintf(&numbuf[strlen(numbuf)], n2 < 0 ? ",%d" : ",+%d", n2);
     return numbuf;
 }
 
@@ -231,21 +231,21 @@ wield()
     oweapon = cur_weapon;
     if (!dropcheck(cur_weapon))
     {
-	cur_weapon = oweapon;
-	return;
+        cur_weapon = oweapon;
+        return;
     }
     cur_weapon = oweapon;
     if ((obj = get_item("wield", WEAPON)) == NULL)
     {
 bad:
-	after = FALSE;
-	return;
+        after = FALSE;
+        return;
     }
 
     if (obj->o_type == ARMOR)
     {
-	msg("you can't wield armor");
-	goto bad;
+        msg("you can't wield armor");
+        goto bad;
     }
     if (is_current(obj))
         goto bad;
@@ -253,7 +253,7 @@ bad:
     sp = inv_name(obj, TRUE);
     cur_weapon = obj;
     if (!terse)
-	addmsg("you are now ");
+        addmsg("you are now ");
     msg("wielding %s (%c)", sp, obj->o_packch);
 }
 
@@ -268,21 +268,21 @@ fallpos(coord *pos, coord *newpos)
 
     cnt = 0;
     for (y = pos->y - 1; y <= pos->y + 1; y++)
-	for (x = pos->x - 1; x <= pos->x + 1; x++)
-	{
-	    /*
-	     * check to make certain the spot is empty, if it is,
-	     * put the object there, set it in the level list
-	     * and re-draw the room if he can see it
-	     */
-	    if (y == hero.y && x == hero.x)
-		continue;
-	    if (((ch = chat(y, x)) == FLOOR || ch == PASSAGE)
-					&& rnd(++cnt) == 0)
-	    {
-		newpos->y = y;
-		newpos->x = x;
-	    }
-	}
+        for (x = pos->x - 1; x <= pos->x + 1; x++)
+        {
+            /*
+             * check to make certain the spot is empty, if it is,
+             * put the object there, set it in the level list
+             * and re-draw the room if he can see it
+             */
+            if (y == hero.y && x == hero.x)
+                continue;
+            if (((ch = chat(y, x)) == FLOOR || ch == PASSAGE)
+                    && rnd(++cnt) == 0)
+            {
+                newpos->y = y;
+                newpos->x = x;
+            }
+        }
     return (bool)(cnt != 0);
 }

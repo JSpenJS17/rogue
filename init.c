@@ -242,14 +242,14 @@ init_colors()
     register int i, j;
 
     for (i = 0; i < NCOLORS; i++)
-	used[i] = FALSE;
+        used[i] = FALSE;
     for (i = 0; i < MAXPOTIONS; i++)
     {
-	do
-	    j = rnd(NCOLORS);
-	until (!used[j]);
-	used[j] = TRUE;
-	p_colors[i] = rainbow[j];
+        do
+            j = rnd(NCOLORS);
+        until (!used[j]);
+        used[j] = TRUE;
+        p_colors[i] = rainbow[j];
     }
 }
 
@@ -268,24 +268,24 @@ init_names()
 
     for (i = 0; i < MAXSCROLLS; i++)
     {
-	cp = prbuf;
-	nwords = rnd(3) + 2;
-	while (nwords--)
-	{
-	    nsyl = rnd(3) + 1;
-	    while (nsyl--)
-	    {
-		sp = sylls[rnd((sizeof sylls) / (sizeof (char *)))];
-		if (&cp[strlen(sp)] > &prbuf[MAXNAME])
-			break;
-		while (*sp)
-		    *cp++ = *sp++;
-	    }
-	    *cp++ = ' ';
-	}
-	*--cp = '\0';
-	s_names[i] = (char *) malloc((unsigned) strlen(prbuf)+1);
-	strcpy(s_names[i], prbuf);
+        cp = prbuf;
+        nwords = rnd(3) + 2;
+        while (nwords--)
+        {
+            nsyl = rnd(3) + 1;
+            while (nsyl--)
+            {
+                sp = sylls[rnd((sizeof sylls) / (sizeof (char *)))];
+                if (&cp[strlen(sp)] > &prbuf[MAXNAME])
+                    break;
+                while (*sp)
+                    *cp++ = *sp++;
+            }
+            *cp++ = ' ';
+        }
+        *--cp = '\0';
+        s_names[i] = (char *) malloc((unsigned) strlen(prbuf)+1);
+        strcpy(s_names[i], prbuf);
     }
 }
 
@@ -299,15 +299,15 @@ init_stones()
     register int i, j;
 
     for (i = 0; i < NSTONES; i++)
-	used[i] = FALSE;
+        used[i] = FALSE;
     for (i = 0; i < MAXRINGS; i++)
     {
-	do
-	    j = rnd(NSTONES);
-	until (!used[j]);
-	used[j] = TRUE;
-	r_stones[i] = stones[j].st_name;
-	ring_info[i].oi_worth += stones[j].st_value;
+        do
+            j = rnd(NSTONES);
+        until (!used[j]);
+        used[j] = TRUE;
+        r_stones[i] = stones[j].st_name;
+        ring_info[i].oi_worth += stones[j].st_value;
     }
 }
 
@@ -323,35 +323,35 @@ init_materials()
     static bool metused[NMETAL];
 
     for (i = 0; i < NWOOD; i++)
-	used[i] = FALSE;
+        used[i] = FALSE;
     for (i = 0; i < NMETAL; i++)
-	metused[i] = FALSE;
+        metused[i] = FALSE;
     for (i = 0; i < MAXSTICKS; i++)
     {
-	for (;;)
-	    if (rnd(2) == 0)
-	    {
-		j = rnd(NMETAL);
-		if (!metused[j])
-		{
-		    ws_type[i] = "wand";
-		    str = metal[j];
-		    metused[j] = TRUE;
-		    break;
-		}
-	    }
-	    else
-	    {
-		j = rnd(NWOOD);
-		if (!used[j])
-		{
-		    ws_type[i] = "staff";
-		    str = wood[j];
-		    used[j] = TRUE;
-		    break;
-		}
-	    }
-	ws_made[i] = str;
+        for (;;)
+            if (rnd(2) == 0)
+            {
+                j = rnd(NMETAL);
+                if (!metused[j])
+                {
+                    ws_type[i] = "wand";
+                    str = metal[j];
+                    metused[j] = TRUE;
+                    break;
+                }
+            }
+            else
+            {
+                j = rnd(NWOOD);
+                if (!used[j])
+                {
+                    ws_type[i] = "staff";
+                    str = wood[j];
+                    used[j] = TRUE;
+                    break;
+                }
+            }
+        ws_made[i] = str;
     }
 }
 
@@ -380,18 +380,18 @@ init_materials()
 void
 sumprobs(struct obj_info *info, int bound
 #ifdef MASTER
-	, char *name
+         , char *name
 #endif
-)
+        )
 {
 #ifdef MASTER
-	struct obj_info *start = info;
+    struct obj_info *start = info;
 #endif
     struct obj_info *endp;
 
     endp = info + bound;
     while (++info < endp)
-	info->oi_prob += (info - 1)->oi_prob;
+        info->oi_prob += (info - 1)->oi_prob;
 #ifdef MASTER
     badcheck(name, start, bound);
 #endif
@@ -424,14 +424,14 @@ badcheck(char *name, struct obj_info *info, int bound)
     register struct obj_info *end;
 
     if (info[bound - 1].oi_prob == 100)
-	return;
+        return;
     printf("\nBad percentages for %s (bound = %d):\n", name, bound);
     for (end = &info[bound]; info < end; info++)
-	printf("%3d%% %s\n", info->oi_prob, info->oi_name);
+        printf("%3d%% %s\n", info->oi_prob, info->oi_name);
     printf("[hit RETURN to continue]");
     fflush(stdout);
     while (getchar() != '\n')
-	continue;
+        continue;
 }
 #endif
 
