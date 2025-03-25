@@ -333,42 +333,56 @@ char be_trapped (coord *tc)
         level++;
         new_level();
         msg ("you fell into a trap!");
-    when T_BEAR:
+        break;
+    case T_BEAR:
         no_move += BEARTIME;
         msg ("you are caught in a bear trap");
-    when T_MYST:
+        break;
+    case T_MYST:
 
         switch (rnd (11))
         {
         case 0:
             msg ("you are suddenly in a parallel dimension");
-        when 1:
+            break;
+        case 1:
             msg ("the light in here suddenly seems %s", rainbow[rnd (cNCOLORS)]);
-        when 2:
+            break;
+        case 2:
             msg ("you feel a sting in the side of your neck");
-        when 3:
+            break;
+        case 3:
             msg ("multi-colored lines swirl around you, then fade");
-        when 4:
+            break;
+        case 4:
             msg ("a %s light flashes in your eyes", rainbow[rnd (cNCOLORS)]);
-        when 5:
+            break;
+        case 5:
             msg ("a spike shoots past your ear!");
-        when 6:
+            break;
+        case 6:
             msg ("%s sparks dance across your armor", rainbow[rnd (cNCOLORS)]);
-        when 7:
+            break;
+        case 7:
             msg ("you suddenly feel very thirsty");
-        when 8:
+            break;
+        case 8:
             msg ("you feel time speed up suddenly");
-        when 9:
+            break;
+        case 9:
             msg ("time now seems to be going slower");
-        when 10:
+            break;
+        case 10:
             msg ("you pack turns %s!", rainbow[rnd (cNCOLORS)]);
         }
 
-    when T_SLEEP:
+        break;
+    case T_SLEEP:
         no_command += SLEEPTIME;
         player.t_flags &= ~ISRUN;
         msg ("a strange white mist envelops you and you fall asleep");
-    when T_ARROW:
+        break;
+    case T_ARROW:
 
         if (swing (pstats.s_lvl - 1, pstats.s_arm, 1))
         {
@@ -394,14 +408,16 @@ char be_trapped (coord *tc)
             msg ("an arrow shoots past you");
         }
 
-    when T_TELEP:
+        break;
+    case T_TELEP:
         /*
          * since the hero's leaving, look() won't put a TRAP
          * down for us, so we have to do it ourself
          */
         teleport();
         mvaddch (tc->y, tc->x, TRAP);
-    when T_DART:
+        break;
+    case T_DART:
 
         if (!swing (pstats.s_lvl + 1, pstats.s_arm, 1))
         {
@@ -425,7 +441,8 @@ char be_trapped (coord *tc)
             msg ("a small dart just hit you in the shoulder");
         }
 
-    when T_RUST:
+        break;
+    case T_RUST:
         msg ("a gush of water hits you on the head");
         rust_armor (cur_armor);
     }

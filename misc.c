@@ -171,49 +171,56 @@ void look (bool wakeup)
                             continue;
                         }
 
-                    when 'j':
+                        break;
+                    case 'j':
 
                         if (y == sy)
                         {
                             continue;
                         }
 
-                    when 'k':
+                        break;
+                    case 'k':
 
                         if (y == ey)
                         {
                             continue;
                         }
 
-                    when 'l':
+                        break;
+                    case 'l':
 
                         if (x == sx)
                         {
                             continue;
                         }
 
-                    when 'y':
+                        break;
+                    case 'y':
 
                         if ((y + x) - sumhero >= 1)
                         {
                             continue;
                         }
 
-                    when 'u':
+                        break;
+                    case 'u':
 
                         if ((y - x) - diffhero >= 1)
                         {
                             continue;
                         }
 
-                    when 'n':
+                        break;
+                    case 'n':
 
                         if ((y + x) - sumhero <= -1)
                         {
                             continue;
                         }
 
-                    when 'b':
+                        break;
+                    case 'b':
 
                         if ((y - x) - diffhero <= -1)
                         {
@@ -649,43 +656,52 @@ bool get_dir()
             case'H':
                 delta.y =  0;
                 delta.x = -1;
-            when 'j':
+                break;
+            case 'j':
 
             case'J':
                 delta.y =  1;
                 delta.x =  0;
-            when 'k':
+                break;
+            case 'k':
 
             case'K':
                 delta.y = -1;
                 delta.x =  0;
-            when 'l':
+                break;
+            case 'l':
 
             case'L':
                 delta.y =  0;
                 delta.x =  1;
-            when 'y':
+                break;
+            case 'y':
 
             case'Y':
                 delta.y = -1;
                 delta.x = -1;
-            when 'u':
+                break;
+            case 'u':
 
             case'U':
                 delta.y = -1;
                 delta.x =  1;
-            when 'b':
+                break;
+            case 'b':
 
             case'B': delta.y =  1; delta.x = -1;
-                    when 'n':
+                    break;
+            case 'n':
             case'N':
                 delta.y =  1;
                 delta.x =  1;
-            when ESCAPE:
+                break;
+            case ESCAPE:
                 last_dir = '\0';
                 reset_last();
                 return FALSE;
-            otherwise:
+                break;
+            default:
                 mpos = 0;
                 msg (prompt);
                 gotit = FALSE;

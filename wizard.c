@@ -71,15 +71,19 @@ void whatis (bool insist, int type)
     {
     case SCROLL:
         set_know (obj, scr_info);
-    when POTION:
+        break;
+    case POTION:
         set_know (obj, pot_info);
-    when STICK:
+        break;
+    case STICK:
         set_know (obj, ws_info);
-    when WEAPON:
+        break;
+    case WEAPON:
 
     case ARMOR:
         obj->o_flags |= ISKNOW;
-    when RING:
+        break;
+    case RING:
         set_know (obj, ring_info);
     }
 

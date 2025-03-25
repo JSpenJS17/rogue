@@ -266,7 +266,8 @@ char *ring_num (THING *obj)
     case R_ADDDAM:
     case R_ADDHIT:
         sprintf (buf, " [%s]", num (obj->o_arm, 0, RING));
-    otherwise:
+        break;
+    default:
         return "";
     }
 

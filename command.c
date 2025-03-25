@@ -222,109 +222,129 @@ void command()
             switch (ch)
             {
             case ',':
-            {
-                THING *obj = NULL;
-                int found = 0;
-
-                for (obj = lvl_obj; obj != NULL; obj = next (obj))
                 {
-                    if (obj->o_pos.y == hero.y && obj->o_pos.x == hero.x)
+                    THING *obj = NULL;
+                    int found = 0;
+
+                    for (obj = lvl_obj; obj != NULL; obj = next (obj))
                     {
-                        found = 1;
-                        break;
+                        if (obj->o_pos.y == hero.y && obj->o_pos.x == hero.x)
+                        {
+                            found = 1;
+                            break;
+                        }
                     }
-                }
 
-                if (found)
-                {
-                    if (levit_check())
-                        ;
+                    if (found)
+                    {
+                        if (levit_check())
+                            ;
+                        else
+                        {
+                            pick_up ((char) obj->o_type);
+                        }
+                    }
                     else
                     {
-                        pick_up ((char) obj->o_type);
+                        if (!terse)
+                        {
+                            addmsg ("there is ");
+                        }
+
+                        addmsg ("nothing here");
+
+                        if (!terse)
+                        {
+                            addmsg (" to pick up");
+                        }
+
+                        endmsg();
                     }
                 }
-                else
-                {
-                    if (!terse)
-                    {
-                        addmsg ("there is ");
-                    }
 
-                    addmsg ("nothing here");
-
-                    if (!terse)
-                    {
-                        addmsg (" to pick up");
-                    }
-
-                    endmsg();
-                }
-            }
-
-        when '!':
-            shell();
-        when 'h':
-            do_move (0, -1);
-        when 'j':
-            do_move (1, 0);
-        when 'k':
-            do_move (-1, 0);
-        when 'l':
-            do_move (0, 1);
-        when 'y':
-            do_move (-1, -1);
-        when 'u':
-            do_move (-1, 1);
-        when 'b':
-            do_move (1, -1);
-        when 'n':
-            do_move (1, 1);
-        when 'H':
-            do_run ('h');
-        when 'J':
-            do_run ('j');
-        when 'K':
-            do_run ('k');
-        when 'L':
-            do_run ('l');
-        when 'Y':
-            do_run ('y');
-        when 'U':
-            do_run ('u');
-        when 'B':
-            do_run ('b');
-        when 'N':
-            do_run ('n');
-            when CTRL ('H') : case CTRL ('J') :
+                break;
+            case '!':
+                shell();
+                break;
+            case 'h':
+                do_move (0, -1);
+                break;
+            case 'j':
+                do_move (1, 0);
+                break;
+            case 'k':
+                do_move (-1, 0);
+                break;
+            case 'l':
+                do_move (0, 1);
+                break;
+            case 'y':
+                do_move (-1, -1);
+                break;
+            case 'u':
+                do_move (-1, 1);
+                break;
+            case 'b':
+                do_move (1, -1);
+                break;
+            case 'n':
+                do_move (1, 1);
+                break;
+            case 'H':
+                do_run ('h');
+                break;
+            case 'J':
+                do_run ('j');
+                break;
+            case 'K':
+                do_run ('k');
+                break;
+            case 'L':
+                do_run ('l');
+                break;
+            case 'Y':
+                do_run ('y');
+                break;
+            case 'U':
+                do_run ('u');
+                break;
+            case 'B':
+                do_run ('b');
+                break;
+            case 'N':
+                do_run ('n');
+                break;
+            case CTRL ('H') :
+            case CTRL ('J') :
             case CTRL ('K') :
             case CTRL ('L') :
             case CTRL ('Y') :
             case CTRL ('U') :
             case CTRL ('B') :
             case CTRL ('N') :
-            {
-                if (!on (player, ISBLIND))
                 {
-                    door_stop = TRUE;
-                    firstmove = TRUE;
+                    if (!on (player, ISBLIND))
+                    {
+                        door_stop = TRUE;
+                        firstmove = TRUE;
+                    }
+
+                    if (count && !newcount)
+                    {
+                        ch = direction;
+                    }
+                    else
+                    {
+                        ch += ('A' - CTRL ('A'));
+                        direction = ch;
+                    }
+
+                    goto over;
                 }
 
-                if (count && !newcount)
-                {
-                    ch = direction;
-                }
-                else
-                {
-                    ch += ('A' - CTRL ('A'));
-                    direction = ch;
-                }
-
-                goto over;
-            }
-
-        when 'F':
-            kamikaze = TRUE;
+                break;
+            case 'F':
+                kamikaze = TRUE;
 
             /* FALLTHROUGH */
             case 'f':
@@ -357,7 +377,8 @@ void command()
                     goto over;
                 }
 
-            when 't':
+                break;
+            case 't':
 
                 if (!get_dir())
                 {
@@ -368,7 +389,8 @@ void command()
                     missile (delta.y, delta.x);
                 }
 
-            when 'a':
+                break;
+            case 'a':
 
                 if (last_comm == '\0')
                 {
@@ -382,56 +404,76 @@ void command()
                     goto over;
                 }
 
-            when 'q':
+                break;
+            case 'q':
                 quaff();
-            when 'Q':
+                break;
+            case 'Q':
                 after = FALSE;
                 q_comm = TRUE;
                 quit (0);
                 q_comm = FALSE;
-            when 'i':
+                break;
+            case 'i':
                 after = FALSE;
                 inventory (pack, 0);
-            when 'I':
+                break;
+            case 'I':
                 after = FALSE;
                 picky_inven();
-            when 'd':
+                break;
+            case 'd':
                 drop();
-            when 'r':
+                break;
+            case 'r':
                 read_scroll();
-            when 'e':
+                break;
+            case 'e':
                 eat();
-            when 'w':
+                break;
+            case 'w':
                 wield();
-            when 'W':
+                break;
+            case 'W':
                 wear();
-            when 'T':
+                break;
+            case 'T':
                 take_off();
-            when 'P':
+                break;
+            case 'P':
                 ring_on();
-            when 'R':
+                break;
+            case 'R':
                 ring_off();
-            when 'o':
+                break;
+            case 'o':
                 option();
                 after = FALSE;
-            when 'c':
+                break;
+            case 'c':
                 call();
                 after = FALSE;
-            when '>':
+                break;
+            case '>':
                 after = FALSE;
                 d_level();
-            when '<':
+                break;
+            case '<':
                 after = FALSE;
                 u_level();
-            when '?':
+                break;
+            case '?':
                 after = FALSE;
                 help();
-            when '/':
+                break;
+            case '/':
                 after = FALSE;
                 identify();
-            when 's':
+                break;
+            case 's':
                 search();
-            when 'z':
+                break;
+            case 'z':
 
                 if (get_dir())
                 {
@@ -442,25 +484,34 @@ void command()
                     after = FALSE;
                 }
 
-            when 'D':
+                break;
+            case 'D':
                 after = FALSE;
                 discovered();
-                when CTRL ('P') : after = FALSE;
+                break;
+            case CTRL ('P') :
+                after = FALSE;
                 msg (huh);
-                when CTRL ('R') :
-                    after = FALSE;
+                break;
+            case CTRL ('R') :
+                after = FALSE;
                 clearok (curscr, TRUE);
                 wrefresh (curscr);
-            when 'v':
+                break;
+            case 'v':
                 after = FALSE;
                 msg ("version %s. (mctesq was here)", release);
-            when 'S':
+                break;
+            case 'S':
                 after = FALSE;
                 save_game();
-            when '.': ;         /* Rest command */
-            when ' ':
+                break;
+            case '.': ;         /* Rest command */
+                break;
+            case ' ':
                 after = FALSE;  /* "Legal" illegal command */
-            when '^':
+                break;
+            case '^':
                 after = FALSE;
 
                 if (get_dir())
@@ -516,12 +567,14 @@ void command()
                 }
 
 #endif
-            when ESCAPE:    /* Escape */
+                break;
+            case ESCAPE:    /* Escape */
                 door_stop = FALSE;
                 count = 0;
                 after = FALSE;
                 again = FALSE;
-            when 'm':
+                break;
+            case 'm':
                 move_on = TRUE;
 
                 if (!get_dir())
@@ -535,21 +588,26 @@ void command()
                     goto over;
                 }
 
-            when ')':
+                break;
+            case ')':
                 current (cur_weapon, "wielding", NULL);
-            when ']':
+                break;
+            case ']':
                 current (cur_armor, "wearing", NULL);
-            when '=':
+                break;
+            case '=':
                 current (cur_ring[LEFT], "wearing",
                          terse ? "(L)" : "on left hand");
                 current (cur_ring[RIGHT], "wearing",
                          terse ? "(R)" : "on right hand");
-            when '@':
+                break;
+            case '@':
                 stat_msg = TRUE;
                 status();
                 stat_msg = FALSE;
                 after = FALSE;
-            otherwise:
+                break;
+            default:
                 after = FALSE;
 #ifdef MASTER
 
@@ -1028,15 +1086,18 @@ void call()
         op = &ring_info[obj->o_which];
         elsewise = r_stones[obj->o_which];
         goto norm;
-    when POTION:
+        break;
+    case POTION:
         op = &pot_info[obj->o_which];
         elsewise = p_colors[obj->o_which];
         goto norm;
-    when SCROLL:
+        break;
+    case SCROLL:
         op = &scr_info[obj->o_which];
         elsewise = s_names[obj->o_which];
         goto norm;
-    when STICK:
+        break;
+    case STICK:
         op = &ws_info[obj->o_which];
         elsewise = ws_made[obj->o_which];
     norm:
@@ -1048,10 +1109,12 @@ void call()
             elsewise = *guess;
         }
 
-    when FOOD:
+        break;
+    case FOOD:
         msg ("you can't call that anything");
         return;
-    otherwise:
+        break;
+    default:
         guess = &obj->o_label;
         know = NULL;
         elsewise = obj->o_label;

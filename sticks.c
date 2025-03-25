@@ -38,7 +38,8 @@ void fix_stick (THING *cur)
     {
     case WS_LIGHT:
         cur->o_charges = rnd (10) + 10;
-    otherwise:
+        break;
+    default:
         cur->o_charges = rnd (5) + 3;
     }
 }
@@ -103,7 +104,8 @@ void do_zap()
             endmsg();
         }
 
-    when WS_DRAIN:
+        break;
+    case WS_DRAIN:
 
         /*
          * take away 1/2 of hero's hit points, then take it away
@@ -120,7 +122,8 @@ void do_zap()
             drain();
         }
 
-    when WS_INVIS:
+        break;
+    case WS_INVIS:
 
     case WS_POLYMORPH:
     case WS_TELAWAY:
@@ -157,32 +160,32 @@ void do_zap()
                 break;
 
             case WS_POLYMORPH:
-            {
-                THING *pp;
-
-                pp = tp->t_pack;
-                detach (mlist, tp);
-
-                if (see_monst (tp))
                 {
-                    mvaddch (y, x, chat (y, x));
+                    THING *pp;
+
+                    pp = tp->t_pack;
+                    detach (mlist, tp);
+
+                    if (see_monst (tp))
+                    {
+                        mvaddch (y, x, chat (y, x));
+                    }
+
+                    oldch = tp->t_oldch;
+                    delta.y = y;
+                    delta.x = x;
+                    new_monster (tp, monster = (char) (rnd (26) + 'A'), &delta);
+
+                    if (see_monst (tp))
+                    {
+                        mvaddch (y, x, monster);
+                    }
+
+                    tp->t_oldch = oldch;
+                    tp->t_pack = pp;
+                    ws_info[WS_POLYMORPH].oi_know |= see_monst (tp);
+                    break;
                 }
-
-                oldch = tp->t_oldch;
-                delta.y = y;
-                delta.x = x;
-                new_monster (tp, monster = (char) (rnd (26) + 'A'), &delta);
-
-                if (see_monst (tp))
-                {
-                    mvaddch (y, x, monster);
-                }
-
-                tp->t_oldch = oldch;
-                tp->t_pack = pp;
-                ws_info[WS_POLYMORPH].oi_know |= see_monst (tp);
-                break;
-            }
 
             case WS_CANCEL:
                 tp->t_flags |= ISCANC;
@@ -198,31 +201,32 @@ void do_zap()
 
             case WS_TELAWAY:
             case WS_TELTO:
-            {
-                coord new_pos;
-
-                if (obj->o_which == WS_TELAWAY)
                 {
-                    do
+                    coord new_pos;
+
+                    if (obj->o_which == WS_TELAWAY)
                     {
-                        find_floor (NULL, &new_pos, FALSE, TRUE);
+                        do
+                        {
+                            find_floor (NULL, &new_pos, FALSE, TRUE);
+                        }
+                        while (ce (new_pos, hero));
                     }
-                    while (ce (new_pos, hero));
-                }
-                else
-                {
-                    new_pos.y = hero.y + delta.y;
-                    new_pos.x = hero.x + delta.x;
-                }
+                    else
+                    {
+                        new_pos.y = hero.y + delta.y;
+                        new_pos.x = hero.x + delta.x;
+                    }
 
-                tp->t_dest = &hero;
-                tp->t_flags |= ISRUN;
-                relocate (tp, &new_pos);
-            }
+                    tp->t_dest = &hero;
+                    tp->t_flags |= ISRUN;
+                    relocate (tp, &new_pos);
+                }
             }
         }
 
-    when WS_MISSILE:
+        break;
+    case WS_MISSILE:
         ws_info[WS_MISSILE].oi_know = TRUE;
         bolt.o_type = '*';
         strncpy (bolt.o_hurldmg, "1x4", sizeof (bolt.o_hurldmg));
@@ -251,7 +255,8 @@ void do_zap()
             msg ("the missle vanishes with a puff of smoke");
         }
 
-    when WS_HASTE_M:
+        break;
+    case WS_HASTE_M:
 
     case WS_SLOW_M:
         y = hero.y;
@@ -295,7 +300,8 @@ void do_zap()
             runto (&delta);
         }
 
-    when WS_ELECT:
+        break;
+    case WS_ELECT:
 
     case WS_FIRE:
     case WS_COLD:
@@ -314,7 +320,8 @@ void do_zap()
 
         fire_bolt (&hero, &delta, name);
         ws_info[obj->o_which].oi_know = TRUE;
-    when WS_NOP:
+        break;
+    case WS_NOP:
         break;
 #ifdef MASTER
     otherwise:
@@ -418,11 +425,13 @@ void fire_bolt (coord *start, coord *dir, char *name)
     {
     case 0:
         dirch = '/';
-    when 1:
+        break;
+    case 1:
 
     case -1:
         dirch = (dir->y == 0 ? '-' : '|');
-    when 2:
+        break;
+    case 2:
 
     case -2:
         dirch = '\\';

@@ -245,7 +245,8 @@ int attack (THING *mp)
                  * If an aquator hits, you can lose armor class.
                  */
                 rust_armor (cur_armor);
-            when 'I':
+                break;
+            case 'I':
                 /*
                  * The ice monster freezes you
                  */
@@ -270,7 +271,8 @@ int attack (THING *mp)
                     death ('h');
                 }
 
-            when 'R':
+                break;
+            case 'R':
 
                 /*
                  * Rattlesnakes have poisonous bites
@@ -303,7 +305,8 @@ int attack (THING *mp)
                     }
                 }
 
-            when 'W':
+                break;
+            case 'W':
 
             case 'V':
 
@@ -355,7 +358,8 @@ int attack (THING *mp)
                     msg ("you suddenly feel weaker");
                 }
 
-            when 'F':
+                break;
+            case 'F':
                 /*
                  * Venus Flytrap stops the poor guy from moving
                  */
@@ -367,7 +371,8 @@ int attack (THING *mp)
                     death ('F');
                 }
 
-            when 'L':
+                break;
+            case 'L':
                 {
                     /*
                      * Leperachaun steals some gold
@@ -395,7 +400,8 @@ int attack (THING *mp)
                         msg ("your purse feels lighter");
                     }
                 }
-            when 'N':
+                break;
+            case 'N':
                 {
                     register THING *obj, *steal;
                     register int nobj;
@@ -423,7 +429,8 @@ int attack (THING *mp)
                         discard (steal);
                     }
                 }
-            otherwise:
+                break;
+            default:
                 break;
             }
     }
@@ -887,7 +894,8 @@ void killed (THING *tp, bool pr)
         player.t_flags &= ~ISHELD;
         vf_hit = 0;
         strcpy (monsters['F' - 'A'].m_stats.s_dmg, "000x0");
-    when 'L':
+        break;
+    case 'L':
         {
             THING *gold;
 

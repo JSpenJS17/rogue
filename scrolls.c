@@ -75,7 +75,8 @@ void read_scroll()
          */
         player.t_flags |= CANHUH;
         msg ("your hands begin to glow %s", pick_color ("red"));
-    when S_ARMOR:
+        break;
+    case S_ARMOR:
 
         if (cur_armor != NULL)
         {
@@ -84,7 +85,8 @@ void read_scroll()
             msg ("your armor glows %s for a moment", pick_color ("silver"));
         }
 
-    when S_HOLD:
+        break;
+    case S_HOLD:
         /*
          * Hold monster scroll.  Stop all monsters within two spaces
          * from chasing after the hero.
@@ -127,7 +129,8 @@ void read_scroll()
             msg ("you feel a strange sense of loss");
         }
 
-    when S_SLEEP:
+        break;
+    case S_SLEEP:
         /*
          * Scroll which makes you fall asleep
          */
@@ -135,7 +138,8 @@ void read_scroll()
         no_command += rnd (SLEEPTIME) + 4;
         player.t_flags &= ~ISRUN;
         msg ("you fall asleep");
-    when S_CREATE:
+        break;
+    case S_CREATE:
         /*
          * Create a monster:
          * First look in a circle around him, next try his room
@@ -180,214 +184,223 @@ void read_scroll()
             new_monster (obj, randmonster (FALSE), &mp);
         }
 
-    when S_ID_POTION:
+        break;
+    case S_ID_POTION:
 
     case S_ID_SCROLL:
     case S_ID_WEAPON:
     case S_ID_ARMOR:
     case S_ID_R_OR_S:
-    {
-        static char id_type[S_ID_R_OR_S + 1] =
-        { 0, 0, 0, 0, 0, POTION, SCROLL, WEAPON, ARMOR, R_OR_S };
-        /*
-         * Identify, let him figure something out
-         */
-        scr_info[obj->o_which].oi_know = TRUE;
-        msg ("this scroll is an %s scroll", scr_info[obj->o_which].oi_name);
-        whatis (TRUE, id_type[obj->o_which]);
-    }
+        {
+            static char id_type[S_ID_R_OR_S + 1] =
+            { 0, 0, 0, 0, 0, POTION, SCROLL, WEAPON, ARMOR, R_OR_S };
+            /*
+             * Identify, let him figure something out
+             */
+            scr_info[obj->o_which].oi_know = TRUE;
+            msg ("this scroll is an %s scroll", scr_info[obj->o_which].oi_name);
+            whatis (TRUE, id_type[obj->o_which]);
+        }
 
-when S_MAP:
+        break;
+    case S_MAP:
         /*
          * Scroll of magic mapping.
          */
-    scr_info[S_MAP].oi_know = TRUE;
-    msg ("oh, now this scroll has a map on it");
+        scr_info[S_MAP].oi_know = TRUE;
+        msg ("oh, now this scroll has a map on it");
 
         /*
          * take all the things we want to keep hidden out of the window
          */
-    for (y = 1; y < NUMLINES - 1; y++)
-        for (x = 0; x < NUMCOLS; x++)
-        {
-            pp = INDEX (y, x);
-
-            switch (ch = pp->p_ch)
+        for (y = 1; y < NUMLINES - 1; y++)
+            for (x = 0; x < NUMCOLS; x++)
             {
-            case DOOR:
-            case STAIRS:
-                break;
+                pp = INDEX (y, x);
 
-            case '-':
-            case '|':
-                if (! (pp->p_flags & F_REAL))
+                switch (ch = pp->p_ch)
                 {
-                    ch = pp->p_ch = DOOR;
+                case DOOR:
+                case STAIRS:
+                    break;
+
+                case '-':
+                case '|':
+                    if (! (pp->p_flags & F_REAL))
+                    {
+                        ch = pp->p_ch = DOOR;
+                        pp->p_flags |= F_REAL;
+                    }
+
+                    break;
+
+                case ' ':
+                    if (pp->p_flags & F_REAL)
+                    {
+                        goto def;
+                    }
+
                     pp->p_flags |= F_REAL;
-                }
+                    ch = pp->p_ch = PASSAGE;
 
-                break;
+                /* FALLTHROUGH */
 
-            case ' ':
-                if (pp->p_flags & F_REAL)
-                {
-                    goto def;
-                }
+                case PASSAGE:
+                pass:
+                    if (! (pp->p_flags & F_REAL))
+                    {
+                        pp->p_ch = PASSAGE;
+                    }
 
-                pp->p_flags |= F_REAL;
-                ch = pp->p_ch = PASSAGE;
-
-            /* FALLTHROUGH */
-
-            case PASSAGE:
-            pass:
-                if (! (pp->p_flags & F_REAL))
-                {
-                    pp->p_ch = PASSAGE;
-                }
-
-                pp->p_flags |= (F_SEEN | F_REAL);
-                ch = PASSAGE;
-                break;
-
-            case FLOOR:
-                if (pp->p_flags & F_REAL)
-                {
-                    ch = ' ';
-                }
-                else
-                {
-                    ch = TRAP;
-                    pp->p_ch = TRAP;
                     pp->p_flags |= (F_SEEN | F_REAL);
+                    ch = PASSAGE;
+                    break;
+
+                case FLOOR:
+                    if (pp->p_flags & F_REAL)
+                    {
+                        ch = ' ';
+                    }
+                    else
+                    {
+                        ch = TRAP;
+                        pp->p_ch = TRAP;
+                        pp->p_flags |= (F_SEEN | F_REAL);
+                    }
+
+                    break;
+
+                default:
+                def:
+                    if (pp->p_flags & F_PASS)
+                    {
+                        goto pass;
+                    }
+
+                    ch = ' ';
+                    break;
                 }
 
-                break;
-
-            default:
-            def:
-                if (pp->p_flags & F_PASS)
+                if (ch != ' ')
                 {
-                    goto pass;
-                }
+                    if ((obj = pp->p_monst) != NULL)
+                    {
+                        obj->t_oldch = ch;
+                    }
 
-                ch = ' ';
-                break;
+                    if (obj == NULL || !on (player, SEEMONST))
+                    {
+                        mvaddch (y, x, ch);
+                    }
+                }
             }
 
-            if (ch != ' ')
-            {
-                if ((obj = pp->p_monst) != NULL)
-                {
-                    obj->t_oldch = ch;
-                }
-
-                if (obj == NULL || !on (player, SEEMONST))
-                {
-                    mvaddch (y, x, ch);
-                }
-            }
-        }
-
-when S_FDET:
+        break;
+    case S_FDET:
         /*
          * Potion of gold detection
          */
-    ch = FALSE;
-    wclear (hw);
+        ch = FALSE;
+        wclear (hw);
 
-    for (obj = lvl_obj; obj != NULL; obj = next (obj))
-        if (obj->o_type == FOOD)
+        for (obj = lvl_obj; obj != NULL; obj = next (obj))
+            if (obj->o_type == FOOD)
+            {
+                ch = TRUE;
+                wmove (hw, obj->o_pos.y, obj->o_pos.x);
+                waddch (hw, FOOD);
+            }
+
+        if (ch)
         {
-            ch = TRUE;
-            wmove (hw, obj->o_pos.y, obj->o_pos.x);
-            waddch (hw, FOOD);
+            scr_info[S_FDET].oi_know = TRUE;
+            show_win ("Your nose tingles and you smell food.--More--");
+        }
+        else
+        {
+            msg ("your nose tingles");
         }
 
-    if (ch)
-    {
-        scr_info[S_FDET].oi_know = TRUE;
-        show_win ("Your nose tingles and you smell food.--More--");
-    }
-    else
-    {
-        msg ("your nose tingles");
-    }
-
-when S_TELEP:
+        break;
+    case S_TELEP:
         /*
          * Scroll of teleportation:
          * Make him dissapear and reappear
          */
-    {
-        cur_room = proom;
-        teleport();
-
-        if (cur_room != proom)
         {
-            scr_info[S_TELEP].oi_know = TRUE;
+            cur_room = proom;
+            teleport();
+
+            if (cur_room != proom)
+            {
+                scr_info[S_TELEP].oi_know = TRUE;
+            }
         }
-    }
-when S_ENCH:
+        break;
+    case S_ENCH:
 
-    if (cur_weapon == NULL || cur_weapon->o_type != WEAPON)
-    {
-        msg ("you feel a strange sense of loss");
-    }
-    else
-    {
-        cur_weapon->o_flags &= ~ISCURSED;
-
-        if (rnd (2) == 0)
+        if (cur_weapon == NULL || cur_weapon->o_type != WEAPON)
         {
-            cur_weapon->o_hplus++;
+            msg ("you feel a strange sense of loss");
         }
         else
         {
-            cur_weapon->o_dplus++;
+            cur_weapon->o_flags &= ~ISCURSED;
+
+            if (rnd (2) == 0)
+            {
+                cur_weapon->o_hplus++;
+            }
+            else
+            {
+                cur_weapon->o_dplus++;
+            }
+
+            msg ("your %s glows %s for a moment",
+                 weap_info[cur_weapon->o_which].oi_name, pick_color ("blue"));
         }
 
-        msg ("your %s glows %s for a moment",
-             weap_info[cur_weapon->o_which].oi_name, pick_color ("blue"));
-    }
-
-when S_SCARE:
+        break;
+    case S_SCARE:
         /*
          * Reading it is a mistake and produces laughter at her
          * poor boo boo.
          */
-    msg ("you hear maniacal laughter in the distance");
-when S_REMOVE:
-    uncurse (cur_armor);
-    uncurse (cur_weapon);
-    uncurse (cur_ring[LEFT]);
-    uncurse (cur_ring[RIGHT]);
-    msg (choose_str ("you feel in touch with the Universal Onenes",
-                     "you feel as if somebody is watching over you"));
-when S_AGGR:
+        msg ("you hear maniacal laughter in the distance");
+        break;
+    case S_REMOVE:
+        uncurse (cur_armor);
+        uncurse (cur_weapon);
+        uncurse (cur_ring[LEFT]);
+        uncurse (cur_ring[RIGHT]);
+        msg (choose_str ("you feel in touch with the Universal Onenes",
+                         "you feel as if somebody is watching over you"));
+        break;
+    case S_AGGR:
         /*
          * This scroll aggravates all the monsters on the current
          * level and sets them running towards the hero
          */
-    aggravate();
-    msg ("you hear a high pitched humming noise");
-when S_PROTECT:
+        aggravate();
+        msg ("you hear a high pitched humming noise");
+        break;
+    case S_PROTECT:
 
-    if (cur_armor != NULL)
-    {
-        cur_armor->o_flags |= ISPROT;
-        msg ("your armor is covered by a shimmering %s shield",
-             pick_color ("gold"));
-    }
-    else
-    {
-        msg ("you feel a strange sense of loss");
-    }
+        if (cur_armor != NULL)
+        {
+            cur_armor->o_flags |= ISPROT;
+            msg ("your armor is covered by a shimmering %s shield",
+                 pick_color ("gold"));
+        }
+        else
+        {
+            msg ("you feel a strange sense of loss");
+        }
 
 #ifdef MASTER
-otherwise:
-    msg ("what a puzzling scroll!");
-    return;
+    otherwise:
+        msg ("what a puzzling scroll!");
+        return;
 #endif
     }
 

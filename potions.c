@@ -111,7 +111,8 @@ void quaff()
     {
     case P_CONFUSE:
         do_pot (P_CONFUSE, !trip);
-    when P_POISON:
+        break;
+    case P_POISON:
         pot_info[P_POISON].oi_know = TRUE;
 
         if (ISWEARING (R_SUSTSTR))
@@ -125,7 +126,8 @@ void quaff()
             come_down();
         }
 
-    when P_HEALING:
+        break;
+    case P_HEALING:
         pot_info[P_HEALING].oi_know = TRUE;
 
         if ((pstats.s_hpt += roll (pstats.s_lvl, 4)) > max_hp)
@@ -135,11 +137,13 @@ void quaff()
 
         sight();
         msg ("you begin to feel better");
-    when P_STRENGTH:
+        break;
+    case P_STRENGTH:
         pot_info[P_STRENGTH].oi_know = TRUE;
         chg_str (1);
         msg ("you feel stronger, now.  What bulging muscles!");
-    when P_MFIND:
+        break;
+    case P_MFIND:
         player.t_flags |= SEEMONST;
         fuse ((void (*)()) turn_see, TRUE, HUHDURATION, AFTER);
 
@@ -147,7 +151,8 @@ void quaff()
             msg ("you have a %s feeling for a moment, then it passes",
                  choose_str ("normal", "strange"));
 
-    when P_TFIND:
+        break;
+    case P_TFIND:
         /*
          * Potion of magic detection.  Show the potions and scrolls
          */
@@ -191,7 +196,8 @@ void quaff()
             msg ("you have a %s feeling for a moment, then it passes",
                  choose_str ("normal", "strange"));
 
-    when P_LSD:
+        break;
+    case P_LSD:
 
         if (!trip)
         {
@@ -205,7 +211,8 @@ void quaff()
         }
 
         do_pot (P_LSD, TRUE);
-    when P_SEEINVIS:
+        break;
+    case P_SEEINVIS:
         sprintf (prbuf, "this potion tastes like %s juice", fruit);
         show = on (player, CANSEE);
         do_pot (P_SEEINVIS, FALSE);
@@ -216,11 +223,13 @@ void quaff()
         }
 
         sight();
-    when P_RAISE:
+        break;
+    case P_RAISE:
         pot_info[P_RAISE].oi_know = TRUE;
         msg ("you suddenly feel much more skillful");
         raise_level();
-    when P_XHEAL:
+        break;
+    case P_XHEAL:
         pot_info[P_XHEAL].oi_know = TRUE;
 
         if ((pstats.s_hpt += roll (pstats.s_lvl, 8)) > max_hp)
@@ -236,7 +245,8 @@ void quaff()
         sight();
         come_down();
         msg ("you begin to feel much better");
-    when P_HASTE:
+        break;
+    case P_HASTE:
         pot_info[P_HASTE].oi_know = TRUE;
         after = FALSE;
 
@@ -245,7 +255,8 @@ void quaff()
             msg ("you feel yourself moving much faster");
         }
 
-    when P_RESTORE:
+        break;
+    case P_RESTORE:
 
         if (ISRING (LEFT, R_ADDSTR))
         {
@@ -273,9 +284,11 @@ void quaff()
         }
 
         msg ("hey, this tastes great.  It make you feel warm all over");
-    when P_BLIND:
+        break;
+    case P_BLIND:
         do_pot (P_BLIND, TRUE);
-    when P_LEVIT:
+        break;
+    case P_LEVIT:
         do_pot (P_LEVIT, TRUE);
 #ifdef MASTER
     otherwise:
