@@ -95,7 +95,7 @@ void do_rooms()
          */
         if (rnd (10) < level - 1)
         {
-            // rp->r_flags |= ISDARK;       /* dark room */
+            rp->r_flags |= ISDARK;       /* dark room */
             if (rnd (15) == 0)
             {
                 rp->r_flags = ISMAZE;    /* maze room */
