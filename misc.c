@@ -165,14 +165,14 @@ void look (bool wakeup)
                 {
                     switch (runch)
                     {
-                    case 'h':
+                    case 'a':
                         if (x == ex)
                         {
                             continue;
                         }
 
                         break;
-                    case 'j':
+                    case 's':
 
                         if (y == sy)
                         {
@@ -180,7 +180,7 @@ void look (bool wakeup)
                         }
 
                         break;
-                    case 'k':
+                    case 'w':
 
                         if (y == ey)
                         {
@@ -188,7 +188,7 @@ void look (bool wakeup)
                         }
 
                         break;
-                    case 'l':
+                    case 'd':
 
                         if (x == sx)
                         {
@@ -196,36 +196,36 @@ void look (bool wakeup)
                         }
 
                         break;
-                    case 'y':
+                    // case 'y':
 
-                        if ((y + x) - sumhero >= 1)
-                        {
-                            continue;
-                        }
+                    //     if ((y + x) - sumhero >= 1)
+                    //     {
+                    //         continue;
+                    //     }
 
-                        break;
-                    case 'u':
+                    //     break;
+                    // case 'u':
 
-                        if ((y - x) - diffhero >= 1)
-                        {
-                            continue;
-                        }
+                    //     if ((y - x) - diffhero >= 1)
+                    //     {
+                    //         continue;
+                    //     }
 
-                        break;
-                    case 'n':
+                    //     break;
+                    // case 'n':
 
-                        if ((y + x) - sumhero <= -1)
-                        {
-                            continue;
-                        }
+                    //     if ((y + x) - sumhero <= -1)
+                    //     {
+                    //         continue;
+                    //     }
 
-                        break;
-                    case 'b':
+                    //     break;
+                    // case 'b':
 
-                        if ((y - x) - diffhero <= -1)
-                        {
-                            continue;
-                        }
+                    //     if ((y - x) - diffhero <= -1)
+                    //     {
+                    //         continue;
+                    //     }
                     }
 
                     switch (ch)
@@ -652,50 +652,50 @@ bool get_dir()
 
             switch (dir_ch = readchar())
             {
-            case 'h':
-            case'H':
+            case 'a':
+            case 'A':
                 delta.y =  0;
                 delta.x = -1;
                 break;
-            case 'j':
 
-            case'J':
+            case 's':
+            case 'S':
                 delta.y =  1;
                 delta.x =  0;
                 break;
-            case 'k':
 
-            case'K':
+            case 'w':
+            case 'W':
                 delta.y = -1;
                 delta.x =  0;
                 break;
-            case 'l':
 
-            case'L':
+            case 'd':
+            case 'D':
                 delta.y =  0;
                 delta.x =  1;
                 break;
-            case 'y':
 
-            case'Y':
-                delta.y = -1;
-                delta.x = -1;
-                break;
-            case 'u':
+            // case 'y':
+            // case'Y':
+            //     delta.y = -1;
+            //     delta.x = -1;
+            //     break;
 
-            case'U':
-                delta.y = -1;
-                delta.x =  1;
-                break;
-            case 'b':
+            // case 'u':
+            // case'U':
+            //     delta.y = -1;
+            //     delta.x =  1;
+            //     break;
 
-            case'B': delta.y =  1; delta.x = -1;
-                    break;
-            case 'n':
-            case'N':
-                delta.y =  1;
-                delta.x =  1;
-                break;
+            // case 'b':
+            // case'B': delta.y =  1; delta.x = -1;
+            //         break;
+            // case 'n':
+            // case'N':
+            //     delta.y =  1;
+            //     delta.x =  1;
+            //     break;
             case ESCAPE:
                 last_dir = '\0';
                 reset_last();

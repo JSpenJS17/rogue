@@ -124,8 +124,8 @@ void do_move (int dy, int dx)
 
             switch (runch)
             {
-            case 'h':
-            case 'l':
+            case 'a':
+            case 'd':
                 b1 = (bool) (hero.y != 1 && turn_ok (hero.y - 1, hero.x));
                 b2 = (bool) (hero.y != NUMLINES - 2 && turn_ok (hero.y + 1, hero.x));
 
@@ -149,8 +149,8 @@ void do_move (int dy, int dx)
                 turnref();
                 goto over;
 
-            case 'j':
-            case 'k':
+            case 's':
+            case 'w':
                 b1 = (bool) (hero.x != 0 && turn_ok (hero.y, hero.x - 1));
                 b2 = (bool) (hero.x != NUMCOLS - 1 && turn_ok (hero.y, hero.x + 1));
 

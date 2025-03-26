@@ -469,6 +469,8 @@ void picky_inven()
 /*
  * get_item:
  *  Pick something out of a pack for a purpose
+ *  TODO: make this like the steam version where it 
+ *        shows the list of items and you can select one without having to hit *
  */
 THING *get_item (char *purpose, int type)
 {

@@ -246,7 +246,7 @@
  */
 #define MACE        0
 #define SWORD       1
-#define BOW     2
+#define BOW         2
 #define ARROW       3
 #define DAGGER      4
 #define TWOSWORD    5
@@ -678,6 +678,7 @@ void    turnref();
 void    u_level();
 void    uncurse (THING *obj);
 void    unlock_sc();
+void    use();
 void    vert (struct room *rp, int startx);
 void    wait_for (int ch);
 THING  *wake_monster (int y, int x);
