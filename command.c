@@ -58,16 +58,6 @@ void use()
             {
                 take_off();
             }
-            else if (cur_armor != NULL)
-            {
-                addmsg("already wearing some");
-                if (!terse)
-                {
-                    addmsg(".  You'll have to take it off first");
-                }
-                endmsg();
-                after = FALSE;
-            }
             else
             {
                 wear(tp);

@@ -16,15 +16,9 @@
  * wear:
  *  The player wants to wear something, so let him/her put it on.
  */
-void wear()
+void wear(THING* obj)
 {
-    register THING *obj;
     register char *sp;
-
-    if ((obj = get_item ("wear", ARMOR)) == NULL)
-    {
-        return;
-    }
 
     if (cur_armor != NULL)
     {
