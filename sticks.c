@@ -49,15 +49,16 @@ void fix_stick (THING *cur)
  *  Perform a zap with a wand
  */
 
-void do_zap()
+void do_zap(THING* obj)
 {
-    THING *obj, *tp;
+    THING *tp;
     int y, x;
     char *name;
     char monster, oldch;
     static THING bolt;
 
-    if ((obj = get_item ("zap with", STICK)) == NULL)
+    /* I don't think we need these two checks */
+    if (obj == NULL)
     {
         return;
     }

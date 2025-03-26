@@ -18,12 +18,9 @@
  *  Put a ring on a hand
  */
 
-void ring_on()
+void ring_on(THING* obj)
 {
-    THING *obj;
     int ring;
-
-    obj = get_item ("put on", RING);
 
     /*
      * Make certain that it is somethings that we want to wear
@@ -114,42 +111,22 @@ void ring_on()
 
 /*
  * ring_off:
- *  take off a ring
+ *  take off the ring on a given hand
  */
 
-void ring_off()
+void ring_off(int hand)
 {
     int ring;
     THING *obj;
 
-    if (cur_ring[LEFT] == NULL && cur_ring[RIGHT] == NULL)
+    if (hand != LEFT && hand != RIGHT)
     {
-        if (terse)
-        {
-            msg ("no rings");
-        }
-        else
-        {
-            msg ("you aren't wearing any rings");
-        }
-
+        /* whoops */
         return;
     }
-    else if (cur_ring[LEFT] == NULL)
-    {
-        ring = RIGHT;
-    }
-    else if (cur_ring[RIGHT] == NULL)
-    {
-        ring = LEFT;
-    }
-    else if ((ring = gethand()) < 0)
-    {
-        return;
-    }
-
+    
     mpos = 0;
-    obj = cur_ring[ring];
+    obj = cur_ring[hand];
 
     if (obj == NULL)
     {

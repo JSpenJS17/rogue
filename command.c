@@ -24,6 +24,11 @@ void use()
 {
     // inventory (pack, 0);
     THING* obj = get_item("use", 0);
+    if (obj == NULL) // we hit esc
+    {
+        return;
+    }
+
     switch (obj->o_type)
     {
         case POTION: //
@@ -33,7 +38,6 @@ void use()
             read_scroll(obj);
             break;
         case RING:
-            // needs to handle take off and put on, depending on if the ring is already on
             if (obj == cur_ring[LEFT])
             {
                 ring_off(LEFT);
@@ -50,6 +54,7 @@ void use()
         case STICK:
             if (get_dir())
             {
+                msg(""); /* clear msg buffer to show something happened, might revisit this */
                 do_zap(obj);
             }
             else
@@ -64,13 +69,16 @@ void use()
             wield(obj);
             break;
         case ARMOR: //
-            // will need to handle taking off armor
             if (obj == cur_armor)
             {
-                take_off();
+                msg("you are already wearing that");
             }
             else
             {
+                if (cur_armor != NULL)
+                {
+                    take_off();
+                }
                 wear(obj);
             }
             break;
