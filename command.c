@@ -31,10 +31,10 @@ void use()
 
     switch (obj->o_type)
     {
-        case POTION: //
+        case POTION:
             quaff(obj);
             break;
-        case SCROLL: //
+        case SCROLL:
             read_scroll(obj);
             break;
         case RING:
@@ -62,13 +62,13 @@ void use()
                 after = FALSE;
             }
             break;
-        case FOOD: //
+        case FOOD:
             eat(obj);
             break;
-        case WEAPON: //
+        case WEAPON:
             wield(obj);
             break;
-        case ARMOR: //
+        case ARMOR:
             if (obj == cur_armor)
             {
                 msg("you are already wearing that");
@@ -86,17 +86,6 @@ void use()
             msg("you can't use that");
             return;
     }
-// Need to account for these commands
-        // case 'T':
-        //     take_off();
-        //     break;
-        // case 'P':
-        //     ring_on();
-        //     break;
-        // case 'R':
-        //     ring_off();
-        //     break;
-// Account for the above
 }
 
 /*
