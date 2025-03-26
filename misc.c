@@ -388,11 +388,11 @@ THING *find_obj (int y, int x)
  *  She wants to eat something, so let her try
  */
 
-void eat()
+void eat(THING* obj)
 {
-    THING *obj;
 
-    if ((obj = get_item ("eat", FOOD)) == NULL)
+    /* Don't think I need these checks, but they are here */
+    if (obj == NULL)
     {
         return;
     }

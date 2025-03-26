@@ -19,9 +19,8 @@
  *  Read a scroll from the pack and do the appropriate thing
  */
 
-void read_scroll()
+void read_scroll(THING* obj)
 {
-    THING *obj;
     PLACE *pp;
     int y, x;
     char ch;
@@ -31,8 +30,8 @@ void read_scroll()
     THING *orig_obj;
     static coord mp;
 
-    obj = get_item ("read", SCROLL);
 
+    /* I think these two checks are unnecessary */
     if (obj == NULL)
     {
         return;

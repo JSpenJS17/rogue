@@ -65,13 +65,11 @@ static PACT p_actions[] =
  *  Quaff a potion from the pack
  */
 
-void quaff()
+void quaff(THING* obj)
 {
-    THING *obj, *tp, *mp;
+    THING *tp, *mp;
     bool discardit = FALSE;
     bool show, trip;
-
-    obj = get_item ("quaff", POTION);
 
     /*
      * Make certain that it is somethings that we want to drink

@@ -250,9 +250,9 @@ char *num (int n1, int n2, char type)
  *  Pull out a certain weapon
  */
 
-void wield()
+void wield(THING* obj)
 {
-    THING *obj, *oweapon;
+    THING *oweapon;
     char *sp;
 
     oweapon = cur_weapon;
@@ -265,22 +265,10 @@ void wield()
 
     cur_weapon = oweapon;
 
-    if ((obj = get_item ("wield", WEAPON)) == NULL)
+    if (obj == NULL || is_current (obj))
     {
-    bad:
         after = FALSE;
         return;
-    }
-
-    if (obj->o_type == ARMOR)
-    {
-        msg ("you can't wield armor");
-        goto bad;
-    }
-
-    if (is_current (obj))
-    {
-        goto bad;
     }
 
     sp = inv_name (obj, TRUE);

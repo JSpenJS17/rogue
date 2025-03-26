@@ -23,44 +23,55 @@
 void use()
 {
     // inventory (pack, 0);
-    THING* tp = get_item("use", 0);
-    switch (tp->o_type)
+    THING* obj = get_item("use", 0);
+    switch (obj->o_type)
     {
-        case POTION:
-            quaff(tp);
+        case POTION: //
+            quaff(obj);
             break;
-        case SCROLL:
-            read_scroll(tp);
+        case SCROLL: //
+            read_scroll(obj);
             break;
         case RING:
             // needs to handle take off and put on, depending on if the ring is already on
-            ring_on(tp);
+            if (obj == cur_ring[LEFT])
+            {
+                ring_off(LEFT);
+            }
+            else if (obj == cur_ring[RIGHT])
+            {
+                ring_off(RIGHT);
+            }
+            else
+            {
+                ring_on(obj);
+            }
             break;
         case STICK:
             if (get_dir())
             {
-                do_zap(tp);
+                do_zap(obj);
             }
             else
             {
                 after = FALSE;
             }
             break;
-        case FOOD:
-            eat();
+        case FOOD: //
+            eat(obj);
             break;
-        case WEAPON:
-            wield();
+        case WEAPON: //
+            wield(obj);
             break;
-        case ARMOR:
+        case ARMOR: //
             // will need to handle taking off armor
-            if (tp == cur_armor)
+            if (obj == cur_armor)
             {
                 take_off();
             }
             else
             {
-                wear(tp);
+                wear(obj);
             }
             break;
         default:
