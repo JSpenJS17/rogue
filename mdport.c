@@ -1184,36 +1184,36 @@ int md_readchar()
             /* Cygwin Console   */
             /* PuTTY        */
             case KEY_LEFT :
-                ch = CTRL ('H');
+                ch = CTRL ('A');
                 break;
 
             case KEY_RIGHT:
-                ch = CTRL ('L');
+                ch = CTRL ('D');
                 break;
 
             case KEY_UP   :
-                ch = CTRL ('K');
+                ch = CTRL ('W');
                 break;
 
             case KEY_DOWN :
-                ch = CTRL ('J');
+                ch = CTRL ('S');
                 break;
 
-            case KEY_HOME :
-                ch = CTRL ('Y');
-                break;
+            // case KEY_HOME :
+            //     ch = CTRL ('Y');
+            //     break;
 
-            case KEY_PPAGE:
-                ch = CTRL ('U');
-                break;
+            // case KEY_PPAGE:
+            //     ch = CTRL ('U');
+            //     break;
 
-            case KEY_NPAGE:
-                ch = CTRL ('N');
-                break;
+            // case KEY_NPAGE:
+            //     ch = CTRL ('N');
+            //     break;
 
-            case KEY_END  :
-                ch = CTRL ('B');
-                break;
+            // case KEY_END  :
+            //     ch = CTRL ('B');
+            //     break;
 
             default:
                 break;
@@ -1228,11 +1228,11 @@ int md_readchar()
             {
             /* ESC F - Interix Console codes */
             case   '^':
-                ch = CTRL ('H');
+                ch = CTRL ('A');
                 break;  /* Shift-Left       */
 
             case   '$':
-                ch = CTRL ('L');
+                ch = CTRL ('D');
                 break;  /* Shift-Right      */
 
             /* ESC [ - Interix Console codes */
@@ -1241,19 +1241,19 @@ int md_readchar()
                 break;      /* Home         */
 
             case     1:
-                ch = CTRL ('K');
+                ch = CTRL ('W');
                 break;  /* Ctl-Keypad Up    */
 
             case     2:
-                ch = CTRL ('J');
+                ch = CTRL ('S');
                 break;  /* Ctl-Keypad Down  */
 
             case     3:
-                ch = CTRL ('L');
+                ch = CTRL ('D');
                 break;  /* Ctl-Keypad Right */
 
             case     4:
-                ch = CTRL ('H');
+                ch = CTRL ('A');
                 break;  /* Ctl-Keypad Left  */
 
             case   263:
@@ -1305,52 +1305,52 @@ int md_readchar()
 
             /* ESC O - PuTTY */
             case   'D':
-                ch = CTRL ('H');
+                ch = CTRL ('A');
                 break;
 
             case   'C':
-                ch = CTRL ('L');
+                ch = CTRL ('D');
                 break;
 
             case   'A':
-                ch = CTRL ('K');
+                ch = CTRL ('W');
                 break;
 
             case   'B':
-                ch = CTRL ('J');
+                ch = CTRL ('S');
                 break;
 
             case   't':
-                ch = 'h';
+                ch = 'a';
                 break;
 
             case   'v':
-                ch = 'l';
+                ch = 'd';
                 break;
 
             case   'x':
-                ch = 'k';
+                ch = 'w';
                 break;
 
             case   'r':
-                ch = 'j';
+                ch = 'd';
                 break;
 
-            case   'w':
-                ch = 'y';
-                break;
+            // case   'w':
+            //     ch = 'y';
+            //     break;
 
-            case   'y':
-                ch = 'u';
-                break;
+            // case   'y':
+            //     ch = 'u';
+            //     break;
 
-            case   's':
-                ch = 'n';
-                break;
+            // case   's':
+            //     ch = 'n';
+            //     break;
 
-            case   'q':
-                ch = 'b';
-                break;
+            // case   'q':
+            //     ch = 'b';
+            //     break;
 
             case   'u':
                 ch = '.';
@@ -1373,214 +1373,214 @@ int md_readchar()
         switch (ch)
         {
         case KEY_LEFT   :
-            ch = 'h';
+            ch = 'a';
             break;
 
         case KEY_DOWN   :
-            ch = 'j';
+            ch = 's';
             break;
 
         case KEY_UP     :
-            ch = 'k';
+            ch = 'w';
             break;
 
         case KEY_RIGHT  :
-            ch = 'l';
+            ch = 'd';
             break;
 
-        case KEY_HOME   :
-            ch = 'y';
-            break;
+        // case KEY_HOME   :
+        //     ch = 'y';
+        //     break;
 
-        case KEY_PPAGE  :
-            ch = 'u';
-            break;
+        // case KEY_PPAGE  :
+        //     ch = 'u';
+        //     break;
 
-        case KEY_END    :
-            ch = 'b';
-            break;
-#ifdef KEY_LL
+        // case KEY_END    :
+        //     ch = 'b';
+        //     break;
+// #ifdef KEY_LL
 
-        case KEY_LL     :
-            ch = 'b';
-            break;
-#endif
+//         case KEY_LL     :
+//             ch = 'b';
+//             break;
+// #endif
 
-        case KEY_NPAGE  :
-            ch = 'n';
-            break;
+//         case KEY_NPAGE  :
+//             ch = 'n';
+//             break;
 
 #ifdef KEY_B1
 
         case KEY_B1     :
-            ch = 'h';
+            ch = 'a';
             break;
 
         case KEY_C2     :
-            ch = 'j';
+            ch = 's';
             break;
 
         case KEY_A2     :
-            ch = 'k';
+            ch = 'w';
             break;
 
         case KEY_B3     :
-            ch = 'l';
+            ch = 'd';
             break;
 #endif
 
-        case KEY_A1     :
-            ch = 'y';
-            break;
+        // case KEY_A1     :
+        //     ch = 'y';
+        //     break;
 
-        case KEY_A3     :
-            ch = 'u';
-            break;
+        // case KEY_A3     :
+        //     ch = 'u';
+        //     break;
 
-        case KEY_C1     :
-            ch = 'b';
-            break;
+        // case KEY_C1     :
+        //     ch = 'b';
+        //     break;
 
-        case KEY_C3     :
-            ch = 'n';
-            break;
+        // case KEY_C3     :
+        //     ch = 'n';
+        //     break;
 
         /* next should be '.', but for problem with putty/linux */
-        case KEY_B2     :
-            ch = 'u';
-            break;
+        // case KEY_B2     :
+        //     ch = 'u';
+        //     break;
 
 #ifdef KEY_SLEFT
 
         case KEY_SRIGHT  :
-            ch = CTRL ('L');
+            ch = CTRL ('D');
             break;
 
         case KEY_SLEFT   :
-            ch = CTRL ('H');
+            ch = CTRL ('A');
             break;
 #ifdef KEY_SUP
 
         case KEY_SUP     :
-            ch = CTRL ('K');
+            ch = CTRL ('W');
             break;
 
         case KEY_SDOWN   :
-            ch = CTRL ('J');
+            ch = CTRL ('S');
             break;
 #endif
 
-        case KEY_SHOME   :
-            ch = CTRL ('Y');
-            break;
+        // case KEY_SHOME   :
+        //     ch = CTRL ('Y');
+        //     break;
 
-        case KEY_SPREVIOUS:
-            ch = CTRL ('U');
-            break;
+        // case KEY_SPREVIOUS:
+        //     ch = CTRL ('U');
+        //     break;
 
-        case KEY_SEND    :
-            ch = CTRL ('B');
-            break;
+        // case KEY_SEND    :
+        //     ch = CTRL ('B');
+        //     break;
 
-        case KEY_SNEXT   :
-            ch = CTRL ('N');
-            break;
+        // case KEY_SNEXT   :
+        //     ch = CTRL ('N');
+        //     break;
 #endif
 
         case 0x146       :
-            ch = CTRL ('K');
+            ch = CTRL ('W');
             break;  /* Shift-Up */
 
         case 0x145       :
-            ch = CTRL ('J');
+            ch = CTRL ('S');
             break;  /* Shift-Down   */
 
 
 #ifdef CTL_RIGHT
 
         case CTL_RIGHT   :
-            ch = CTRL ('L');
+            ch = CTRL ('D');
             break;
 
         case CTL_LEFT    :
-            ch = CTRL ('H');
+            ch = CTRL ('A');
             break;
 
         case CTL_UP      :
-            ch = CTRL ('K');
+            ch = CTRL ('W');
             break;
 
         case CTL_DOWN    :
-            ch = CTRL ('J');
+            ch = CTRL ('S');
             break;
 
-        case CTL_HOME    :
-            ch = CTRL ('Y');
-            break;
+        // case CTL_HOME    :
+        //     ch = CTRL ('Y');
+        //     break;
 
-        case CTL_PGUP    :
-            ch = CTRL ('U');
-            break;
+        // case CTL_PGUP    :
+        //     ch = CTRL ('U');
+        //     break;
 
-        case CTL_END     :
-            ch = CTRL ('B');
-            break;
+        // case CTL_END     :
+        //     ch = CTRL ('B');
+        //     break;
 
-        case CTL_PGDN    :
-            ch = CTRL ('N');
-            break;
+        // case CTL_PGDN    :
+        //     ch = CTRL ('N');
+        //     break;
 #endif
-#ifdef KEY_EOL
+// #ifdef KEY_EOL
 
-        case KEY_EOL     :
-            ch = CTRL ('B');
-            break;
-#endif
+//         case KEY_EOL     :
+//             ch = CTRL ('B');
+//             break;
+// #endif
 
 #ifndef CTL_PAD1
 
         /* MSYS rxvt console */
         case 511         :
-            ch = CTRL ('J');
+            ch = CTRL ('S');
             break; /* Shift Dn */
 
         case 512         :
-            ch = CTRL ('J');
+            ch = CTRL ('S');
             break; /* Ctl Down */
 
         case 514         :
-            ch = CTRL ('H');
+            ch = CTRL ('A');
             break; /* Ctl Left */
 
         case 516         :
-            ch = CTRL ('L');
+            ch = CTRL ('D');
             break; /* Ctl Right*/
 
         case 518         :
-            ch = CTRL ('K');
+            ch = CTRL ('W');
             break; /* Shift Up */
 
         case 519         :
-            ch = CTRL ('K');
+            ch = CTRL ('W');
             break; /* Ctl Up   */
 #endif
 
 #ifdef CTL_PAD1
 
-        case CTL_PAD1   :
-            ch = CTRL ('B');
-            break;
+        // case CTL_PAD1   :
+        //     ch = CTRL ('B');
+        //     break;
 
         case CTL_PAD2   :
-            ch = CTRL ('J');
+            ch = CTRL ('S');
             break;
 
-        case CTL_PAD3   :
-            ch = CTRL ('N');
-            break;
+        // case CTL_PAD3   :
+        //     ch = CTRL ('N');
+        //     break;
 
         case CTL_PAD4   :
-            ch = CTRL ('H');
+            ch = CTRL ('A');
             break;
 
         case CTL_PAD5   :
@@ -1588,34 +1588,34 @@ int md_readchar()
             break;
 
         case CTL_PAD6   :
-            ch = CTRL ('L');
+            ch = CTRL ('D');
             break;
 
-        case CTL_PAD7   :
-            ch = CTRL ('Y');
-            break;
+        // case CTL_PAD7   :
+        //     ch = CTRL ('Y');
+        //     break;
 
         case CTL_PAD8   :
-            ch = CTRL ('K');
+            ch = CTRL ('W');
             break;
 
-        case CTL_PAD9   :
-            ch = CTRL ('U');
-            break;
+        // case CTL_PAD9   :
+        //     ch = CTRL ('U');
+        //     break;
 #endif
 
 #ifdef ALT_RIGHT
 
         case ALT_RIGHT  :
-            ch = CTRL ('L');
+            ch = CTRL ('D');
             break;
 
         case ALT_LEFT   :
-            ch = CTRL ('H');
+            ch = CTRL ('A');
             break;
 
         case ALT_DOWN   :
-            ch = CTRL ('J');
+            ch = CTRL ('S');
             break;
 
         case ALT_HOME   :
@@ -1642,7 +1642,7 @@ int md_readchar()
             break;
 
         case ALT_PAD2   :
-            ch = CTRL ('J');
+            ch = CTRL ('S');
             break;
 
         case ALT_PAD3   :
@@ -1650,7 +1650,7 @@ int md_readchar()
             break;
 
         case ALT_PAD4   :
-            ch = CTRL ('H');
+            ch = CTRL ('A');
             break;
 
         case ALT_PAD5   :
@@ -1658,7 +1658,7 @@ int md_readchar()
             break;
 
         case ALT_PAD6   :
-            ch = CTRL ('L');
+            ch = CTRL ('D');
             break;
 
         case ALT_PAD7   :
@@ -1666,7 +1666,7 @@ int md_readchar()
             break;
 
         case ALT_PAD8   :
-            ch = CTRL ('K');
+            ch = CTRL ('W');
             break;
 
         case ALT_PAD9   :
@@ -1676,7 +1676,7 @@ int md_readchar()
 #ifdef KEY_BACKSPACE /* NCURSES in Keypad mode sends this for Ctrl-H */
 
         case KEY_BACKSPACE:
-            ch = CTRL ('H');
+            ch = CTRL ('A');
             break;
 #endif
         }

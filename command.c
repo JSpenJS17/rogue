@@ -235,39 +235,23 @@ void command()
                 case CTRL ('U') :
                 case CTRL ('Y') :
                 case '.':
-                // case 'a':
-                // case 'b':
-                // case 'h':
-                // case 'j':
-                // case 'k':
-                // case 'l':
                 case 'w':
                 case 'a':
                 case 's':
                 case 'd':
-                case 'm':
-                // case 'n':
-                case 'q':
-                case 'r':
-                // case 's':
-                case 't':
-                // case 'u':
-                // case 'y':
-                case 'z':
-                // case 'B':
-                case 'C':
-                case 'I':
-                // case 'H':
-                // case 'J':
-                // case 'K':
-                // case 'L':
                 case 'W':
                 case 'A':
                 case 'S':
                 case 'D':
-                // case 'N':
-                // case 'U':
-                // case 'Y':
+                
+                case 'm':
+                case 'q':
+                case 'r':
+                case 't':
+                case 'z':
+                case 'C':
+                case 'I':
+
 #ifdef MASTER
                 case CTRL ('D') :
                 case CTRL ('A') :
@@ -287,7 +271,7 @@ void command()
                 count--;
             }
 
-            if (/* ch != 'a' &&*/ ch != ESCAPE && ! (running || count || to_death))
+            if (ch != ESCAPE && ! (running || count || to_death))
             {
                 l_last_comm = last_comm;
                 l_last_dir = last_dir;
@@ -346,94 +330,32 @@ void command()
             case '!':
                 shell();
                 break;
-            // case 'h':
             case 'a':
                 do_move (0, -1);
                 break;
-            // case 'j':
             case 's':
                 do_move (1, 0);
                 break;
-            // case 'k':
             case 'w':
                 do_move (-1, 0);
                 break;
-            // case 'l':
             case 'd':
                 do_move (0, 1);
                 break;
-            // case 'y':
-            //     do_move (-1, -1);
-            //     break;
-            // case 'u':
-            //     do_move (-1, 1);
-            //     break;
-            // case 'b':
-            //     do_move (1, -1);
-            //     break;
-            // case 'n':
-            //     do_move (1, 1);
-            //     break;
-            // case 'H':
             case 'A':
                 do_run ('a');
                 break;
-            // case 'J':
             case 'S':
                 do_run ('s');
                 break;
-            // case 'K':
             case 'W':
                 do_run ('w');
                 break;
-            // case 'L':
             case 'D':
                 do_run ('d');
                 break;
-            // case 'Y':
-            //     do_run ('y');
-            //     break;
-            // case 'U':
-            //     do_run ('u');
-            //     break;
-            // case 'B':
-            //     do_run ('b');
-            //     break;
-            // case 'N':
-            //     do_run ('n');
-            //     break;
-            // case CTRL ('H') :
-            // case CTRL ('J') :
-            // case CTRL ('K') :
-            // case CTRL ('L') :
-            // case CTRL ('Y') :
-            // case CTRL ('U') :
-            // case CTRL ('B') :
-            // case CTRL ('N') :
-            //     {
-            //         if (!on (player, ISBLIND))
-            //         {
-            //             door_stop = TRUE;
-            //             firstmove = TRUE;
-            //         }
-
-            //         if (count && !newcount)
-            //         {
-            //             ch = direction;
-            //         }
-            //         else
-            //         {
-            //             ch += ('A' - CTRL ('A'));
-            //             direction = ch;
-            //         }
-
-            //         goto over;
-            //     }
-
-            //     break;
             case 'F':
                 kamikaze = TRUE;
-
             /* FALLTHROUGH */
             case 'f':
                 if (!get_dir())
@@ -478,27 +400,6 @@ void command()
                 }
 
                 break;
-            // case 'a':
-
-            //     if (last_comm == '\0')
-            //     {
-            //         msg ("you haven't typed a command yet");
-            //         after = FALSE;
-            //     }
-            //     else
-            //     {
-            //         ch = last_comm;
-            //         again = TRUE;
-            //         goto over;
-            //     }
-
-            //     break;
-            // case 'Q':
-            //     after = FALSE;
-            //     q_comm = TRUE;
-            //     quit (0);
-            //     q_comm = FALSE;
-            //     break;
             case 'q':
                 drop();
                 break;
@@ -506,51 +407,6 @@ void command()
                 after = FALSE;
                 inventory (pack, 0);
                 break;
-            // case 'I':
-            //     after = FALSE;
-            //     picky_inven();
-            //     break;
-
-// Need to account for these commands
-            // case 'd':
-            //     drop();
-            //     break;
-            // case 'r':
-            //     read_scroll();
-            //     break;
-            // case 'e':
-            //     eat();
-            //     break;
-            // case 'w':
-            //     wield();
-            //     break;
-            // case 'W':
-            //     wear();
-            //     break;
-            // case 'T':
-            //     take_off();
-            //     break;
-            // case 'P':
-            //     ring_on();
-            //     break;
-            // case 'R':
-            //     ring_off();
-            //     break;
-            // case 'q':
-            //     quaff();
-            //     break;
-            // case 'z':
-            //     if (get_dir())
-            //     {
-            //         do_zap();
-            //     }
-            //     else
-            //     {
-            //         after = FALSE;
-            //     }
-
-            // break;
-// Account for the above
 
             case 'e':  /* new general use item command */
                 use();
@@ -560,10 +416,6 @@ void command()
                 option();
                 after = FALSE;
                 break;
-            // case 'c':
-            //     call();
-            //     after = FALSE;
-            //     break;
             case '>':
                 after = FALSE;
                 d_level();
@@ -577,17 +429,9 @@ void command()
             //     after = FALSE;
             //     help();
             //     break;
-            // case '/':
-            //     after = FALSE;
-            //     identify();
-            //     break;
             case 'r':
                 search();
                 break;
-            // case 'D':
-            //     after = FALSE;
-            //     discovered();
-            //     break;
             case CTRL ('P') :
                 after = FALSE;
                 msg (huh);

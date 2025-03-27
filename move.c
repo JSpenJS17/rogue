@@ -136,12 +136,12 @@ void do_move (int dy, int dx)
 
                 if (b1)
                 {
-                    runch = 'k';
+                    runch = 'w';
                     dy = -1;
                 }
                 else
                 {
-                    runch = 'j';
+                    runch = 's';
                     dy = 1;
                 }
 
@@ -161,12 +161,12 @@ void do_move (int dy, int dx)
 
                 if (b1)
                 {
-                    runch = 'h';
+                    runch = 'a';
                     dx = -1;
                 }
                 else
                 {
-                    runch = 'l';
+                    runch = 'd';
                     dx = 1;
                 }
 
