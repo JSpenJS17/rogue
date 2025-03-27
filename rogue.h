@@ -21,7 +21,7 @@
  */
 #define MAXROOMS    9
 #define MAXTHINGS   9
-#define MAXOBJ      12  /* number of object spawn attempts per level */
+#define MAXOBJ      9  /* number of object spawn attempts per level */
 #define MAXPACK     23
 #define MAXTRAPS    10
 #define AMULETLEVEL 26
