@@ -362,8 +362,14 @@ int attack (THING *mp)
             case 'F':
                 /*
                  * Venus Flytrap stops the poor guy from moving
+                 * But only when orthogonal to the player due to removing diagonal movement
                  */
-                player.t_flags |= ISHELD;
+
+                if (mp->t_pos.x == player.t_pos.x || mp->t_pos.y == player.t_pos.y)
+                {
+                    player.t_flags |= ISHELD;
+                }
+
                 sprintf (monsters['F' - 'A'].m_stats.s_dmg, "%dx1", ++vf_hit);
 
                 if (--pstats.s_hpt <= 0)
