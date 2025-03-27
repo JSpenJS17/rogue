@@ -301,12 +301,13 @@ char pack_char()
 
 /*
  * inventory:
- *  List what is in the pack.  Return TRUE if there is something of
- *  the given type.
+ *  List what is in the pack.  Return the character of the selected item
+ *  or -1 if invalid selection. Should have its own menu system
  */
-bool inventory (THING *list, int type)
+char inventory (THING *list, int type, char* prompt)
 {
     static char inv_temp[MAXSTR];
+    char retch;
 
     n_objs = 0;
 
@@ -320,15 +321,16 @@ bool inventory (THING *list, int type)
         }
 
         n_objs++;
-#ifdef MASTER
 
+#ifdef MASTER
         if (!list->o_packch)
         {
             strcpy (inv_temp, "%s");
         }
         else
 #endif
-            sprintf (inv_temp, "%c) %%s", list->o_packch);
+
+        sprintf (inv_temp, "%c) %%s", list->o_packch);
 
         msg_esc = TRUE;
 
@@ -336,7 +338,7 @@ bool inventory (THING *list, int type)
         {
             msg_esc = FALSE;
             msg ("");
-            return TRUE;
+            return -1;
         }
 
         msg_esc = FALSE;
@@ -351,11 +353,24 @@ bool inventory (THING *list, int type)
             msg (type == 0 ? "you are empty handed" :
                  "you don't have anything appropriate");
 
-        return FALSE;
+        return -1;
     }
 
-    end_line();
-    return TRUE;
+    /* 
+     * Need to refresh screen to prevent 
+     * previous message from overwriting top inventory item
+     */
+    refresh();
+    retch = end_line_cust(prompt);
+
+    if (retch == ESCAPE)
+    {
+        msg_esc = FALSE;
+        msg("");
+        return -1;
+    }
+    
+    return retch;
 }
 
 /*
@@ -494,48 +509,63 @@ THING *get_item (char *purpose, int type)
     {
         for (;;)
         {
-            if (!terse)
-            {
-                addmsg ("which object do you want to ");
-            }
+            // if (!terse)
+            // {
+            //     addmsg ("which object do you want to ");
+            // }
 
-            addmsg (purpose);
+            // addmsg (purpose);
 
-            if (terse)
-            {
-                addmsg (" what");
-            }
+            // if (terse)
+            // {
+            //     addmsg (" what");
+            // }
 
-            msg ("? (* for list): ");
-            ch = readchar();
+            // msg ("? (* for list): ");
+            // ch = readchar();
+
             mpos = 0;
+            ch = inventory (pack, type, "--Press a key to use the item--");
+
+            /* 
+             * Invalid selection, cancel the command
+             * Should probably say something to the user
+             */
+            if (ch == -1)
+            {
+                reset_last();
+                after = FALSE;
+                msg("");
+                return NULL;
+            }
 
             /*
              * Give the poor player a chance to abort the command
              */
-            if (ch == ESCAPE)
-            {
-                reset_last();
-                after = FALSE;
-                msg ("");
-                return NULL;
-            }
+            // if (ch == ESCAPE)
+            // {
+            //     reset_last();
+            //     after = FALSE;
+            //     msg ("");
+            //     return NULL;
+            // }
 
-            n_objs = 1;     /* normal case: person types one char */
+            // n_objs = 1;     /* normal case: person types one char */
 
-            if (ch == '*')
-            {
-                mpos = 0;
+            // if (ch == '*')
+            // {
+            //     mpos = 0;
 
-                if (inventory (pack, type) == 0)
-                {
-                    after = FALSE;
-                    return NULL;
-                }
+            //     if (inventory (pack, type) == 0)
+            //     {
+            //         after = FALSE;
+            //         return NULL;
+            //     }
 
-                continue;
-            }
+            //     continue;
+            // }
 
+            /* Sound from here down */
             for (obj = pack; obj != NULL; obj = next (obj))
                 if (obj->o_packch == ch)
                 {

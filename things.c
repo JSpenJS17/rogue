@@ -616,16 +616,16 @@ void set_order (int *order, int numthings)
 }
 
 /*
- * add_line:
- *  Add a line to the list of discoveries
+ * add_line_cust:
+ *  Add a line to the list of discoveries -- allows for custom prompt
  */
 /* VARARGS1 */
-char add_line (char *fmt, char *arg)
+char add_line_cust (char *fmt, char *arg, char *prompt)
 {
     WINDOW *tw, *sw;
     int x, y;
-    char *prompt = "--Press space to continue--";
     static int maxlen = -1;
+    char retch;
 
     if (line_cnt == 0)
     {
@@ -693,7 +693,7 @@ char add_line (char *fmt, char *arg)
 
                 touchwin (tw);
                 wrefresh (tw);
-                wait_for (' ');
+                retch = readchar();
 
                 if (md_hasclreol())
                 {
@@ -710,7 +710,7 @@ char add_line (char *fmt, char *arg)
                 wmove (hw, LINES - 1, 0);
                 waddstr (hw, prompt);
                 wrefresh (hw);
-                wait_for (' ');
+                retch = readchar();
                 clearok (curscr, TRUE);
                 wclear (hw);
                 touchwin (stdscr);
@@ -736,18 +736,29 @@ char add_line (char *fmt, char *arg)
         }
     }
 
-    return ~ESCAPE;
+    return retch;
+}
+
+/* 
+ * add_line:
+ *  Add a line to the list of discoveries -- uses a set prompt
+ */
+char add_line (char *fmt, char *arg) 
+{
+    return add_line_cust(fmt, arg, "--Press space to continue--");
 }
 
 /*
- * end_line:
- *  End the list of lines
+ * end_line_cust:
+ *  End the list of lines -- custom prompt
  */
 
-void end_line()
+char end_line_cust(char* prompt)
 {
+    char retch = ESCAPE;
     if (inv_type != INV_SLOW)
     {
+        /* Happens on inventory of length 1 I think */
         if (line_cnt == 1 && !newpage)
         {
             mpos = 0;
@@ -755,12 +766,22 @@ void end_line()
         }
         else
         {
-            add_line ((char *) NULL, NULL);
+            retch = add_line_cust ((char *) NULL, NULL, prompt);
         }
     }
 
     line_cnt = 0;
     newpage = FALSE;
+    return retch;
+}
+
+/*
+ * end_line:
+ *  End the list of lines -- default prompt
+ */
+char end_line()
+{
+    return end_line_cust("--Press space to continue--");
 }
 
 /*

@@ -405,7 +405,7 @@ void command()
                 break;
             case 'i':
                 after = FALSE;
-                inventory (pack, 0);
+                inventory (pack, 0, "--Press space to continue--");
                 break;
 
             case 'e':  /* new general use item command */

@@ -600,7 +600,7 @@ void    init_player();
 void    init_probs();
 void    init_stones();
 void    init_weapon (THING *weap, int which);
-bool    inventory (THING *list, int type);
+char    inventory (THING *list, int type, char* prompt);
 void    invis_on();
 void    killed (THING *tp, bool pr);
 void    kill_daemon (void (*func)());
