@@ -759,15 +759,15 @@ char end_line_cust(char* prompt)
     if (inv_type != INV_SLOW)
     {
         /* Happens on inventory of length 1 I think */
-        if (line_cnt == 1 && !newpage)
-        {
-            mpos = 0;
-            msg (lastfmt, lastarg);
-        }
-        else
-        {
+        // if (line_cnt == 1 && !newpage)
+        // {
+        //     mpos = 0;
+        //     msg (lastfmt, lastarg);
+        // }
+        // else
+        // {
             retch = add_line_cust ((char *) NULL, NULL, prompt);
-        }
+        // }
     }
 
     line_cnt = 0;

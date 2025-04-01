@@ -198,6 +198,12 @@ void read_scroll(THING* obj)
              */
             scr_info[obj->o_which].oi_know = TRUE;
             msg ("this scroll is an %s scroll", scr_info[obj->o_which].oi_name);
+            // wait for user to hit enter or space
+            char ch = 0;
+            while (ch != '\n' && ch != ' ' && ch != '\r')
+            {
+                ch = readchar();
+            }
             whatis (TRUE, id_type[obj->o_which]);
         }
 

@@ -313,9 +313,10 @@ char inventory (THING *list, int type, char* prompt)
 
     for (; list != NULL; list = next (list))
     {
-        if (type && type != list->o_type && ! (type == CALLABLE &&
-                                               list->o_type != FOOD && list->o_type != AMULET) &&
-                ! (type == R_OR_S && (list->o_type == RING || list->o_type == STICK)))
+        if (type && 
+            type != list->o_type && 
+            !(type == CALLABLE && list->o_type != FOOD &&  list->o_type != AMULET) &&
+            !(type == R_OR_S && (list->o_type == RING || list->o_type == STICK)))
         {
             continue;
         }
@@ -491,7 +492,7 @@ THING *get_item (char *purpose, int type)
 {
     THING *obj;
     char ch;
-
+    char msg_buf[80];
     if (pack == NULL)
     {
         msg ("you aren't carrying anything");
@@ -525,7 +526,8 @@ THING *get_item (char *purpose, int type)
             // ch = readchar();
 
             mpos = 0;
-            ch = inventory (pack, type, "--Press a key to use the item--");
+            sprintf(msg_buf, "--Press a key to %s the item--", purpose);
+            ch = inventory (pack, type, msg_buf);
 
             /* 
              * Invalid selection, cancel the command
@@ -535,7 +537,6 @@ THING *get_item (char *purpose, int type)
             {
                 reset_last();
                 after = FALSE;
-                msg("");
                 return NULL;
             }
 
