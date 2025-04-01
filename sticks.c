@@ -76,6 +76,10 @@ void do_zap(THING* obj)
         return;
     }
 
+    ws_info[obj->o_which].oi_know = TRUE;
+    sprintf(prbuf, "you zap a wand of %s", ws_info[obj->o_which].oi_name);
+    msg(prbuf);
+
     switch (obj->o_which)
     {
     case WS_LIGHT:

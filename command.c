@@ -54,7 +54,6 @@ void use()
         case STICK:
             if (get_dir())
             {
-                msg(""); /* clear msg buffer to show something happened, might revisit this */
                 do_zap(obj);
             }
             else
