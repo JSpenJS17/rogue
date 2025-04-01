@@ -71,7 +71,7 @@ void use()
         case ARMOR:
             if (obj == cur_armor)
             {
-                msg("you are already wearing that");
+                take_off();
             }
             else
             {
