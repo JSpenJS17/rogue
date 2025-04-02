@@ -77,7 +77,8 @@ void do_zap(THING* obj)
     }
 
     ws_info[obj->o_which].oi_know = TRUE;
-    sprintf(prbuf, "you zap a wand of %s", ws_info[obj->o_which].oi_name);
+    msg("You zap the wand");
+    sprintf(prbuf, "%s", stick_descs[obj->o_which]);
     msg(prbuf);
 
     switch (obj->o_which)
@@ -378,7 +379,10 @@ void drain()
 
     if ((cnt = (int) (dp - drainee)) == 0)
     {
-        msg ("you have a tingling feeling");
+        /*  
+         * Removing this message due to new msg system for wands
+         */
+        // msg ("you have a tingling feeling");
         return;
     }
 

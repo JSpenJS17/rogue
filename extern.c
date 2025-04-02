@@ -333,6 +333,24 @@ struct obj_info ws_info[MAXSTICKS] =
     { "teleport to",         6,  50, NULL, FALSE },
     { "cancellation",        5, 280, NULL, FALSE },
 };
+/* ("You zap the wand, %s", stick_descs[stick_id]) */
+char* stick_descs[MAXSTICKS] = 
+{
+    "a bright light emits",                                 /* WS_LIGHT */
+    "it's so clear in here now",                            /* WS_INVIS */
+    "a bolt of lightning shoots out",                       /* WS_ELECT */
+    "a fireball shoots out",                                /* WS_FIRE */
+    "a blast of cold shoots out",                           /* WS_COLD */
+    "it smells like smoke in here",                         /* WS_POLYMORPH */
+    "a magic missle shoots out",                            /* WS_MISSILE */
+    "the breeze speeds up",                                 /* WS_HASTE_M */
+    "the breeze slows down",                                /* WS_SLOW_M */
+    "you feel your life flowing through it",                /* WS_DRAIN */
+    "nothing happens",                                      /* WS_NOP */
+    "the space in front of you has been teleported away",   /* WS_TELAWAY */
+    "you teleport forward",                                 /* WS_TELTO */
+    "the air now seems very ordinary"                       /* WS_CANCEL */
+};
 
 struct h_list helpstr[] =
 {

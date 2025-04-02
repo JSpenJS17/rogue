@@ -482,7 +482,7 @@ extern bool after, again, allscore, amulet, door_stop, fight_flush,
 extern char dir_ch, file_name[], home[], huh[], *inv_t_name[],
        l_last_comm, l_last_dir, last_comm, last_dir, *Numname,
        outbuf[], *p_colors[], *r_stones[], *release, runch,
-       *s_names[], take, *tr_name[], *ws_made[], *ws_type[];
+       *s_names[], take, *tr_name[], *ws_made[], *ws_type[], *stick_descs[];
 
 extern int  a_class[], count, food_left, hungry_state, inpack,
        inv_type, lastscore, level, max_hit, max_level, mpos,
