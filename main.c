@@ -299,7 +299,8 @@ void playit()
 
     oldpos = hero;
     oldrp = roomin (&hero);
-
+    
+    msg("Welcome to the Dungeons of Doom, %s. Press ? for help.", whoami);
     while (playing)
     {
         command();    /* Command execution */

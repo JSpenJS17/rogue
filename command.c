@@ -225,15 +225,10 @@ void command()
                  */
                 switch (ch)
                 {
-                case CTRL ('B') :
-                case CTRL ('H') :
-                case CTRL ('J') :
-                case CTRL ('K') :
-                case CTRL ('L') :
-                case CTRL ('N') :
-                case CTRL ('U') :
-                case CTRL ('Y') :
-                case '.':
+                case CTRL ('W') :
+                case CTRL ('A') :
+                case CTRL ('S') :
+                case CTRL ('D') :
                 case 'w':
                 case 'a':
                 case 's':
@@ -249,11 +244,10 @@ void command()
                 case 't':
                 case 'z':
                 case 'C':
-                case 'I':
 
 #ifdef MASTER
-                case CTRL ('D') :
-                case CTRL ('A') :
+                // case CTRL ('D') :
+                // case CTRL ('A') :
 #endif
                     break;
 
@@ -284,51 +278,51 @@ void command()
 
             switch (ch)
             {
-            case ',':
-                {
-                    THING *obj = NULL;
-                    int found = 0;
+            // case ',':
+            //     {
+            //         THING *obj = NULL;
+            //         int found = 0;
 
-                    for (obj = lvl_obj; obj != NULL; obj = next (obj))
-                    {
-                        if (obj->o_pos.y == hero.y && obj->o_pos.x == hero.x)
-                        {
-                            found = 1;
-                            break;
-                        }
-                    }
+            //         for (obj = lvl_obj; obj != NULL; obj = next (obj))
+            //         {
+            //             if (obj->o_pos.y == hero.y && obj->o_pos.x == hero.x)
+            //             {
+            //                 found = 1;
+            //                 break;
+            //             }
+            //         }
 
-                    if (found)
-                    {
-                        if (levit_check())
-                            ;
-                        else
-                        {
-                            pick_up ((char) obj->o_type);
-                        }
-                    }
-                    else
-                    {
-                        if (!terse)
-                        {
-                            addmsg ("there is ");
-                        }
+            //         if (found)
+            //         {
+            //             if (levit_check())
+            //                 ;
+            //             else
+            //             {
+            //                 pick_up ((char) obj->o_type);
+            //             }
+            //         }
+            //         else
+            //         {
+            //             if (!terse)
+            //             {
+            //                 addmsg ("there is ");
+            //             }
 
-                        addmsg ("nothing here");
+            //             addmsg ("nothing here");
 
-                        if (!terse)
-                        {
-                            addmsg (" to pick up");
-                        }
+            //             if (!terse)
+            //             {
+            //                 addmsg (" to pick up");
+            //             }
 
-                        endmsg();
-                    }
-                }
+            //             endmsg();
+            //         }
+            //     }
 
-                break;
-            case '!':
-                shell();
-                break;
+            //     break;
+            // case '!':
+            //     shell();
+            //     break;
             case 'a':
                 do_move (0, -1);
                 break;
@@ -353,9 +347,6 @@ void command()
             case 'D':
                 do_run ('d');
                 break;
-            case 'F':
-                kamikaze = TRUE;
-            /* FALLTHROUGH */
             case 'f':
                 if (!get_dir())
                 {
@@ -411,10 +402,13 @@ void command()
                 use();
                 break;
 
-            case 'o':
-                option();
-                after = FALSE;
-                break;
+            /*
+             * TODO: update options 
+             */
+            // case 'o':
+            //     option();
+            //     after = FALSE;
+            //     break;
             case '>':
                 after = FALSE;
                 d_level();
@@ -423,11 +417,10 @@ void command()
                 after = FALSE;
                 u_level();
                 break;
-            // TODO: add back in help commands
-            // case '?':
-            //     after = FALSE;
-            //     help();
-            //     break;
+            case '?':
+                after = FALSE;
+                help();
+                break;
             case 'r':
                 search();
                 break;
@@ -448,39 +441,37 @@ void command()
                 after = FALSE;
                 save_game();
                 break;
-            case '.':           /* Rest command */
-                break;
             case ' ':
                 after = FALSE;  /* "Legal" illegal command */
                 break;
-            case '^':
-                after = FALSE;
+            // case '^':
+            //     after = FALSE;
 
-                if (get_dir())
-                {
-                    delta.y += hero.y;
-                    delta.x += hero.x;
-                    fp = &flat (delta.y, delta.x);
+            //     if (get_dir())
+            //     {
+            //         delta.y += hero.y;
+            //         delta.x += hero.x;
+            //         fp = &flat (delta.y, delta.x);
 
-                    if (!terse)
-                    {
-                        addmsg ("You have found ");
-                    }
+            //         if (!terse)
+            //         {
+            //             addmsg ("You have found ");
+            //         }
 
-                    if (chat (delta.y, delta.x) != TRAP)
-                    {
-                        msg ("no trap there");
-                    }
-                    else if (on (player, ISHALU))
-                    {
-                        msg (tr_name[rnd (NTRAPS)]);
-                    }
-                    else
-                    {
-                        msg (tr_name[*fp & F_TMASK]);
-                        *fp |= F_SEEN;
-                    }
-                }
+            //         if (chat (delta.y, delta.x) != TRAP)
+            //         {
+            //             msg ("no trap there");
+            //         }
+            //         else if (on (player, ISHALU))
+            //         {
+            //             msg (tr_name[rnd (NTRAPS)]);
+            //         }
+            //         else
+            //         {
+            //             msg (tr_name[*fp & F_TMASK]);
+            //             *fp |= F_SEEN;
+            //         }
+            //     }
 
 #ifdef MASTER
             when '+':
@@ -516,40 +507,25 @@ void command()
                 after = FALSE;
                 again = FALSE;
                 break;
-            // case 'm':
-            //     move_on = TRUE;
-
-            //     if (!get_dir())
-            //     {
-            //         after = FALSE;
-            //     }
-            //     else
-            //     {
-            //         ch = dir_ch;
-            //         countch = dir_ch;
-            //         goto over;
-            //     }
-
+            // case ')':
+            //     current (cur_weapon, "wielding", NULL);
             //     break;
-            case ')':
-                current (cur_weapon, "wielding", NULL);
-                break;
-            case ']':
-                current (cur_armor, "wearing", NULL);
-                break;
-            case '=':
-                current (cur_ring[LEFT], "wearing",
-                         terse ? "(L)" : "on left hand");
-                current (cur_ring[RIGHT], "wearing",
-                         terse ? "(R)" : "on right hand");
-                break;
-            case '@':
-                stat_msg = TRUE;
-                status();
-                stat_msg = FALSE;
-                after = FALSE;
-            breakdefault:
-                after = FALSE;
+            // case ']':
+            //     current (cur_armor, "wearing", NULL);
+            //     break;
+            // case '=':
+            //     current (cur_ring[LEFT], "wearing",
+            //              terse ? "(L)" : "on left hand");
+            //     current (cur_ring[RIGHT], "wearing",
+            //              terse ? "(R)" : "on right hand");
+            //     break;
+            // case '@':
+            //     stat_msg = TRUE;
+            //     status();
+            //     stat_msg = FALSE;
+            //     after = FALSE;
+            // breakdefault:
+            //     after = FALSE;
 #ifdef MASTER
 
                 if (wizard) switch (ch)
@@ -781,32 +757,9 @@ void search()
 void help()
 {
     register struct h_list *strp;
-    register char helpch;
     register int numprint, cnt;
-    msg ("character you want help for (* for all): ");
-    helpch = readchar();
+
     mpos = 0;
-
-    /*
-     * If its not a *, print the right help string
-     * or an error if he typed a funny character.
-     */
-    if (helpch != '*')
-    {
-        move (0, 0);
-
-        for (strp = helpstr; strp->h_desc != NULL; strp++)
-            if (strp->h_ch == helpch)
-            {
-                lower_msg = TRUE;
-                msg ("%s%s", unctrl (strp->h_ch), strp->h_desc);
-                lower_msg = FALSE;
-                return;
-            }
-
-        msg ("unknown character '%s'", unctrl (helpch));
-        return;
-    }
 
     /*
      * Here we print help for everything.
