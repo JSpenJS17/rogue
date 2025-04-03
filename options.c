@@ -67,10 +67,6 @@ OPTION  optlist[] =
         &tombstone, put_bool,   get_bool
     },
     {
-        "inven",    "Inventory style",
-        &inv_type,  put_inv_t,  get_inv_t
-    },
-    {
         "name",  "Name",
         whoami, put_str,    get_str
     },
@@ -176,16 +172,6 @@ void put_bool (void *b)
 void put_str (void *str)
 {
     waddstr (hw, (char *) str);
-}
-
-/*
- * put_inv_t:
- *  Put out an inventory type
- */
-
-void put_inv_t (void *ip)
-{
-    waddstr (hw, inv_t_name[* (int *) ip]);
 }
 
 /*
@@ -383,66 +369,6 @@ int get_str (void *vopt, WINDOW *win)
     }
 }
 
-/*
- * get_inv_t
- *  Get an inventory type name
- */
-int get_inv_t (void *vp, WINDOW *win)
-{
-    int *ip = (int *) vp;
-    int oy, ox;
-    bool op_bad;
-
-    op_bad = TRUE;
-    getyx (win, oy, ox);
-    waddstr (win, inv_t_name[*ip]);
-
-    while (op_bad)
-    {
-        wmove (win, oy, ox);
-        wrefresh (win);
-
-        switch (readchar())
-        {
-        case 'o':
-        case 'O':
-            *ip = INV_OVER;
-            op_bad = FALSE;
-            break;
-
-        case 's':
-        case 'S':
-            *ip = INV_SLOW;
-            op_bad = FALSE;
-            break;
-
-        case 'c':
-        case 'C':
-            *ip = INV_CLEAR;
-            op_bad = FALSE;
-            break;
-
-        case '\n':
-        case '\r':
-            op_bad = FALSE;
-            break;
-
-        case ESCAPE:
-            return QUIT;
-
-        case '-':
-            return MINUS;
-
-        default:
-            wmove (win, oy, ox + 15);
-            waddstr (win, "(O, S, or C)");
-        }
-    }
-
-    mvwprintw (win, oy, ox, "%s\n", inv_t_name[*ip]);
-    return NORM;
-}
-
 
 #ifdef MASTER
 /*
@@ -534,28 +460,6 @@ void parse_opts (char *str)
                     for (sp = str + 1; *sp && *sp != ','; sp++)
                     {
                         continue;
-                    }
-
-                    /*
-                     * check for type of inventory
-                     */
-                    if (op->o_putfunc == put_inv_t)
-                    {
-                        if (islower (*str))
-                        {
-                            *str = (char) toupper (*str);
-                        }
-
-                        for (i = inv_t_name; i <= &inv_t_name[INV_CLEAR]; i++)
-                            if (strncmp (str, *i, sp - str) == 0)
-                            {
-                                inv_type = (int) (i - inv_t_name);
-                                break;
-                            }
-                    }
-                    else
-                    {
-                        strucpy (start, str, (int) (sp - str));
                     }
                 }
 

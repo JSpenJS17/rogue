@@ -624,7 +624,6 @@ void    picky_inven();
 void    pr_spec (struct obj_info *info, int nitems);
 void    pr_list();
 void    put_bool (void *b);
-void    put_inv_t (void *ip);
 void    put_str (void *str);
 void    put_things();
 void    putpass (coord *cp);
@@ -719,7 +718,6 @@ char    *set_mname (THING *tp);
 char    *vowelstr (char *str);
 
 int get_bool (void *vp, WINDOW *win);
-int get_inv_t (void *vp, WINDOW *win);
 int get_num (void *vp, WINDOW *win);
 int get_sf (void *vp, WINDOW *win);
 int get_str (void *vopt, WINDOW *win);

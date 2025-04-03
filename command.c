@@ -401,14 +401,10 @@ void command()
             case 'e':  /* new general use item command */
                 use();
                 break;
-
-            /*
-             * TODO: update options 
-             */
-            // case 'o':
-            //     option();
-            //     after = FALSE;
-            //     break;
+            case 'o':
+                option();
+                after = FALSE;
+                break;
             case '>':
                 after = FALSE;
                 d_level();
