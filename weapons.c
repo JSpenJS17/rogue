@@ -67,9 +67,13 @@ void missile (int ydelta, int xdelta)
      * AHA! Here it has hit something.  If it is a wall or a door,
      * or if it misses (combat) the monster, put it on the floor
      */
-    if (moat (obj->o_pos.y, obj->o_pos.x) == NULL ||
-            !hit_monster (unc (obj->o_pos), obj))
+    bool hit_wall = moat (obj->o_pos.y, obj->o_pos.x) == NULL;
+    if (hit_wall || !hit_monster (unc (obj->o_pos), obj))
     {
+        if (hit_wall)
+        { 
+            endmsg(); /* Specifically when we hit a wall, need to endmsg() here or it'll never get ended */
+        }
         fall (obj, TRUE);
     }
 }
