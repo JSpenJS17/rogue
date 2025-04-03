@@ -146,8 +146,14 @@ void quaff(THING* obj)
         fuse ((void (*)()) turn_see, TRUE, HUHDURATION, AFTER);
 
         if (!turn_see (FALSE))
+        {
             msg ("you have a %s feeling for a moment, then it passes",
                  choose_str ("normal", "strange"));
+        }
+        else 
+        {
+            msg ("You sense the presence of monsters on this level.");
+        }
 
         break;
     case P_TFIND:
@@ -187,6 +193,7 @@ void quaff(THING* obj)
 
         if (show)
         {
+            endmsg(); /* prevents game from freezing here */
             pot_info[P_TFIND].oi_know = TRUE;
             show_win ("You sense the presence of magic on this level.--More--");
         }
