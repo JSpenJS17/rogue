@@ -184,27 +184,24 @@ void read_scroll(THING* obj)
         }
 
         break;
-    case S_ID_POTION:
-
-    case S_ID_SCROLL:
-    case S_ID_WEAPON:
-    case S_ID_ARMOR:
-    case S_ID_R_OR_S:
+    
+    /* This scroll is 3x likely to occur than any other scroll */
+    case S_ID:
+    case S_ID2:
+    case S_ID3:
         {
-            static char id_type[S_ID_R_OR_S + 1] =
-            { 0, 0, 0, 0, 0, POTION, SCROLL, WEAPON, ARMOR, R_OR_S };
             /*
              * Identify, let him figure something out
              */
             scr_info[obj->o_which].oi_know = TRUE;
-            msg ("this scroll is an %s scroll", scr_info[obj->o_which].oi_name);
+            msg ("this scroll is an identify scroll");
             // wait for user to hit enter or space
             char ch = 0;
             while (ch != '\n' && ch != ' ' && ch != '\r')
             {
                 ch = readchar();
             }
-            whatis (TRUE, id_type[obj->o_which]);
+            whatis (TRUE, 0);
         }
 
         break;
