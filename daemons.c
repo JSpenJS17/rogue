@@ -182,7 +182,7 @@ void stomach()
     else
     {
         oldfood = food_left;
-        food_left -= ring_eat (LEFT) + ring_eat (RIGHT) + 1 - amulet;
+        food_left += ring_eat (LEFT) + ring_eat (RIGHT) - 1 + amulet;
 
         if (food_left < MORETIME && oldfood >= MORETIME)
         {

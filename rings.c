@@ -194,6 +194,7 @@ int ring_eat (int hand)
 {
     THING *ring;
     int eat;
+    /* more negative, less hunger used */
     static int uses[] =
     {
         1,  /* R_PROTECT */      1, /* R_ADDSTR */
