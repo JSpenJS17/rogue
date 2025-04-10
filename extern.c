@@ -375,7 +375,7 @@ struct h_list helpstr[] =
     // {'o',        " \texamine/set options",                 TRUE}, /* TODO: add back in after options are functional */
     {CTRL ('R'),    " \tredraw screen",                       TRUE},
     {CTRL ('P'),    " \trepeat last message",                 TRUE},
-    {ESCAPE,        " \t(escape) cancel command",                      TRUE},
+    {ESCAPE,        " \t(escape) cancel command",             TRUE},
     {CTRL ('S'),    " \tsave game",                           TRUE},
     {'Q',           " \tquit",                                TRUE},
     // {'!',        " \tshell escape",                        TRUE},

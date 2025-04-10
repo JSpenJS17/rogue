@@ -371,7 +371,7 @@ void command()
                 }
                 goto over;
             }
-            case 'F':
+            case 'f':
                 if (!get_dir())
                 {
                     after = FALSE;
