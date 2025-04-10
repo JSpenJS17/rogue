@@ -182,7 +182,12 @@ void stomach()
     else
     {
         oldfood = food_left;
-        food_left += ring_eat (LEFT) + ring_eat (RIGHT) - 1 + amulet;
+        /* 
+         * Food calculation, subtract some from the rings we wear (adding some if R_DIGEST)
+         * Subtract 1 to represent getting hungry
+         * Having the amulet cancels this out
+         */
+        food_left += -ring_eat (LEFT) + -ring_eat (RIGHT) - 1 + amulet;
 
         if (food_left < MORETIME && oldfood >= MORETIME)
         {

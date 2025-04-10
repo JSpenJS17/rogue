@@ -194,16 +194,23 @@ int ring_eat (int hand)
 {
     THING *ring;
     int eat;
-    /* more negative, less hunger used */
+    
+    /* 
+     * Determines how much food is used by a ring
+     *   Positive values mean it uses food
+     *   0 values are neutral, no food is used or given
+     *   Negative values have probability of using food (1/-n chance)
+     *     Except R_DIGEST, which will give food equal to -n
+     */
     static int uses[] =
     {
-        1,  /* R_PROTECT */      1, /* R_ADDSTR */
-        1,  /* R_SUSTSTR */     -3, /* R_SEARCH */
-        -5, /* R_SEEINVIS */     0, /* R_NOP */
-        0,  /* R_AGGR */        -3, /* R_ADDHIT */
-        -3, /* R_ADDDAM */       2, /* R_REGEN */
+        -3, /* R_PROTECT */     -3, /* R_ADDSTR */
+         0, /* R_SUSTSTR */     -4, /* R_SEARCH */
+         0, /* R_SEEINVIS */     0, /* R_NOP */
+         0, /* R_AGGR */        -4, /* R_ADDHIT */
+        -3, /* R_ADDDAM */      -2, /* R_REGEN */
         -2, /* R_DIGEST */       0, /* R_TELEPORT */
-        1,  /* R_STEALTH */      1  /* R_SUSTARM */
+        -4, /* R_STEALTH */     -3  /* R_SUSTARM */
     };
 
     if ((ring = cur_ring[hand]) == NULL)
@@ -216,7 +223,7 @@ int ring_eat (int hand)
         eat = (rnd (-eat) == 0);
     }
 
-    if (ring->o_which == R_DIGEST)
+    if (ring->o_which == R_DIGEST) // special case, slow digest ring will actually feed you
     {
         eat = -eat;
     }
