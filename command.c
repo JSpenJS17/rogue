@@ -335,19 +335,43 @@ void command()
             case 'd':
                 do_move (0, 1);
                 break;
-            case 'A':
-                do_run ('a');
-                break;
-            case 'S':
-                do_run ('s');
-                break;
+            // case 'A':
+            //     do_run ('a');
+            //     break;
+            // case 'S':
+            //     do_run ('s');
+            //     break;
+            // case 'W':
+            //     do_run ('w');
+            //     break;
+            // case 'D':
+            //     do_run ('d');
+            //     break;
+
             case 'W':
-                do_run ('w');
-                break;
+            case 'A':
+            case 'S':
             case 'D':
-                do_run ('d');
-                break;
-            case 'f':
+            {
+
+                if (!on(player, ISBLIND))
+                {
+                    door_stop = TRUE;
+                    firstmove = TRUE;
+                }
+
+                if (count && !newcount) {
+                    ch = direction;
+                }
+                else
+                {
+                    ch = tolower(ch);
+                    direction = ch;
+                    do_run(ch);
+                }
+                goto over;
+            }
+            case 'F':
                 if (!get_dir())
                 {
                     after = FALSE;
@@ -522,75 +546,6 @@ void command()
             //     after = FALSE;
             // breakdefault:
             //     after = FALSE;
-#ifdef MASTER
-
-                if (wizard) switch (ch)
-                    {
-                    case '|':
-                        msg ("@ %d,%d", hero.y, hero.x);
-                    when 'C':
-                        create_obj();
-                    when '$':
-                        msg ("inpack = %d", inpack);
-                        when CTRL ('G') : inventory (lvl_obj, 0);
-                        when CTRL ('W') : whatis (FALSE, 0);
-                        when CTRL ('D') : level++;
-                        new_level();
-                        when CTRL ('A') : level--;
-                        new_level();
-                        when CTRL ('F') : show_map();
-                        when CTRL ('T') : teleport();
-                        when CTRL ('E') : msg ("food left: %d", food_left);
-                        when CTRL ('C') : add_pass();
-                        when CTRL ('X') : turn_see (on (player, SEEMONST));
-                        when CTRL ('~') :
-                        {
-                            THING *item;
-
-                            if ((item = get_item ("charge", STICK)) != NULL)
-                            {
-                                item->o_charges = 10000;
-                            }
-                        }
-                        when CTRL ('I') :
-                        {
-                            int i;
-                            THING *obj;
-
-                            for (i = 0; i < 9; i++)
-                            {
-                                raise_level();
-                            }
-
-                            /*
-                             * Give him a sword (+1,+1)
-                             */
-                            obj = new_item();
-                            init_weapon (obj, TWOSWORD);
-                            obj->o_hplus = 1;
-                            obj->o_dplus = 1;
-                            add_pack (obj, TRUE);
-                            cur_weapon = obj;
-                            /*
-                             * And his suit of armor
-                             */
-                            obj = new_item();
-                            obj->o_type = ARMOR;
-                            obj->o_which = PLATE_MAIL;
-                            obj->o_arm = -5;
-                            obj->o_flags |= ISKNOW;
-                            obj->o_count = 1;
-                            obj->o_group = 0;
-                            cur_armor = obj;
-                            add_pack (obj, TRUE);
-                        }
-                    when '*' :
-                        pr_list();
-                    otherwise:
-                        illcom (ch);
-                    }
-                else
-#endif
                     illcom (ch);
             }
 
