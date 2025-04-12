@@ -180,7 +180,16 @@ void do_zap(THING* obj)
                     oldch = tp->t_oldch;
                     delta.y = y;
                     delta.x = x;
-                    new_monster (tp, monster = (char) (rnd (26) + 'A'), &delta);
+
+                    /* 
+                     * Try new monsters until we get one that isn't a boss
+                     * Polymorph spawning bosses seems a little too hard
+                     */
+                    monster = (char) (rnd (26) + 'A');
+                    while (!new_monster (tp, monster, &delta, TRUE))
+                    {
+                        monster = (char) (rnd (26) + 'A');
+                    }
 
                     if (see_monst (tp))
                     {

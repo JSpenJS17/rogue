@@ -161,7 +161,7 @@
 #define ISCANC  0000010     /* creature has special qualities cancelled */
 #define ISLEVIT 0000010     /* hero is levitating */
 #define ISFOUND 0000020     /* creature has been seen (used for objects) */
-#define ISGREED 0000040     /* creature runs to protect gold */
+#define ISBOSS  0000040     /* creature runs to protect gold */
 #define ISHASTE 0000100     /* creature has been hastened */
 #define ISTARGET 000200     /* creature is the target of an 'f' command */
 #define ISHELD  0000400     /* creature has been held */
@@ -611,7 +611,8 @@ void    move_msg (THING *obj);
 int msg (char *fmt, ...);
 void    nameit (THING *obj, char *type, char *which, struct obj_info *op, char * (*prfunc) (THING *));
 void    new_level();
-void    new_monster (THING *tp, char type, coord *cp);
+bool    new_monster (THING *tp, char type, coord *cp, bool boss);
+void    spawn_monster (THING *tp, bool wander, coord *cp, bool boss);
 void    numpass (int y, int x);
 void    option();
 void    open_score();

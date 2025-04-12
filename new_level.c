@@ -104,6 +104,38 @@ void new_level()
     chat (stairs.y, stairs.x) = STAIRS;
     seenstairs = FALSE;
 
+    /*
+     * Place the boss if this is level 5, 10, 15, 20, or 26
+     */
+    switch (level)
+    {
+        case 5:
+            // centaur boss
+            tp = new_item();
+            new_monster (tp, 'C', &stairs, FALSE);
+            break;
+        case 10:
+            // troll boss
+            tp = new_item();
+            new_monster (tp, 'T', &stairs, FALSE);
+            break;
+        case 15:
+            // griffin boss
+            tp = new_item();
+            new_monster (tp, 'G', &stairs, FALSE);
+            break;
+        case 20:
+            // Jabberwock boss
+            tp = new_item();
+            new_monster (tp, 'J', &stairs, FALSE);
+            break;
+        case 26:
+            // Dragon boss -- might want to move this to the amulet room somehow
+            tp = new_item();
+            new_monster (tp, 'D', &stairs, FALSE);
+            break;
+    }
+
     for (tp = mlist; tp != NULL; tp = next (tp))
     {
         tp->t_room = roomin (&tp->t_pos);
@@ -267,7 +299,8 @@ void treas_room()
         if (find_floor (rp, &mp, MAXTRIES, TRUE))
         {
             tp = new_item();
-            new_monster (tp, randmonster (FALSE), &mp);
+            spawn_monster (tp, FALSE, &mp, FALSE);
+            // new_monster (tp, randmonster (FALSE), &mp, FALSE);
             tp->t_flags |= ISMEAN;  /* no sloughers in THIS room */
             give_pack (tp);
         }

@@ -124,7 +124,7 @@ void command()
          * these are illegal things for the player to be, so if any are
          * set, someone's been poking in memeory
          */
-        if (on (player, ISSLOW | ISGREED | ISINVIS | ISREGEN | ISTARGET))
+        if (on (player, ISSLOW | ISBOSS | ISINVIS | ISREGEN | ISTARGET))
         {
             exit (1);
         }
@@ -848,6 +848,16 @@ void d_level()
     }
     else
     {
+        // loop through monster list to see if the boss is still alive
+        THING* tp = NULL;
+        for (tp = mlist; tp != NULL; tp = next (tp))
+        {
+            if (tp->t_flags & ISBOSS)
+            {
+                msg ("The boss magically blocks your way down!");
+                return;
+            }
+        }
         level++;
         seenstairs = FALSE;
         new_level();

@@ -64,12 +64,31 @@ char randmonster (bool wander)
 /*
  * new_monster:
  *  Pick a new monster and add it to the list
+ *  Returns true if spawn is successful, false if spawn fails 
+ *  (boss monster when boss BOOL is false or non-boss when boss BOOL is true)
  */
 
-void new_monster (THING *tp, char type, coord *cp)
+bool new_monster (THING *tp, char type, coord *cp, bool boss)
 {
     struct monster *mp;
     int lev_add;
+
+    // boss monster check, don't spawn C, T, G, J, or D unless boss == true
+    if (!boss && monsters[tp->t_type - 'A'].m_flags & ISBOSS) 
+    {
+        return FALSE;
+    }
+    // if boss == true, only let bosses spawn, this check might be bad actually
+        // polymorph wants to be able to spawn bosses, but can't because of this
+    // but you want this because otherwise you'll start spawning bosses as regular enemies
+        // this might be a feature not a bug lowkey
+        // if we do want to spawn boss monsters later in the game, need to remove the ISBOSS flag
+            // otherwise they will prevent the way down
+    else if (boss && !(monsters[type - 'A'].m_flags & ISBOSS)) 
+    {
+        return FALSE;
+    }
+    
 
     if ((lev_add = level - AMULETLEVEL) < 0)
     {
@@ -113,6 +132,23 @@ void new_monster (THING *tp, char type, coord *cp)
     if (type == 'X')
     {
         tp->t_disguise = rnd_thing();
+    }
+
+    return TRUE;
+}
+
+/*
+ * spawn_monster:
+ *  Spawn a random new monster using new_monster -- new_monster adds it to list
+ *  If boss is true, spawn the appropriate boss monster
+ */
+void spawn_monster (THING *tp, bool wander, coord *cp, bool boss)
+{
+    bool succ = FALSE;
+
+    while (!succ)
+    {
+        succ = new_monster (tp, randmonster(wander), cp, boss);
     }
 }
 
@@ -163,7 +199,8 @@ void wanderer()
     }
     while (roomin (&cp) == proom);
 
-    new_monster (tp, randmonster (TRUE), &cp);
+    // new_monster (tp, randmonster (TRUE), &cp, FALSE);
+    spawn_monster (tp, TRUE, &cp, FALSE);
 
     if (on (player, SEEMONST))
     {
@@ -267,8 +304,9 @@ THING *wake_monster (int y, int x)
 
     /*
      * Let greedy ones guard gold
+     * Used to be a flag ISGREED, is now just orcs cause that was the only ISGREED monster
      */
-    if (on (*tp, ISGREED) && !on (*tp, ISRUN))
+    if (tp->t_type == 'O' && !on (*tp, ISRUN))
     {
         tp->t_flags |= ISRUN;
 

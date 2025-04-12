@@ -180,7 +180,8 @@ void read_scroll(THING* obj)
         else
         {
             obj = new_item();
-            new_monster (obj, randmonster (FALSE), &mp);
+            // new_monster (obj, randmonster (FALSE), &mp, FALSE);
+            spawn_monster (obj, FALSE, &mp, FALSE);
         }
 
         break;

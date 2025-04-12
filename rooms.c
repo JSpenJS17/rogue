@@ -153,12 +153,14 @@ void do_rooms()
 
         /*
          * Put the monster in
+         * Rooms with gold are much more likely to have a monster to guard it
          */
         if (rnd (100) < (rp->r_goldval > 0 ? 80 : 25))
         {
             tp = new_item();
             find_floor (rp, &mp, FALSE, TRUE);
-            new_monster (tp, randmonster (FALSE), &mp);
+            // new_monster (tp, randmonster (FALSE), &mp, FALSE);
+            spawn_monster (tp, FALSE, &mp, FALSE);
             give_pack (tp);
         }
     }

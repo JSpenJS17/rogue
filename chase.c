@@ -154,7 +154,8 @@ int do_chase (THING *th)
         th->t_stats.s_movectr = th->t_stats.s_movespd;
     }
 
-    if (on (*th, ISGREED) && rer->r_goldval == 0)
+    // orcs are greedy
+    if (th->t_type == 'O' && rer->r_goldval == 0)
     {
         th->t_dest = &hero;    /* If gold has been taken, run after hero */
     }
