@@ -21,15 +21,16 @@
  */
 #define MAXROOMS    9
 #define MAXTHINGS   9
-#define MAXOBJ      10  /* number of object spawn attempts per level */
+#define MAXOBJ      9  /* number of object spawn attempts per level */
 #define MAXPACK     23
 #define MAXTRAPS    10
+#define MAXLEVEL    20
 #define AMULETLEVEL 26
 #define NUMTHINGS   7   /* number of types of things */
 #define MAXPASS     13  /* upper limit on number of passages */
 #define NUMLINES    24
 #define NUMCOLS     80
-#define STATLINE        (NUMLINES - 1)
+#define STATLINE    (NUMLINES - 1)
 #define BORE_LEVEL  50
 
 /*
