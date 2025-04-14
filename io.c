@@ -238,7 +238,7 @@ void status()
         move (0, 0);
         if (e_levels != NULL && state_name != NULL && pstats.s_lvl > 0 && pstats.s_lvl <= 22)
         {
-            printw ("Floor: %d  Gold: %-5d  Hp: %*d(%*d)  Str: %2d(%d)  Arm: %-2d  Exp:%d %ld/%ld  %s",
+            printw ("Floor: %d  Gold: %-5d  Hp: %*d(%*d)  Str: %2d(%d)  Arm: %-2d  Exp:%d %d/%d  %s",
                     cur_floor, purse, hpwidth, pstats.s_hpt, hpwidth, max_hp, pstats.s_str,
                     max_stats.s_str, 10 - s_arm, pstats.s_lvl, pstats.s_exp, e_levels[pstats.s_lvl - 1],
                     state_name[hungry_state]);

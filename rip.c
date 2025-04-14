@@ -351,7 +351,9 @@ void death (char monst)
     score (purse, amulet ? 3 : 0, monst);
     printf ("[Press return to continue]");
     fflush (stdout);
-    (void) fgets (prbuf, 10, stdin);
+    if (fgets (prbuf, 10, stdin) == NULL) {
+        prbuf[0] = '\0';
+    }
     my_exit (0);
 }
 

@@ -370,7 +370,7 @@ int attack (THING *mp)
                     player.t_flags |= ISHELD;
                 }
 
-                sprintf (monsters['F' - 'A'].m_stats.s_dmg, "%dx1", ++vf_hit);
+                snprintf(monsters['F' - 'A'].m_stats.s_dmg, sizeof(monsters['F' - 'A'].m_stats.s_dmg), "%dx1", ++vf_hit);
 
                 if (--pstats.s_hpt <= 0)
                 {
