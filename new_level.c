@@ -28,9 +28,9 @@ void new_level()
 
     player.t_flags &= ~ISHELD;  /* unhold when you go down just in case */
 
-    if (floor > max_level)
+    if (cur_floor > max_level)
     {
-        max_level = floor;
+        max_level = cur_floor;
     }
 
     /*
@@ -66,9 +66,9 @@ void new_level()
     /*
      * Place the traps
      */
-    if (rnd (10) < floor)
+    if (rnd (10) < cur_floor)
     {
-        ntraps = rnd (floor / 4) + 1;
+        ntraps = rnd (cur_floor / 4) + 1;
 
         if (ntraps > MAXTRAPS)
         {
@@ -107,7 +107,7 @@ void new_level()
     /*
      * Place the boss if this is floor 5, 10, 15, 20, or 26
      */
-    switch (floor)
+    switch (cur_floor)
     {
         case 5:
             // centaur boss
@@ -187,7 +187,7 @@ void put_things()
      * Once you have found the amulet, the only way to get new stuff is
      * go down into the dungeon.
      */
-    if (amulet && floor < max_level)
+    if (amulet && cur_floor < max_level)
     {
         return;
     }
@@ -222,7 +222,7 @@ void put_things()
      * If he is really deep in the dungeon and he hasn't found the
      * amulet yet, put it somewhere on the ground
      */
-    if (floor >= AMULETLEVEL && !amulet)
+    if (cur_floor >= AMULETLEVEL && !amulet)
     {
         obj = new_item();
         attach (lvl_obj, obj);
@@ -290,7 +290,7 @@ void treas_room()
         nm = spots;
     }
 
-    floor++;
+    cur_floor++;
 
     while (nm--)
     {
@@ -306,5 +306,5 @@ void treas_room()
         }
     }
 
-    floor--;
+    cur_floor--;
 }

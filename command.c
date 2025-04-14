@@ -858,7 +858,7 @@ void d_level()
                 return;
             }
         }
-        floor++;
+        cur_floor++;
         seenstairs = FALSE;
         new_level();
     }
@@ -878,9 +878,9 @@ void u_level()
     if (chat (hero.y, hero.x) == STAIRS)
         if (amulet)
         {
-            floor--;
+            cur_floor--;
 
-            if (floor == 0)
+            if (cur_floor == 0)
             {
                 total_winner();
             }

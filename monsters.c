@@ -44,7 +44,7 @@ char randmonster (bool wander)
 
     do
     {
-        d = floor + (rnd (10) - 6);
+        d = cur_floor + (rnd (10) - 6);
 
         if (d < 0)
         {
@@ -90,7 +90,7 @@ bool new_monster (THING *tp, char type, coord *cp, bool boss)
     }
     
 
-    if ((lev_add = floor - AMULETLEVEL) < 0)
+    if ((lev_add = cur_floor - AMULETLEVEL) < 0)
     {
         lev_add = 0;
     }
@@ -116,7 +116,7 @@ bool new_monster (THING *tp, char type, coord *cp, bool boss)
     tp->t_stats.s_exp = mp->m_stats.s_exp + lev_add * 10 + exp_add (tp);
     tp->t_flags = mp->m_flags;
 
-    if (floor > 29)
+    if (cur_floor > 29)
     {
         tp->t_flags |= ISHASTE;
     }
@@ -330,7 +330,7 @@ THING *wake_monster (int y, int x)
 
 void give_pack (THING *tp)
 {
-    if (floor >= max_level && rnd (100) < monsters[tp->t_type - 'A'].m_carry)
+    if (cur_floor >= max_level && rnd (100) < monsters[tp->t_type - 'A'].m_carry)
     {
         attach (tp->t_pack, new_thing());
     }

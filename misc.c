@@ -809,7 +809,7 @@ char rnd_thing()
         POTION, SCROLL, RING, STICK, FOOD, WEAPON, ARMOR, STAIRS, GOLD, AMULET
     };
 
-    if (floor >= AMULETLEVEL)
+    if (cur_floor >= AMULETLEVEL)
     {
         i = rnd (sizeof thing_list / sizeof (char));
     }

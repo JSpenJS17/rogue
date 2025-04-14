@@ -106,7 +106,7 @@ int main (int argc, char **argv, char **envp)
             }
 
             purse = rnd (100) + 1;
-            floor = rnd (100) + 1;
+            cur_floor = rnd (100) + 1;
             initscr();
             getltchars();
             death (death_monst());

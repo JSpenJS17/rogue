@@ -336,7 +336,7 @@ void putpass (coord *cp)
     pp = INDEX (cp->y, cp->x);
     pp->p_flags |= F_PASS;
 
-    if (rnd (10) + 1 < floor && rnd (40) == 0)
+    if (rnd (10) + 1 < cur_floor && rnd (40) == 0)
     {
         pp->p_flags &= ~F_REAL;
     }
@@ -365,7 +365,7 @@ void door (struct room *rm, coord *cp)
 
     pp = INDEX (cp->y, cp->x);
 
-    if (rnd (10) + 1 < floor && rnd (5) == 0)
+    if (rnd (10) + 1 < cur_floor && rnd (5) == 0)
     {
         if (cp->y == rm->r_pos.y || cp->y == rm->r_pos.y + rm->r_max.y - 1)
         {
