@@ -14,7 +14,7 @@
 #define HAVE_ALARM 1
 
 /* Define to 1 if you have the <arpa/inet.h> header file. */
-#define HAVE_ARPA_INET_H 1
+// #define HAVE_ARPA_INET_H 1
 
 /* Define to 1 if libcurses is requested */
 #define HAVE_CURSES_H 1
@@ -26,7 +26,7 @@
 #define HAVE_ERASECHAR 1
 
 /* Define if ncurses has ESCDELAY variable */
-#define HAVE_ESCDELAY 1
+// #define HAVE_ESCDELAY 1
 
 /* Define to 1 if you have the <fcntl.h> header file. */
 #define HAVE_FCNTL_H 1
@@ -35,19 +35,19 @@
 #define HAVE_FORK 1
 
 /* Define to 1 if you have the `getgid' function. */
-#define HAVE_GETGID 1
+// #define HAVE_GETGID 1
 
 /* Define to 1 if you have the `getloadavg' function. */
-#define HAVE_GETLOADAVG 1
+// #define HAVE_GETLOADAVG 1
 
 /* Define to 1 if you have the `getpass' function. */
-#define HAVE_GETPASS 1
+// #define HAVE_GETPASS 1
 
 /* Define to 1 if you have the `getpwuid' function. */
-#define HAVE_GETPWUID 1
+// #define HAVE_GETPWUID 1
 
 /* Define to 1 if you have the `getuid' function. */
-#define HAVE_GETUID 1
+// #define HAVE_GETUID 1
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #define HAVE_INTTYPES_H 1
@@ -87,28 +87,28 @@
 /* #undef HAVE_PROCESS_H */
 
 /* Define to 1 if you have the <pwd.h> header file. */
-#define HAVE_PWD_H 1
+// #define HAVE_PWD_H 1
 
 /* Define to 1 if you have the `setenv' function. */
-#define HAVE_SETENV 1
+// #define HAVE_SETENV 1
 
 /* Define to 1 if you have the `setgid' function. */
-#define HAVE_SETGID 1
+// #define HAVE_SETGID 1
 
 /* Define to 1 if you have the `setregid' function. */
-#define HAVE_SETREGID 1
+// #define HAVE_SETREGID 1
 
 /* Define to 1 if you have the `setresgid' function. */
-#define HAVE_SETRESGID 1
+// #define HAVE_SETRESGID 1
 
 /* Define to 1 if you have the `setresuid' function. */
-#define HAVE_SETRESUID 1
+// #define HAVE_SETRESUID 1
 
 /* Define to 1 if you have the `setreuid' function. */
-#define HAVE_SETREUID 1
+// #define HAVE_SETREUID 1
 
 /* Define to 1 if you have the `setuid' function. */
-#define HAVE_SETUID 1
+// #define HAVE_SETUID 1
 
 /* Define to 1 if you have the `spawnl' function. */
 /* #undef HAVE_SPAWNL */
@@ -151,10 +151,10 @@
 #define HAVE_SYS_UTSNAME_H 1
 
 /* Define to 1 if you have the <termios.h> header file. */
-#define HAVE_TERMIOS_H 1
+// #define HAVE_TERMIOS_H 1
 
 /* Define to 1 if you have the <term.h> header file. */
-#define HAVE_TERM_H 1
+// #define HAVE_TERM_H 1
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #define HAVE_UNISTD_H 1
@@ -172,10 +172,10 @@
 #define HAVE_VPRINTF 1
 
 /* Define to 1 if `fork' works. */
-#define HAVE_WORKING_FORK 1
+// #define HAVE_WORKING_FORK 1
 
 /* Define to 1 if `vfork' works. */
-#define HAVE_WORKING_VFORK 1
+// #define HAVE_WORKING_VFORK 1
 
 /* Define to 1 if the system has the type `_Bool'. */
 #define HAVE__BOOL 1

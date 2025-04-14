@@ -26,10 +26,10 @@ O=o
 CC    = gcc
 
 #CFLAGS=-O2
-CFLAGS= -g -O2 
+CFLAGS= -g -O2 -I./include -L./lib
 
-#LIBS=-lcurses
-LIBS =	 -lcurses
+#LIBS=-lpdcurses
+LIBS =	 -lpdcurses
 
 #RM=rm -f
 RM    = rm -f
@@ -164,10 +164,10 @@ dist.src:
 	rm -fr $(DISTNAME)
 
 findpw: findpw.c xcrypt.o mdport.o xcrypt.o
-	$(CC) -s -o findpw findpw.c xcrypt.o mdport.o -lcurses
+	$(CC) -s -o findpw findpw.c xcrypt.o mdport.o -lpdcurses
 
 scedit: scedit.o scmisc.o vers.o mdport.o xcrypt.o
-	$(CC) -s -o scedit vers.o scedit.o scmisc.o mdport.o xcrypt.o -lcurses
+	$(CC) -s -o scedit vers.o scedit.o scmisc.o mdport.o xcrypt.o -lpdcurses
 
 scmisc.o scedit.o:
 	$(CC) -O -c $(SF) $*.c
