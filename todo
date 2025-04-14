@@ -1,7 +1,10 @@
 - Damage calculations SUCK !
-- Perk system?
-- Balance + playtest bosses
-    - Balance leveling, the exp requirements explode and leveling up early is OP
+- Perk system? - every 5 levels you get to choose an upgrade?
 - Typing can't backspace when naming (calling/callit) something
 - Enemy scaling 
     - More health/damage, more exp, more loot
+    - Maybe just tighten the range of enemies that can spawn on each floor
+        - Or have a specific range like a list of strings like "ZOCRS"
+            -- This method seems good, can implement spawn chances too
+- Test 'T' boss
+- No trapdoor traps on boss levels, or at least prevent them from making you fall
