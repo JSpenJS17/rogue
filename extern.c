@@ -123,28 +123,29 @@ int vf_hit = 0;             /* Number of time flytrap has hit */
 
 int dnum;               /* Dungeon number */
 int seed;               /* Random number seed */
-int e_levels[] =
+int e_levels[] =        /* Experience required to level up */
+/* This should be modified for balancing */
 {
-    10L,
-    20L,
-    40L,
-    80L,
-    160L,
-    320L,
-    640L,
-    1300L,
-    2600L,
-    5200L,
-    13000L,
-    26000L,
-    50000L,
-    100000L,
-    200000L,
-    400000L,
-    800000L,
-    2000000L,
-    4000000L,
-    8000000L,
+    15L,      /* Level 2  */
+    60L,      /* Level 3  */
+    135L,     /* Level 4  */
+    240L,     /* Level 5  */
+    375L,     /* Level 6  */
+    540L,     /* Level 7  */
+    735L,     /* Level 8  */
+    960L,     /* Level 9  */
+    1215L,    /* Level 10 */
+    1500L,    /* Level 11 */
+    1815L,    /* Level 12 */
+    2160L,    /* Level 13 */
+    2535L,    /* Level 14 */
+    2940L,    /* Level 15 */
+    3375L,    /* Level 16 */
+    3840L,    /* Level 17 */
+    4335L,    /* Level 18 */
+    4860L,    /* Level 19 */
+    5415L,    /* Level 20 */
+    6000L,    /* Level 21 */
     0L
 };
 
