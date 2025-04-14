@@ -186,7 +186,7 @@ void do_zap(THING* obj)
                      * Polymorph spawning bosses seems a little too hard
                      */
                     monster = (char) (rnd (26) + 'A');
-                    while (!new_monster (tp, monster, &delta, TRUE))
+                    while (!new_monster (tp, monster, &delta, FALSE))
                     {
                         monster = (char) (rnd (26) + 'A');
                     }

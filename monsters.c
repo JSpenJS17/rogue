@@ -74,7 +74,7 @@ bool new_monster (THING *tp, char type, coord *cp, bool boss)
     int lev_add;
 
     // boss monster check, don't spawn C, T, G, J, or D unless boss == true
-    if (!boss && monsters[tp->t_type - 'A'].m_flags & ISBOSS) 
+    if (!boss && monsters[type - 'A'].m_flags & ISBOSS) 
     {
         return FALSE;
     }

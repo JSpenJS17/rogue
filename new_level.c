@@ -112,27 +112,27 @@ void new_level()
         case 5:
             // centaur boss
             tp = new_item();
-            new_monster (tp, 'C', &stairs, FALSE);
+            new_monster (tp, 'C', &stairs, TRUE);
             break;
         case 10:
             // troll boss
             tp = new_item();
-            new_monster (tp, 'T', &stairs, FALSE);
+            new_monster (tp, 'T', &stairs, TRUE);
             break;
         case 15:
             // griffin boss
             tp = new_item();
-            new_monster (tp, 'G', &stairs, FALSE);
+            new_monster (tp, 'G', &stairs, TRUE);
             break;
         case 20:
             // Jabberwock boss
             tp = new_item();
-            new_monster (tp, 'J', &stairs, FALSE);
+            new_monster (tp, 'J', &stairs, TRUE);
             break;
         case 26:
             // Dragon boss -- might want to move this to the amulet room somehow
             tp = new_item();
-            new_monster (tp, 'D', &stairs, FALSE);
+            new_monster (tp, 'D', &stairs, TRUE);
             break;
     }
 

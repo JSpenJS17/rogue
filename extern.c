@@ -198,11 +198,11 @@ struct monster monsters[26] =
     /* Name        CARRY      FLAG             str,  exp, lvl, amr, hpt, dmg,             maxhp, mvspd, mvctr */
     { "aquator",       0,   ISMEAN,           { XX,   20,   5,   2, ___, "0x0/0x0",        ___,     1,     0} },
     { "bat",           0,   ISFLY,            { XX,    1,   1,   3, ___, "1x2",            ___,     0,     0} },
-    { "centaur",      25,   ISBOSS,           { XX,  150,   4,   4, ___, "2x2/2x5/2x5",    ___,     0,     0} }, /* boss 1, floor 5  */
+    { "centaur",      25,   ISBOSS,           { XX,  150,   4,   4, ___, "2x2/2x2/2x5",    ___,     0,     0} }, /* boss 1, floor 5  */
     { "dragon",      100,   ISBOSS,           { XX, 5000,  10,  -1, ___, "1x8/1x8/3x10",   ___,     2,     0} }, /* boss 5, floor 26 */
     { "emu",           0,   ISMEAN,           { XX,    2,   1,   7, ___, "1x2",            ___,     1,     0} },
     { "venus flytrap", 0,   ISMEAN,           { XX,   80,   8,   3, ___, "%%%x0",          ___,     1,     0} },
-    { "griffin",      75,   ISFLY | ISBOSS,   { XX, 2000,  12,   2, ___, "4x3/3x5",        ___,     0,     0} }, /* boss 3, floor 15 */
+    { "griffin",      75,   ISFLY | ISBOSS,   { XX, 2000,  12,   2, ___, "4x2/3x4",        ___,     0,     0} }, /* boss 3, floor 15 */
     { "hobgoblin",     0,   ISMEAN,           { XX,    3,   1,   5, ___, "1x8",            ___,     1,     0} },
     { "ice monster",   0,   0,                { XX,    5,   1,   9, ___, "0x0",            ___,     1,     0} },
     { "jabberwock",  100,   ISBOSS,           { XX, 3000,  15,   6, ___, "2x12/2x8",       ___,     1,     0} }, /* boss 4, floor 20 */
