@@ -6,6 +6,7 @@
 *.cat
 *.6
 rogue
+*.exe
 _*
 *.orig
 old_build
