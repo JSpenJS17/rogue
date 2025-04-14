@@ -136,7 +136,7 @@ void do_rooms()
         /*
          * Put the gold in
          */
-        if (rnd (2) == 0 && (!amulet || cur_floor >= max_level))
+        if (rnd (2) == 0 && (!amulet || cur_floor >= max_floor))
         {
             THING *gold;
 

@@ -330,7 +330,7 @@ THING *wake_monster (int y, int x)
 
 void give_pack (THING *tp)
 {
-    if (cur_floor >= max_level && rnd (100) < monsters[tp->t_type - 'A'].m_carry)
+    if (cur_floor >= max_floor && rnd (100) < monsters[tp->t_type - 'A'].m_carry)
     {
         attach (tp->t_pack, new_thing());
     }

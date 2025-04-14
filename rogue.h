@@ -67,7 +67,7 @@
 #undef max
 #define max(a,b)    ((a) > (b) ? (a) : (b))
 #define on(thing,flag)  ((bool)(((thing).t_flags & (flag)) != 0))
-#define GOLDCALC    (rnd(50 + 10 * level) + 2)
+#define GOLDCALC    (rnd(50 + 10 * cur_floor) + 2)
 #define ISRING(h,r) (cur_ring[h] != NULL && cur_ring[h]->o_which == r)
 #define ISWEARING(r)    (ISRING(LEFT, r) || ISRING(RIGHT, r))
 #define ISMULT(type)    (type == POTION || type == SCROLL || type == FOOD)
@@ -483,7 +483,7 @@ extern char dir_ch, file_name[], home[], huh[], *inv_t_name[],
        *s_names[], take, *tr_name[], *ws_made[], *ws_type[], *stick_descs[];
 
 extern int  a_class[], count, food_left, hungry_state, inpack,
-       inv_type, lastscore, cur_floor, max_hit, max_level, mpos,
+       inv_type, lastscore, cur_floor, max_hit, max_floor, mpos,
        n_objs, no_command, no_food, no_move, noscore, ntraps, purse,
        quiet, vf_hit;
 

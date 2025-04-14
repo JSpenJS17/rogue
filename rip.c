@@ -179,7 +179,7 @@ void score (int amount, int flags, char monst)
 
             if (flags == 2)
             {
-                scp->sc_level = max_level;
+                scp->sc_level = max_floor;
             }
             else
             {

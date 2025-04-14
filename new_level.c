@@ -28,9 +28,9 @@ void new_level()
 
     player.t_flags &= ~ISHELD;  /* unhold when you go down just in case */
 
-    if (cur_floor > max_level)
+    if (cur_floor > max_floor)
     {
-        max_level = cur_floor;
+        max_floor = cur_floor;
     }
 
     /*
@@ -187,7 +187,7 @@ void put_things()
      * Once you have found the amulet, the only way to get new stuff is
      * go down into the dungeon.
      */
-    if (amulet && cur_floor < max_level)
+    if (amulet && cur_floor < max_floor)
     {
         return;
     }
