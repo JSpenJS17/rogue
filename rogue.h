@@ -366,7 +366,7 @@ struct stats
     int s_lvl;              /* level of mastery */
     int s_arm;              /* Armor class */
     int s_hpt;              /* Hit points */
-    char s_dmg[13];         /* String describing damage done */
+    char s_dmg[26];         /* String describing damage done */
     int  s_maxhp;           /* Max hit points */
     short s_movespd;        /* Move speed, lower faster */
     short s_movectr;        /* Move counter, when 0 move */
