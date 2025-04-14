@@ -348,7 +348,14 @@ THING *new_thing()
 
         break;
     case 3:
-        init_weapon (cur, pick_one (weap_info, MAXWEAPONS));
+    {
+        int weap = pick_one (weap_info, MAXWEAPONS);
+        while (weap == 0 || weap == 2) /* don't spawn maces or shortbows, he already has one */
+        {
+            weap = pick_one (weap_info, MAXWEAPONS);
+        }
+        
+        init_weapon (cur, weap);
 
         if ((r = rnd (100)) < 10)
         {
@@ -361,6 +368,7 @@ THING *new_thing()
         }
 
         break;
+    }
     case 4:
         cur->o_type = ARMOR;
         cur->o_which = pick_one (arm_info, MAXARMORS);
