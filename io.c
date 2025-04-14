@@ -200,7 +200,7 @@ void status()
     temp = (cur_armor != NULL ? cur_armor->o_arm : pstats.s_arm);
 
     if (s_hp == pstats.s_hpt && s_exp == pstats.s_exp && s_pur == purse
-            && s_arm == temp && s_str == pstats.s_str && s_lvl == level
+            && s_arm == temp && s_str == pstats.s_str && s_lvl == cur_floor
             && s_hungry == hungry_state
             && !stat_msg
        )
@@ -226,7 +226,7 @@ void status()
     /*
      * Save current status
      */
-    s_lvl = level;
+    s_lvl = cur_floor;
     s_pur = purse;
     s_hp = pstats.s_hpt;
     s_str = pstats.s_str;
@@ -236,19 +236,36 @@ void status()
     if (stat_msg)
     {
         move (0, 0);
-        msg ("Level: %d  Gold: %-5d  Hp: %*d(%*d)  Str: %2d(%d)  Arm: %-2d  Exp: %d/%ld  %s",
-             level, purse, hpwidth, pstats.s_hpt, hpwidth, max_hp, pstats.s_str,
-             max_stats.s_str, 10 - s_arm, pstats.s_lvl, pstats.s_exp,
-             state_name[hungry_state]);
+        if (e_levels != NULL && state_name != NULL && pstats.s_lvl > 0 && pstats.s_lvl <= 22)
+        {
+            printw ("Floor: %d  Gold: %-5d  Hp: %*d(%*d)  Str: %2d(%d)  Arm: %-2d  Exp:%d %d/%d  %s",
+                    cur_floor, purse, hpwidth, pstats.s_hpt, hpwidth, max_hp, pstats.s_str,
+                    max_stats.s_str, 10 - s_arm, pstats.s_lvl, pstats.s_exp, e_levels[pstats.s_lvl - 1],
+                    state_name[hungry_state]);
+        }
+        else
+        {
+            printw("Error: Invalid game state.");
+        }
     }
     else
     {
         move (STATLINE, 0);
 
-        printw ("Level: %d  Gold: %-5d  Hp: %*d(%*d)  Str: %2d(%d)  Arm: %-2d  Exp: %d/%d  %s",
-                level, purse, hpwidth, pstats.s_hpt, hpwidth, max_hp, pstats.s_str,
-                max_stats.s_str, 10 - s_arm, pstats.s_lvl, pstats.s_exp,
-                state_name[hungry_state]);
+        /* 
+         * Adding this check to hopefully prevent a mysterious Seg Fault...
+         */
+        if (e_levels != NULL && state_name != NULL && pstats.s_lvl > 0 && pstats.s_lvl <= 22)
+        {
+            printw ("Floor: %d  Gold: %-5d  Hp: %*d(%*d)  Str: %2d(%d)  Arm: %-2d  Lvl:%d %d/%d  %s",
+                    cur_floor, purse, hpwidth, pstats.s_hpt, hpwidth, max_hp, pstats.s_str,
+                    max_stats.s_str, 10 - s_arm, pstats.s_lvl, pstats.s_exp, e_levels[pstats.s_lvl - 1],
+                    state_name[hungry_state]);
+        }
+        else
+        {
+            printw("Error: Invalid game state.");
+        }
     }
 
     clrtoeol();

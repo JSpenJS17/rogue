@@ -301,7 +301,7 @@ bool fallpos (coord *pos, coord *newpos)
         {
             /*
              * check to make certain the spot is empty, if it is,
-             * put the object there, set it in the level list
+             * put the object there, set it in the floor list
              * and re-draw the room if he can see it
              */
             if (y == hero.y && x == hero.x)

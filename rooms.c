@@ -93,7 +93,7 @@ void do_rooms()
         /*
          * set room type
          */
-        if (rnd (10) < level - 1)
+        if (rnd (10) < cur_floor - 1)
         {
             rp->r_flags |= ISDARK;       /* dark room */
             if (rnd (15) == 0)
@@ -136,7 +136,7 @@ void do_rooms()
         /*
          * Put the gold in
          */
-        if (rnd (2) == 0 && (!amulet || level >= max_level))
+        if (rnd (2) == 0 && (!amulet || cur_floor >= max_floor))
         {
             THING *gold;
 

@@ -2196,8 +2196,8 @@ int rs_save_file (FILE *savef)
     rs_write_int (savef, hungry_state);
     rs_write_int (savef, inpack);
     rs_write_int (savef, inv_type);
-    rs_write_int (savef, level);
-    rs_write_int (savef, max_level);
+    rs_write_int (savef, cur_floor);
+    rs_write_int (savef, max_floor);
     rs_write_int (savef, mpos);
     rs_write_int (savef, no_food);
     rs_write_ints (savef, a_class, MAXARMORS);
@@ -2327,8 +2327,8 @@ int rs_restore_file (FILE *inf)
     rs_read_int (inf, &hungry_state);
     rs_read_int (inf, &inpack);
     rs_read_int (inf, &inv_type);
-    rs_read_int (inf, &level);
-    rs_read_int (inf, &max_level);
+    rs_read_int (inf, &cur_floor);
+    rs_read_int (inf, &max_floor);
     rs_read_int (inf, &mpos);
     rs_read_int (inf, &no_food);
     rs_read_ints (inf, a_class, MAXARMORS);

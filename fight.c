@@ -370,7 +370,7 @@ int attack (THING *mp)
                     player.t_flags |= ISHELD;
                 }
 
-                sprintf (monsters['F' - 'A'].m_stats.s_dmg, "%dx1", ++vf_hit);
+                snprintf(monsters['F' - 'A'].m_stats.s_dmg, sizeof(monsters['F' - 'A'].m_stats.s_dmg), "%dx1", ++vf_hit);
 
                 if (--pstats.s_hpt <= 0)
                 {
@@ -905,7 +905,7 @@ void killed (THING *tp, bool pr)
         {
             THING *gold;
 
-            if (fallpos (&tp->t_pos, &tp->t_room->r_gold) && level >= max_level)
+            if (fallpos (&tp->t_pos, &tp->t_room->r_gold) && cur_floor >= max_floor)
             {
                 gold = new_item();
                 gold->o_type = GOLD;
@@ -947,7 +947,7 @@ void killed (THING *tp, bool pr)
     }
 
     /*
-     * Do adjustments if he went up a level
+     * Do adjustments if he went up a floor
      */
     check_level();
 

@@ -233,7 +233,7 @@ void drop()
 
     obj = leave_pack (obj, TRUE, (bool) !ISMULT (obj->o_type));
     /*
-     * Link it into the level object list
+     * Link it into the floor object list
      */
     attach (lvl_obj, obj);
     chat (hero.y, hero.x) = (char) obj->o_type;

@@ -470,14 +470,15 @@ void check_level()
     if (i > olevel)
     {
         /*
-         * Increase his hit points by 1d6 + 4 for each level
+         * Increase his hit points by 1d4 + 6 for each level
          * he has gone up.  This is a little different than
          * the original, but it is a lot more consistent (previously 1d10)
          */
-        add = roll (i - olevel, 6) + 4 * (i - olevel);
+        add = roll (i - olevel, 4) + 6 * (i - olevel);
         max_hp += add;
         pstats.s_hpt += add;
         msg ("welcome to level %d", i);
+        status();
     }
 }
 
@@ -560,7 +561,7 @@ bool add_haste (bool potion)
 
 /*
  * aggravate:
- *  Aggravate all the monsters on this level
+ *  Aggravate all the monsters on this floor
  */
 
 void aggravate()
@@ -798,7 +799,7 @@ void call_it (struct obj_info *info)
 
 /*
  * rnd_thing:
- *  Pick a random thing appropriate for this level
+ *  Pick a random thing appropriate for this floor
  */
 char rnd_thing()
 {
@@ -808,7 +809,7 @@ char rnd_thing()
         POTION, SCROLL, RING, STICK, FOOD, WEAPON, ARMOR, STAIRS, GOLD, AMULET
     };
 
-    if (level >= AMULETLEVEL)
+    if (cur_floor >= AMULETLEVEL)
     {
         i = rnd (sizeof thing_list / sizeof (char));
     }

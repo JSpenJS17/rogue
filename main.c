@@ -106,7 +106,7 @@ int main (int argc, char **argv, char **envp)
             }
 
             purse = rnd (100) + 1;
-            level = rnd (100) + 1;
+            cur_floor = rnd (100) + 1;
             initscr();
             getltchars();
             death (death_monst());
@@ -162,7 +162,7 @@ int main (int argc, char **argv, char **envp)
 #ifdef MASTER
     noscore = wizard;
 #endif
-    new_level();            /* Draw current level */
+    new_level();            /* Draw current floor */
     /*
      * Start up daemons and fuses
      */
