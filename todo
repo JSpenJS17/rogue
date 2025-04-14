@@ -3,3 +3,5 @@
 - Balance + playtest bosses
 - Typing can't backspace when naming (calling/callit) something
 - Test that orcs are still greedy
+
+- Combine Winodws and UNIX versions to run from the same Makefile
