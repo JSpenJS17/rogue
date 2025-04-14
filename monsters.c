@@ -32,7 +32,7 @@ static char wand_mons[] =
 
 /*
  * randmonster:
- *  Pick a monster to show up.  The lower the level,
+ *  Pick a monster to show up.  The lower the floor,
  *  the meaner the monster.
  */
 char randmonster (bool wander)
@@ -44,7 +44,7 @@ char randmonster (bool wander)
 
     do
     {
-        d = level + (rnd (10) - 6);
+        d = floor + (rnd (10) - 6);
 
         if (d < 0)
         {
@@ -90,7 +90,7 @@ bool new_monster (THING *tp, char type, coord *cp, bool boss)
     }
     
 
-    if ((lev_add = level - AMULETLEVEL) < 0)
+    if ((lev_add = floor - AMULETLEVEL) < 0)
     {
         lev_add = 0;
     }
@@ -116,7 +116,7 @@ bool new_monster (THING *tp, char type, coord *cp, bool boss)
     tp->t_stats.s_exp = mp->m_stats.s_exp + lev_add * 10 + exp_add (tp);
     tp->t_flags = mp->m_flags;
 
-    if (level > 29)
+    if (floor > 29)
     {
         tp->t_flags |= ISHASTE;
     }
@@ -330,7 +330,7 @@ THING *wake_monster (int y, int x)
 
 void give_pack (THING *tp)
 {
-    if (level >= max_level && rnd (100) < monsters[tp->t_type - 'A'].m_carry)
+    if (floor >= max_level && rnd (100) < monsters[tp->t_type - 'A'].m_carry)
     {
         attach (tp->t_pack, new_thing());
     }

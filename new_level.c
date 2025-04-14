@@ -1,6 +1,6 @@
 /*
  * new_level:
- *  Dig and draw a new level
+ *  Dig and draw a new floor
  *
  * @(#)new_level.c  4.38 (Berkeley) 02/05/99
  *
@@ -28,13 +28,13 @@ void new_level()
 
     player.t_flags &= ~ISHELD;  /* unhold when you go down just in case */
 
-    if (level > max_level)
+    if (floor > max_level)
     {
-        max_level = level;
+        max_level = floor;
     }
 
     /*
-     * Clean things off from last level
+     * Clean things off from last floor
      */
     for (pp = places; pp < &places[MAXCOLS * MAXLINES]; pp++)
     {
@@ -46,7 +46,7 @@ void new_level()
     clear();
 
     /*
-     * Free up the monsters on the last level
+     * Free up the monsters on the last floor
      */
     for (tp = mlist; tp != NULL; tp = next (tp))
     {
@@ -55,7 +55,7 @@ void new_level()
 
     free_list (mlist);
     /*
-     * Throw away stuff left on the previous level (if anything)
+     * Throw away stuff left on the previous floor (if anything)
      */
     free_list (lvl_obj);
     do_rooms();             /* Draw rooms */
@@ -66,9 +66,9 @@ void new_level()
     /*
      * Place the traps
      */
-    if (rnd (10) < level)
+    if (rnd (10) < floor)
     {
-        ntraps = rnd (level / 4) + 1;
+        ntraps = rnd (floor / 4) + 1;
 
         if (ntraps > MAXTRAPS)
         {
@@ -105,9 +105,9 @@ void new_level()
     seenstairs = FALSE;
 
     /*
-     * Place the boss if this is level 5, 10, 15, 20, or 26
+     * Place the boss if this is floor 5, 10, 15, 20, or 26
      */
-    switch (level)
+    switch (floor)
     {
         case 5:
             // centaur boss
@@ -175,7 +175,7 @@ int rnd_room()
 
 /*
  * put_things:
- *  Put potions and scrolls on this level
+ *  Put potions and scrolls on this floor
  */
 
 void put_things()
@@ -187,7 +187,7 @@ void put_things()
      * Once you have found the amulet, the only way to get new stuff is
      * go down into the dungeon.
      */
-    if (amulet && level < max_level)
+    if (amulet && floor < max_level)
     {
         return;
     }
@@ -201,7 +201,7 @@ void put_things()
     }
 
     /*
-     * Do MAXOBJ attempts to put things on a level
+     * Do MAXOBJ attempts to put things on a floor
      */
     for (i = 0; i < MAXOBJ; i++)
         if (rnd (100) < 36)
@@ -222,7 +222,7 @@ void put_things()
      * If he is really deep in the dungeon and he hasn't found the
      * amulet yet, put it somewhere on the ground
      */
-    if (level >= AMULETLEVEL && !amulet)
+    if (floor >= AMULETLEVEL && !amulet)
     {
         obj = new_item();
         attach (lvl_obj, obj);
@@ -290,7 +290,7 @@ void treas_room()
         nm = spots;
     }
 
-    level++;
+    floor++;
 
     while (nm--)
     {
@@ -306,5 +306,5 @@ void treas_room()
         }
     }
 
-    level--;
+    floor--;
 }

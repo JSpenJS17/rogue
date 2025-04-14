@@ -330,7 +330,7 @@ char be_trapped (coord *tc)
     switch (tr)
     {
     case T_DOOR:
-        level++;
+        floor++;
         new_level();
         msg ("you fell into a trap!");
         break;

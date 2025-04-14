@@ -905,7 +905,7 @@ void killed (THING *tp, bool pr)
         {
             THING *gold;
 
-            if (fallpos (&tp->t_pos, &tp->t_room->r_gold) && level >= max_level)
+            if (fallpos (&tp->t_pos, &tp->t_room->r_gold) && floor >= max_level)
             {
                 gold = new_item();
                 gold->o_type = GOLD;
@@ -947,7 +947,7 @@ void killed (THING *tp, bool pr)
     }
 
     /*
-     * Do adjustments if he went up a level
+     * Do adjustments if he went up a floor
      */
     check_level();
 

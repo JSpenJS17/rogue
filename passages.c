@@ -16,7 +16,7 @@
 
 /*
  * do_passages:
- *  Draw all the passages on a level.
+ *  Draw all the passages on a floor.
  */
 
 void do_passages()
@@ -320,7 +320,7 @@ void conn (int r1, int r2)
 
     if (!ce (curr, epos))
     {
-        msg ("warning, connectivity problem on this level");
+        msg ("warning, connectivity problem on this floor");
     }
 }
 
@@ -336,7 +336,7 @@ void putpass (coord *cp)
     pp = INDEX (cp->y, cp->x);
     pp->p_flags |= F_PASS;
 
-    if (rnd (10) + 1 < level && rnd (40) == 0)
+    if (rnd (10) + 1 < floor && rnd (40) == 0)
     {
         pp->p_flags &= ~F_REAL;
     }
@@ -365,7 +365,7 @@ void door (struct room *rm, coord *cp)
 
     pp = INDEX (cp->y, cp->x);
 
-    if (rnd (10) + 1 < level && rnd (5) == 0)
+    if (rnd (10) + 1 < floor && rnd (5) == 0)
     {
         if (cp->y == rm->r_pos.y || cp->y == rm->r_pos.y + rm->r_max.y - 1)
         {

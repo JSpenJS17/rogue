@@ -483,7 +483,7 @@ extern char dir_ch, file_name[], home[], huh[], *inv_t_name[],
        *s_names[], take, *tr_name[], *ws_made[], *ws_type[], *stick_descs[];
 
 extern int  a_class[], count, food_left, hungry_state, inpack,
-       inv_type, lastscore, level, max_hit, max_level, mpos,
+       inv_type, lastscore, floor, max_hit, max_level, mpos,
        n_objs, no_command, no_food, no_move, noscore, ntraps, purse,
        quiet, vf_hit;
 

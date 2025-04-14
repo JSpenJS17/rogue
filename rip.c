@@ -183,7 +183,7 @@ void score (int amount, int flags, char monst)
             }
             else
             {
-                scp->sc_level = level;
+                scp->sc_level = floor;
             }
 
             scp->sc_monster = monst;

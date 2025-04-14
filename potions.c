@@ -152,7 +152,7 @@ void quaff(THING* obj)
         }
         else 
         {
-            msg ("You sense the presence of monsters on this level.");
+            msg ("You sense the presence of monsters on this floor.");
         }
 
         break;
@@ -195,7 +195,7 @@ void quaff(THING* obj)
         {
             endmsg(); /* prevents game from freezing here */
             pot_info[P_TFIND].oi_know = TRUE;
-            show_win ("You sense the presence of magic on this level.--More--");
+            show_win ("You sense the presence of magic on this floor.--More--");
         }
         else
             msg ("you have a %s feeling for a moment, then it passes",
@@ -362,7 +362,7 @@ void invis_on()
 
 /*
  * turn_see:
- *  Put on or off seeing monsters on this level
+ *  Put on or off seeing monsters on this floor
  */
 bool turn_see (bool turn_off)
 {

@@ -833,7 +833,7 @@ void identify()
 
 /*
  * d_level:
- *  He wants to go down a level
+ *  He wants to go down a floor
  */
 void d_level()
 {
@@ -858,7 +858,7 @@ void d_level()
                 return;
             }
         }
-        level++;
+        floor++;
         seenstairs = FALSE;
         new_level();
     }
@@ -866,7 +866,7 @@ void d_level()
 
 /*
  * u_level:
- *  He wants to go up a level
+ *  He wants to go up a floor
  */
 void u_level()
 {
@@ -878,9 +878,9 @@ void u_level()
     if (chat (hero.y, hero.x) == STAIRS)
         if (amulet)
         {
-            level--;
+            floor--;
 
-            if (level == 0)
+            if (floor == 0)
             {
                 total_winner();
             }

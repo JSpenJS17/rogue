@@ -346,6 +346,6 @@ void show_map()
             }
         }
 
-    show_win ("---More (level map)---");
+    show_win ("---More (floor map)---");
 }
 #endif

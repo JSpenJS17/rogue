@@ -382,7 +382,7 @@ void read_scroll(THING* obj)
     case S_AGGR:
         /*
          * This scroll aggravates all the monsters on the current
-         * level and sets them running towards the hero
+         * floor and sets them running towards the hero
          */
         aggravate();
         msg ("you hear a high pitched humming noise");

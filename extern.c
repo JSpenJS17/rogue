@@ -90,11 +90,11 @@ char *tr_name[] =           /* Names of the traps */
 
 
 int n_objs;             /* # items listed in inventory() call */
-int ntraps;             /* Number of traps on this level */
+int ntraps;             /* Number of traps on this floor */
 int hungry_state = 0;           /* How hungry is he */
 int inpack = 0;             /* Number of things in pack */
 int inv_type = 0;           /* Type of inventory to use */
-int level = 1;              /* What level she is on */
+int floor = 1;              /* What floor she is on */
 int max_hit;                /* Max damage done to her in to_death */
 int max_level;              /* Deepest player has gone */
 int mpos = 0;               /* Where cursor is on top line */
@@ -152,15 +152,15 @@ coord delta;                /* Change indicated to get_dir() */
 coord oldpos;               /* Position before last look() call */
 coord stairs;               /* Location of staircase */
 
-PLACE places[MAXLINES * MAXCOLS];       /* level map */
+PLACE places[MAXLINES * MAXCOLS];       /* floor map */
 
 THING *cur_armor;           /* What he is wearing */
 THING *cur_ring[2];         /* Which rings are being worn */
 THING *cur_weapon;          /* Which weapon he is weilding */
 THING *l_last_pick = NULL;      /* Last last_pick */
 THING *last_pick = NULL;        /* Last object picked in get_item() */
-THING *lvl_obj = NULL;          /* List of objects on this level */
-THING *mlist = NULL;            /* List of monsters on the level */
+THING *lvl_obj = NULL;          /* List of objects on this floor */
+THING *mlist = NULL;            /* List of monsters on the floor */
 THING player;               /* His stats */
 /* restart of game */
 
@@ -171,7 +171,7 @@ WINDOW *hw = NULL;          /* used as a scratch window */
 struct stats max_stats = INIT_STATS;    /* The maximum for the player */
 
 struct room *oldrp;         /* Roomin(&oldpos) */
-struct room rooms[MAXROOMS];        /* One for each room -- A level */
+struct room rooms[MAXROOMS];        /* One for each room -- A floor */
 struct room passages[MAXPASS] =     /* One for each passage */
 {
     {   {0, 0}, {0, 0}, {0, 0}, 0, ISGONE | ISDARK, 0, {{0, 0}}
