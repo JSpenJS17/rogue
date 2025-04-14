@@ -470,11 +470,11 @@ void check_level()
     if (i > olevel)
     {
         /*
-         * Increase his hit points by 1d6 + 4 for each level
+         * Increase his hit points by 1d4 + 6 for each level
          * he has gone up.  This is a little different than
          * the original, but it is a lot more consistent (previously 1d10)
          */
-        add = roll (i - olevel, 6) + 4 * (i - olevel);
+        add = roll (i - olevel, 4) + 6 * (i - olevel);
         max_hp += add;
         pstats.s_hpt += add;
         msg ("welcome to level %d", i);
