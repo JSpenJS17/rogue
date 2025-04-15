@@ -2,9 +2,4 @@
 - Perk system? - every 5 levels you get to choose an upgrade?
 - Typing can't backspace when naming (calling/callit) something
     - Only on linux
-- Balance enemy HP -- they're dying too fast midgame (Z, O, etc.)
-- No trapdoor traps on boss levels, or at least prevent them from making you fall
-- Redo boss bool
-    - If true, sets ISBOSS flag
-    - If false, does not set
-        - Should prevent boss enemies ('T', 'C', 'G', 'J', 'D') from spawning
+- No trapdoor traps on boss levels, or at least prevent them from making you fall ?
