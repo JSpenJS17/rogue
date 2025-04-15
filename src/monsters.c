@@ -104,7 +104,11 @@ bool new_monster (THING *tp, char type, coord *cp, bool boss)
     if (boss) 
     {
         tp->t_flags |= ISBOSS;
-        tp->t_flags ^= ISMEAN;
+        // they will not attack until provoked!
+        if (tp->t_flags & ISMEAN)
+        {
+            tp->t_flags ^= ISMEAN;
+        }
     }
 
     if (cur_floor > 29)
