@@ -20,20 +20,22 @@
  */
 static char lvl_mons[] =
 {
-    'K', 'E', 'B', 'S', 'H', 'I', 'R', 'O', 'Z', 'L', 'C', 'Q', 'A',
-    'N', 'Y', 'F', 'T', 'W', 'P', 'X', 'U', 'M', 'V', 'G', 'J', 'D'
+    'K', 'E', 'B', 'S', 'H', 'I', 'R', 'O', 'Z', 'L', 'F', 'Q', 'A',
+    'N', 'Y', 'C', 'W', 'P', 'T', 'X', 'U', 'M', 'V', 'G', 'J', 'D'
 };
 
 static char wand_mons[] =
 {
-    'K', 'E', 'B', 'S', 'H',   0, 'R', 'O', 'Z',   0, 'C', 'Q', 'A',
-    0, 'Y',   0, 'T', 'W', 'P',   0, 'U', 'M', 'V', 'G', 'J',   0
+    'K', 'E', 'B', 'S', 'H',   0, 'R', 'O', 'Z',   0,  0, 'Q', 'A',
+    0,   'Y',   0, 'W', 'P', 'T',   0, 'U', 'M', 'V',  0,   0,   0
 };
 
 /*
  * randmonster:
  *  Pick a monster to show up.  The lower the floor,
  *  the meaner the monster.
+ *    monster index: cur_floor + [-6, 3]
+ *      -- I might lower the variance on this, 10 unique enemies/floor is a lot
  */
 char randmonster (bool wander)
 {
@@ -56,7 +58,7 @@ char randmonster (bool wander)
             d = rnd (5) + 21;
         }
     }
-    while (mons[d] == 0);
+    while (mons[d] == 0); // never return 0
 
     return mons[d];
 }
@@ -65,30 +67,12 @@ char randmonster (bool wander)
  * new_monster:
  *  Pick a new monster and add it to the list
  *  Returns true if spawn is successful, false if spawn fails 
- *  (boss monster when boss BOOL is false or non-boss when boss BOOL is true)
  */
 
 bool new_monster (THING *tp, char type, coord *cp, bool boss)
 {
     struct monster *mp;
     int lev_add;
-
-    // boss monster check, don't spawn C, T, G, J, or D unless boss == true
-    if (!boss && monsters[type - 'A'].m_flags & ISBOSS) 
-    {
-        return FALSE;
-    }
-    // if boss == true, only let bosses spawn, this check might be bad actually
-        // polymorph wants to be able to spawn bosses, but can't because of this
-    // but you want this because otherwise you'll start spawning bosses as regular enemies
-        // this might be a feature not a bug lowkey
-        // if we do want to spawn boss monsters later in the game, need to remove the ISBOSS flag
-            // otherwise they will prevent the way down
-    else if (boss && !(monsters[type - 'A'].m_flags & ISBOSS)) 
-    {
-        return FALSE;
-    }
-    
 
     if ((lev_add = cur_floor - AMULETLEVEL) < 0)
     {
@@ -116,6 +100,13 @@ bool new_monster (THING *tp, char type, coord *cp, bool boss)
     tp->t_stats.s_exp = mp->m_stats.s_exp + lev_add * 10 + exp_add (tp);
     tp->t_flags = mp->m_flags;
 
+    // add boss status to bosses
+    if (boss) 
+    {
+        tp->t_flags |= ISBOSS;
+        tp->t_flags ^= ISMEAN;
+    }
+
     if (cur_floor > 29)
     {
         tp->t_flags |= ISHASTE;
@@ -140,16 +131,21 @@ bool new_monster (THING *tp, char type, coord *cp, bool boss)
 /*
  * spawn_monster:
  *  Spawn a random new monster using new_monster -- new_monster adds it to list
- *  If boss is true, spawn the appropriate boss monster
  */
 void spawn_monster (THING *tp, bool wander, coord *cp, bool boss)
 {
-    bool succ = FALSE;
+    char only_boss[] = {'G', 'J', 'D'}; // only spawn these if boss is true
+    int num_bosses = sizeof (only_boss) / sizeof (char);
+    char monst;
 
-    while (!succ)
-    {
-        succ = new_monster (tp, randmonster(wander), cp, boss);
-    }
+    /*
+     * Skip bosses if we are not spawning a boss
+     */
+    do {
+        monst = randmonster (wander);
+    } while (!boss && strchr (only_boss, monst));
+
+    new_monster(tp, monst, cp, boss);
 }
 
 /*
@@ -176,6 +172,11 @@ int exp_add (THING *tp)
     else if (tp->t_stats.s_lvl > 6)
     {
         mod *= 4;
+    }
+
+    if (tp->t_flags & ISBOSS) 
+    {
+        mod *= 5;
     }
 
     return mod;
