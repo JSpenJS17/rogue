@@ -138,8 +138,6 @@ bool new_monster (THING *tp, char type, coord *cp, bool boss)
  */
 void spawn_monster (THING *tp, bool wander, coord *cp, bool boss)
 {
-    char only_boss[] = {'G', 'J', 'D'}; // only spawn these if boss is true
-    int num_bosses = sizeof (only_boss) / sizeof (char);
     char monst;
 
     /*

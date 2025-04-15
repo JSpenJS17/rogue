@@ -105,35 +105,15 @@ void new_level()
     seenstairs = FALSE;
 
     /*
-     * Place the boss if this is floor 5, 10, 15, 20, or 26
+     * Place the boss if this is floor is marked as a boss floor
      */
-    switch (cur_floor)
+    for (int i = 0; i < NUMBOSSES; i++)
     {
-        case 5:
-            // centaur boss
+        if (cur_floor == boss_floors[i])
+        {
             tp = new_item();
-            new_monster (tp, 'C', &stairs, TRUE);
-            break;
-        case 10:
-            // troll boss
-            tp = new_item();
-            new_monster (tp, 'T', &stairs, TRUE);
-            break;
-        case 15:
-            // griffin boss
-            tp = new_item();
-            new_monster (tp, 'G', &stairs, TRUE);
-            break;
-        case 20:
-            // Jabberwock boss
-            tp = new_item();
-            new_monster (tp, 'J', &stairs, TRUE);
-            break;
-        case 26:
-            // Dragon boss -- might want to move this to the amulet room somehow
-            tp = new_item();
-            new_monster (tp, 'D', &stairs, TRUE);
-            break;
+            new_monster (tp, boss_order[i], &stairs, TRUE);
+        }
     }
 
     for (tp = mlist; tp != NULL; tp = next (tp))

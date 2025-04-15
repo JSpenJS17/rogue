@@ -226,6 +226,22 @@ struct monster monsters[26] =
 #undef ___
 #undef XX
 
+int boss_floors[NUMBOSSES] = 
+{
+    5, 10, 15, 20, 26
+};
+
+char boss_order[NUMBOSSES + 1] = 
+{
+    'C', 'T', 'G', 'J', 'D', '\0'
+};
+
+/* monster types that can only be spawned as bosses */
+char only_boss[] = 
+{
+    'G', 'J', 'D', '\0' 
+};
+
 struct obj_info things[NUMTHINGS] =
 {
     { 0,            26 },   /* potion */

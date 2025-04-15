@@ -21,7 +21,7 @@
  */
 #define MAXROOMS    9
 #define MAXTHINGS   9
-#define MAXOBJ      9  /* number of object spawn attempts per level */
+#define MAXOBJ      9   /* number of object spawn attempts per level */
 #define MAXPACK     23
 #define MAXTRAPS    10
 #define MAXLEVEL    20
@@ -32,6 +32,7 @@
 #define NUMCOLS     80
 #define STATLINE    (NUMLINES - 1)
 #define BORE_LEVEL  50
+#define NUMBOSSES   5
 
 /*
  * return values for get functions
@@ -508,6 +509,9 @@ extern struct room  *oldrp, passages[], rooms[];
 extern struct stats max_stats;
 
 extern struct monster   monsters[];
+extern int              boss_floors[];
+extern char             boss_order[];
+extern char             only_boss[];
 
 extern struct obj_info  arm_info[], pot_info[], ring_info[],
            scr_info[], things[], ws_info[], weap_info[];
