@@ -2342,7 +2342,7 @@ int rs_restore_file (FILE *inf)
     rs_read_int (inf, &vf_hit);
     rs_read_int (inf, &dnum);
     rs_read_int (inf, &seed);
-    rs_read_ints (inf, e_levels, 21);
+    rs_read_ints (inf, e_levels, 20);
     rs_read_coord (inf, &delta);
     rs_read_coord (inf, &oldpos);
     rs_read_coord (inf, &stairs);
