@@ -139,7 +139,7 @@ void spawn_monster (THING *tp, bool wander, coord *cp, bool boss)
     char monst;
 
     /*
-     * Skip bosses if we are not spawning a boss
+     * Skip only_boss monsters if we are not spawning a boss
      */
     do {
         monst = randmonster (wander);
