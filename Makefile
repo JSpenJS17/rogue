@@ -4,6 +4,7 @@ SRC_DIR := src
 OBJ_DIR := $(SRC_DIR)/obj
 SRC := $(wildcard $(SRC_DIR)/*.c)
 OBJ := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
+HDR := $(wildcard $(SRC_DIR)/*.h)
 TARGET := rogue
 
 CC := gcc
@@ -11,7 +12,7 @@ CFLAGS := -g -O2
 LIBS := -lcurses
 
 # Final executable target
-$(TARGET): $(OBJ)
+$(TARGET): $(HDR) $(OBJ)
 	$(CC) $(OBJ) $(LIBS) -o $(TARGET)
 
 # Rule to compile .c -> .o (ensures obj/ exists)
