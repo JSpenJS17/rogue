@@ -399,7 +399,7 @@ void command()
                 }
                 goto over;
             }
-            case 'f':
+            case 'j':
                 if (!get_dir())
                 {
                     after = FALSE;
@@ -469,7 +469,7 @@ void command()
                 after = FALSE;
                 help();
                 break;
-            case 'r':
+            case 'k':
                 search();
                 break;
             case CTRL ('P') :
@@ -572,9 +572,9 @@ void command()
             //     status();
             //     stat_msg = FALSE;
             //     after = FALSE;
-            // breakdefault:
-            //     after = FALSE;
-                    illcom (ch);
+            default:
+                 after = FALSE;
+                 illcom (ch);
             }
 
             /*
