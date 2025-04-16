@@ -195,33 +195,34 @@ struct monster monsters[26] =
 {
     /* NOTE: the damage is %%% on venus flytrap so that xstr won't merge this */
     /* string with others, since it is written on in the program */
+    /* NOTE: HIGHER armor means easier to hit for some reason */
     /* Name        CARRY      FLAG             str,  exp, lvl, amr, hpt, dmg(NDICExSIDES), maxhp, mvspd, mvctr */
-    { "aquator",       0,   ISMEAN,           { XX,   20,   5,   2, ___, "0x0/0x0",        ___,     1,     0} },
-    { "bat",           0,   ISFLY,            { XX,    1,   1,   3, ___, "1x2",            ___,     0,     0} },
-    { "centaur",      25,   0,                { XX,   30,   4,   4, ___, "2x2/2x2/2x4",    ___,     0,     0} }, /* boss 1, floor 5  */
-    { "dragon",      100,   0,                { XX,  250,  10,   2, ___, "4x8/4x8/12x4",   ___,     2,     0} }, /* boss 5, floor 26 */
-    { "emu",           0,   ISMEAN,           { XX,    2,   1,   7, ___, "1x2",            ___,     1,     0} },
-    { "venus flytrap", 0,   ISMEAN,           { XX,   80,   8,   3, ___, "%%%x0",          ___,     0,     0} },
-    { "griffin",     100,   ISFLY,            { XX,  100,  12,   2, ___, "4x2/3x4",        ___,     0,     0} }, /* boss 3, floor 15 */
-    { "hobgoblin",     0,   ISMEAN,           { XX,    3,   1,   5, ___, "1x8",            ___,     1,     0} },
-    { "ice monster",   0,   0,                { XX,    5,   1,   9, ___, "1x2",            ___,     1,     0} },
-    { "jabberwock",  100,   0,                { XX,  160,  15,   6, ___, "2x6/2x6/1x20",   ___,     0,     0} }, /* boss 4, floor 20 */
-    { "kestrel",       0,   ISMEAN | ISFLY,   { XX,    2,   1,   7, ___, "1x3",            ___,     0,     0} },
-    { "leprechaun",    0,   0,                { XX,   10,   3,   8, ___, "1x1",            ___,     0,     0} },
-    { "medusa",       40,   ISMEAN,           { XX,  200,   8,   2, ___, "4x4/4x6",        ___,     1,     0} },
-    { "nymph",       100,   0,                { XX,   37,   3,   9, ___, "0x0",            ___,     0,     0} },
-    { "orc",          15,   0,                { XX,   15,   1,   6, ___, "1x8/2x8",        ___,     1,     0} },
-    { "phantom",       0,   ISINVIS,          { XX,  120,   8,   3, ___, "4x4",            ___,     1,     0} },
-    { "quagga",        0,   ISMEAN,           { XX,   25,   3,   3, ___, "2x4",            ___,     0,     0} },
-    { "rattlesnake",   0,   ISMEAN,           { XX,   10,   2,   3, ___, "2x6",            ___,     1,     0} },
-    { "snake",         0,   ISMEAN,           { XX,    2,   1,   5, ___, "1x4",            ___,     1,     0} },
-    { "troll",        50,   ISREGEN | ISMEAN, { XX,   50,   6,   4, ___, "3x8/3x8/5x6",    ___,     2,     0} }, /* boss 2, floor 10 */
-    { "black unicorn", 0,   ISMEAN,           { XX,  200,   7,  -2, ___, "2x8/2x10",       ___,     0,     0} },
-    { "vampire",      20,   ISREGEN | ISMEAN, { XX,  100,   8,   1, ___, "2x6/2x10",       ___,     0,     0} },
-    { "wraith",        0,   0,                { XX,   75,   5,   4, ___, "1x6",            ___,     0,     0} },
-    { "xeroc",        30,   0,                { XX,  100,   7,   7, ___, "4x8/6x8",        ___,     1,     0} },
-    { "yeti",         30,   0,                { XX,   50,   4,   6, ___, "2x6",            ___,     0,     0} },
-    { "zombie",        0,   ISMEAN,           { XX,   20,   2,   8, ___, "2x8/3x6",        ___,     1,     0} }
+    { "aquator",       0,   ISMEAN,           { XX,   20,   5,   3, ___, "0x0/0x0",        ___,     1,     0} },
+    { "bat",           0,   ISFLY,            { XX,    1,   1,   4, ___, "1x2",            ___,     0,     0} },
+    { "centaur",      25,   0,                { XX,   30,   4,   5, ___, "2x2/2x2/2x4",    ___,     0,     0} }, /* boss 1, floor 5  */
+    { "dragon",      100,   0,                { XX,  250,  10,   3, ___, "4x8/4x8/12x4",   ___,     2,     0} }, /* boss 5, floor 26 */
+    { "emu",           0,   ISMEAN,           { XX,    2,   1,   8, ___, "1x2",            ___,     1,     0} },
+    { "venus flytrap", 0,   ISMEAN,           { XX,   80,   8,   4, ___, "%%%x0",          ___,     0,     0} },
+    { "griffin",     100,   ISFLY,            { XX,  100,  12,   5, ___, "4x2/3x4",        ___,     0,     0} }, /* boss 3, floor 15 */
+    { "hobgoblin",     0,   ISMEAN,           { XX,    3,   1,   6, ___, "1x8",            ___,     1,     0} },
+    { "ice monster",   0,   0,                { XX,    5,   1,  10, ___, "1x2",            ___,     1,     0} },
+    { "jabberwock",  100,   0,                { XX,  160,  15,   7, ___, "2x6/2x6/1x20",   ___,     0,     0} }, /* boss 4, floor 20 */
+    { "kestrel",       0,   ISMEAN | ISFLY,   { XX,    2,   1,   8, ___, "1x3",            ___,     0,     0} },
+    { "leprechaun",    0,   0,                { XX,   10,   3,   9, ___, "1x1",            ___,     0,     0} },
+    { "medusa",       40,   ISMEAN,           { XX,  200,   8,   3, ___, "4x4/4x6",        ___,     1,     0} },
+    { "nymph",       100,   0,                { XX,   37,   3,  10, ___, "0x0",            ___,     0,     0} },
+    { "orc",          15,   0,                { XX,   15,   1,   7, ___, "1x8/2x8",        ___,     1,     0} },
+    { "phantom",       0,   ISINVIS,          { XX,  120,   8,   4, ___, "4x4",            ___,     1,     0} },
+    { "quagga",        0,   ISMEAN,           { XX,   25,   3,   4, ___, "2x4",            ___,     0,     0} },
+    { "rattlesnake",   0,   ISMEAN,           { XX,   10,   2,   4, ___, "2x6",            ___,     1,     0} },
+    { "snake",         0,   ISMEAN,           { XX,    2,   1,   6, ___, "1x4",            ___,     1,     0} },
+    { "troll",        50,   ISREGEN | ISMEAN, { XX,   50,   6,   5, ___, "3x8/3x8/5x6",    ___,     2,     0} }, /* boss 2, floor 10 */
+    { "black unicorn", 0,   ISMEAN,           { XX,  200,   7,  -1, ___, "2x8/2x10",       ___,     0,     0} },
+    { "vampire",      20,   ISREGEN | ISMEAN, { XX,  100,   8,   2, ___, "2x6/2x10",       ___,     0,     0} },
+    { "wraith",        0,   0,                { XX,   75,   5,   5, ___, "1x6",            ___,     0,     0} },
+    { "xeroc",        30,   0,                { XX,  100,   7,   8, ___, "4x8/6x8",        ___,     1,     0} },
+    { "yeti",         30,   0,                { XX,   50,   4,   7, ___, "2x6",            ___,     0,     0} },
+    { "zombie",        0,   ISMEAN,           { XX,   20,   2,   9, ___, "2x8/3x6",        ___,     1,     0} }
 };
 #undef ___
 #undef XX
