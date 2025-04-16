@@ -181,6 +181,14 @@ void do_zap(THING* obj)
                     delta.y = y;
                     delta.x = x;
 
+                    /*
+                     * Skip bosses -- they shouldn't be poly-able
+                     */
+                    if (tp->t_flags & ISBOSS) 
+                    {
+                        break;
+                    }
+
                     /* 
                      * Try new monsters until we get one that isn't a boss
                      * Polymorph spawning bosses seems a little too hard

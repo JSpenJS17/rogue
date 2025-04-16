@@ -147,6 +147,17 @@ int do_chase (THING *th)
     if (th->t_stats.s_movectr != 0)
     {
         th->t_stats.s_movectr--;
+        
+        // sometimes trolls move faster, gives the boss fight some variance 
+        if (th->t_type == 'T' && rnd(2) == 0)
+        {
+            th->t_stats.s_movectr--;
+        }
+
+        if (th->t_stats.s_movectr < 0)
+        {
+            th->t_stats.s_movectr = 0;
+        }
         return -1;
     }
     else {

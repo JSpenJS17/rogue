@@ -21,16 +21,18 @@
  */
 #define MAXROOMS    9
 #define MAXTHINGS   9
-#define MAXOBJ      10  /* number of object spawn attempts per level */
+#define MAXOBJ      9   /* number of object spawn attempts per level */
 #define MAXPACK     23
 #define MAXTRAPS    10
+#define MAXLEVEL    20
 #define AMULETLEVEL 26
 #define NUMTHINGS   7   /* number of types of things */
 #define MAXPASS     13  /* upper limit on number of passages */
 #define NUMLINES    24
 #define NUMCOLS     80
-#define STATLINE        (NUMLINES - 1)
+#define STATLINE    (NUMLINES - 1)
 #define BORE_LEVEL  50
+#define NUMBOSSES   5
 
 /*
  * return values for get functions
@@ -507,6 +509,9 @@ extern struct room  *oldrp, passages[], rooms[];
 extern struct stats max_stats;
 
 extern struct monster   monsters[];
+extern int              boss_floors[];
+extern char             boss_order[];
+extern char             only_boss[];
 
 extern struct obj_info  arm_info[], pot_info[], ring_info[],
            scr_info[], things[], ws_info[], weap_info[];
@@ -731,7 +736,7 @@ THING   *find_obj (int y, int x);
 THING   *get_item (char *purpose, int type);
 THING   *leave_pack (THING *obj, bool newobj, bool all);
 THING   *new_item();
-THING   *new_thing();
+THING   *new_thing(int type);
 
 struct room *roomin (coord *cp);
 

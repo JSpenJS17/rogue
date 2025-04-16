@@ -466,6 +466,10 @@ bool seen_stairs()
 
 void raise_level()
 {
+    if (pstats.s_lvl >= MAXLEVEL)
+    {
+        return;
+    }
     pstats.s_exp = e_levels[pstats.s_lvl - 1] + 1L;
     check_level();
 }

@@ -2211,7 +2211,7 @@ int rs_save_file (FILE *savef)
     rs_write_int (savef, vf_hit);
     rs_write_int (savef, dnum);
     rs_write_int (savef, seed);
-    rs_write_ints (savef, e_levels, 21);
+    rs_write_ints (savef, e_levels, 20);
     rs_write_coord (savef, delta);
     rs_write_coord (savef, oldpos);
     rs_write_coord (savef, stairs);
@@ -2342,7 +2342,7 @@ int rs_restore_file (FILE *inf)
     rs_read_int (inf, &vf_hit);
     rs_read_int (inf, &dnum);
     rs_read_int (inf, &seed);
-    rs_read_ints (inf, e_levels, 21);
+    rs_read_ints (inf, e_levels, 20);
     rs_read_coord (inf, &delta);
     rs_read_coord (inf, &oldpos);
     rs_read_coord (inf, &stairs);

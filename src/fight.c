@@ -947,7 +947,7 @@ void killed (THING *tp, bool pr)
     }
 
     /*
-     * Do adjustments if he went up a floor
+     * Do adjustments if he went up a level
      */
     check_level();
 

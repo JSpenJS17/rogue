@@ -201,6 +201,7 @@ void fatal (char *s)
 /*
  * rnd:
  *  Pick a very random number.
+ *  Returns a number between 0 and range - 1.
  */
 int rnd (int range)
 {
