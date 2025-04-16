@@ -113,6 +113,8 @@ void new_level()
         {
             tp = new_item();
             new_monster (tp, boss_order[i], &stairs, TRUE);
+            attach (tp->t_pack, new_thing(5)); // always drop a ring
+            // lowkey should change this, it's bad :(
         }
     }
 
@@ -189,7 +191,7 @@ void put_things()
             /*
              * Pick a new object and link it in the list
              */
-            obj = new_thing();
+            obj = new_thing(-1);
             attach (lvl_obj, obj);
             /*
              * Put it somewhere
@@ -248,7 +250,7 @@ void treas_room()
     while (nm--)
     {
         find_floor (rp, &mp, 2 * MAXTRIES, FALSE);
-        tp = new_thing();
+        tp = new_thing(-1);
         tp->o_pos = mp;
         attach (lvl_obj, tp);
         chat (mp.y, mp.x) = (char) tp->o_type;

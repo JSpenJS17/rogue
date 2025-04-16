@@ -104,11 +104,8 @@ bool new_monster (THING *tp, char type, coord *cp, bool boss)
     if (boss) 
     {
         tp->t_flags |= ISBOSS;
-        // they will not attack until provoked!
-        if (tp->t_flags & ISMEAN)
-        {
-            tp->t_flags ^= ISMEAN;
-        }
+        tp->t_flags &= ~ISMEAN;
+        tp->t_stats.s_exp *= 5;
     }
 
     if (cur_floor > 29)
@@ -174,11 +171,6 @@ int exp_add (THING *tp)
     else if (tp->t_stats.s_lvl > 6)
     {
         mod *= 4;
-    }
-
-    if (tp->t_flags & ISBOSS) 
-    {
-        mod *= 5;
     }
 
     return mod;
@@ -335,7 +327,7 @@ void give_pack (THING *tp)
 {
     if (cur_floor >= max_floor && rnd (100) < monsters[tp->t_type - 'A'].m_carry)
     {
-        attach (tp->t_pack, new_thing());
+        attach (tp->t_pack, new_thing(-1));
     }
 }
 

@@ -303,8 +303,17 @@ bool dropcheck (THING *obj)
 /*
  * new_thing:
  *  Return a new thing
+ *  Types:
+ *   -1 - random (previous functionality)
+ *    0 - potion
+ *    1 - scroll
+ *    2 - food
+ *    3 - weapon
+ *    4 - armor
+ *    5 - ring
+ *    6 - stick
  */
-THING *new_thing()
+THING *new_thing(int type)
 {
     THING *cur;
     int r;
@@ -323,7 +332,13 @@ THING *new_thing()
      * Decide what kind of object it will be
      * If we haven't had food for a while, let it be food.
      */
-    switch (no_food > 3 ? 2 : pick_one (things, NUMTHINGS))
+
+    if (type == -1)
+    {
+        type = no_food > 3 ? 2 : pick_one (things, NUMTHINGS);
+    }
+
+    switch (type)
     {
     case 0:
         cur->o_type = POTION;

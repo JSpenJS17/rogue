@@ -736,7 +736,7 @@ THING   *find_obj (int y, int x);
 THING   *get_item (char *purpose, int type);
 THING   *leave_pack (THING *obj, bool newobj, bool all);
 THING   *new_item();
-THING   *new_thing();
+THING   *new_thing(int type);
 
 struct room *roomin (coord *cp);
 
