@@ -45,10 +45,10 @@ void init_player()
     cur_armor = obj;
     add_pack (obj, TRUE);
     /*
-     * Give him his weaponry.  First a mace.
+     * Give him his weaponry.  First a dagger.
      */
     obj = new_item();
-    init_weapon (obj, MACE);
+    init_weapon (obj, DAGGER);
     obj->o_hplus = 1;
     obj->o_dplus = 1;
     obj->o_flags |= ISKNOW;

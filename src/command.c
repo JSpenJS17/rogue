@@ -65,7 +65,35 @@ void use()
             eat(obj);
             break;
         case WEAPON:
-            wield(obj);
+            switch (obj->o_which)
+            {
+                case ARROW:
+                    /* 
+                     * If the player doesn't have a bow equiped, we can't throw arrows
+                     */
+                    if (cur_weapon == NULL || cur_weapon->o_which != BOW)
+                    {
+                        msg("wield a bow to shoot arrows");
+                        after = FALSE;
+                        return;
+                    }
+                /* FALLTHROUGH */
+                case DART:
+                case SHIRAKEN:
+                    if (!get_dir())
+                    {
+                        after = FALSE;
+                    }
+                    else
+                    {
+                        missile (obj, delta.y, delta.x);
+                    }
+                    break;
+
+                /* Non-throwing weapon */
+                default:
+                    wield(obj);
+            }
             break;
         case ARMOR:
             if (obj == cur_armor)
@@ -402,25 +430,25 @@ void command()
                 }
 
                 break;
-            case 't':
+            // case 't':
 
-                if (!get_dir())
-                {
-                    after = FALSE;
-                }
-                else
-                {
-                    missile (delta.y, delta.x);
-                }
+            //     if (!get_dir())
+            //     {
+            //         after = FALSE;
+            //     }
+            //     else
+            //     {
+            //         missile (delta.y, delta.x);
+            //     }
 
-                break;
+            //     break;
             case 'q':
                 drop();
                 break;
-            case 'i':
-                after = FALSE;
-                inventory (pack, 0, "--Press space to continue--");
-                break;
+            // case 'i':
+            //     after = FALSE;
+            //     inventory (pack, 0, "--Press space to continue--");
+            //     break;
 
             case 'e':  /* new general use item command */
                 use();

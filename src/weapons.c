@@ -31,50 +31,40 @@ static struct init_weaps
     { "3x4",    "1x2",  NO_WEAPON,  0,      },  /* Long sword */
     { "1x1",    "1x1",  NO_WEAPON,  0,      },  /* Bow */
     { "1x1",    "2x3",  BOW,        ISMANY | ISMISL,    },  /* Arrow */
-    { "1x6",    "1x4",  NO_WEAPON,  ISMISL | ISMISL,    },  /* Dagger */
+    { "1x4",    "1x4",  NO_WEAPON,  0,      },  /* Dagger */
     { "4x4",    "1x2",  NO_WEAPON,  0,      },  /* 2h sword */
     { "1x1",    "1x3",  NO_WEAPON,  ISMANY | ISMISL,    },  /* Dart */
     { "1x2",    "2x4",  NO_WEAPON,  ISMANY | ISMISL,    },  /* Shuriken */
-    { "2x3",    "1x6",  NO_WEAPON,  ISMISL,     },  /* Spear */
+    { "2x3",    "1x6",  NO_WEAPON,  0,      },  /* Spear */
 };
 
 /*
  * missile:
- *  Fire a missile in a given direction
+ *  Fire a weapon in a given direction
  */
 
-void missile (int ydelta, int xdelta)
+void missile (THING* weapon, int ydelta, int xdelta)
 {
-    THING *obj;
-
-    /*
-     * Get which thing we are hurling
-     */
-    if ((obj = get_item ("throw", WEAPON)) == NULL)
+    if (!dropcheck (weapon) || is_current (weapon))
     {
         return;
     }
 
-    if (!dropcheck (obj) || is_current (obj))
-    {
-        return;
-    }
-
-    obj = leave_pack (obj, TRUE, FALSE);
-    do_motion (obj, ydelta, xdelta);
+    weapon = leave_pack (weapon, TRUE, FALSE);
+    do_motion (weapon, ydelta, xdelta);
 
     /*
      * AHA! Here it has hit something.  If it is a wall or a door,
      * or if it misses (combat) the monster, put it on the floor
      */
-    bool hit_wall = moat (obj->o_pos.y, obj->o_pos.x) == NULL;
-    if (hit_wall || !hit_monster (unc (obj->o_pos), obj))
+    bool hit_wall = moat (weapon->o_pos.y, weapon->o_pos.x) == NULL;
+    if (hit_wall || !hit_monster (unc (weapon->o_pos), weapon))
     {
         if (hit_wall)
         { 
             endmsg(); /* Specifically when we hit a wall, need to endmsg() here or it'll never get ended */
         }
-        fall (obj, TRUE);
+        fall (weapon, TRUE);
     }
 }
 
@@ -201,12 +191,7 @@ void init_weapon (THING *weap, int which)
     weap->o_hplus = 0;
     weap->o_dplus = 0;
 
-    if (which == DAGGER)
-    {
-        weap->o_count = rnd (4) + 2;
-        weap->o_group = group++;
-    }
-    else if (weap->o_flags & ISMANY)
+    if (weap->o_flags & ISMANY)
     {
         weap->o_count = rnd (8) + 8;
         weap->o_group = group++;

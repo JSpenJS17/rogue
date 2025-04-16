@@ -251,7 +251,7 @@
 #define DAGGER      4
 #define TWOSWORD    5
 #define DART        6
-#define SHIRAKEN    7
+#define SHIRAKEN    7   /* endearing typo from the 80s */
 #define SPEAR       8
 #define FLAME       9   /* fake entry for dragon breath (ick) */
 #define MAXWEAPONS  9   /* this should equal FLAME */
@@ -609,7 +609,7 @@ void    killed (THING *tp, bool pr);
 void    kill_daemon (void (*func)());
 bool    lock_sc();
 void    miss (char *er, char *ee, bool noend);
-void    missile (int ydelta, int xdelta);
+void    missile (THING* weapon, int ydelta, int xdelta);
 void    money (int value);
 int move_monst (THING *tp);
 void    move_msg (THING *obj);

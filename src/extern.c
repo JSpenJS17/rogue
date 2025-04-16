@@ -368,33 +368,25 @@ char* stick_descs[MAXSTICKS] =
 
 struct h_list helpstr[] =
 {
-    {'?',           " \tprints help",                         TRUE},
-    {'w',           " \tup",                                  TRUE},
-    {'a',           " \tleft",                                TRUE},
-    {'s',           " \tdown",                                TRUE},
-    {'d',           " \tright",                               TRUE},
-    {'\0',          " \t<SHIFT><dir>: run that way",          TRUE},
-    {'r',           " \trest and search for secrets",         TRUE},
-    {'i',           " \tinventory",                           TRUE},
-    {'e',           " \tuse an item",                         TRUE},
-    {'q',           " \tdrop an item",                        TRUE},
-    {'t',           " \tthrow something",                     TRUE},
-    {'f',           " \tfight till death or near death",      TRUE},
-    // {'^',   "<dir  \tidentify trap type",          TRUE},
-    {'>',           " \tgo down a staircase (%)",             TRUE},
-    {'<',           " \tgo up a staircase (%)",               TRUE},
-    // {'c',        " \tcall object",                         TRUE}, /* I lowkey want to add this back */
-    // {')',        " \tprint current weapon",                TRUE},
-    // {']',        " \tprint current armor",                 TRUE},
-    // {'=',        " \tprint current rings",                 TRUE},
-    // {'@',        " \tprint current stats",                 TRUE},
-    // {'o',        " \texamine/set options",                 TRUE}, /* TODO: add back in after options are functional */
-    {CTRL ('R'),    " \tredraw screen",                       TRUE},
-    {CTRL ('P'),    " \trepeat last message",                 TRUE},
-    {ESCAPE,        " \t(escape) cancel command",             TRUE},
-    {CTRL ('S'),    " \tsave game",                           TRUE},
-    {'Q',           " \tquit",                                TRUE},
-    // {'!',        " \tshell escape",                        TRUE},
-    {'v',           " \tprint version number",                TRUE},
+    {'?',           "    prints help",                         TRUE},
+    {'w',           "    up",                                  TRUE},
+    {'a',           "    left",                                TRUE},
+    {'s',           "    down",                                TRUE},
+    {'d',           "    right",                               TRUE},
+    {'\0',          "    <SHIFT><dir>: run that way",          TRUE},
+    {'k',           "    rest and search for secrets",         TRUE},
+    {'e',           "    use an item",                         TRUE},
+    {'q',           "    drop an item",                        TRUE},
+    // {'t',             throw something",                     TRUE},
+    {'j',           "    fight till death or near death",      TRUE},
+    {'>',           "    go down a staircase (%)",             TRUE},
+    {'<',           "    go up a staircase (%)",               TRUE},
+    // {'c',        "    call object",                         TRUE}, /* I lowkey want to add this back */
+    // {'o',        "    examine/set options",                 TRUE}, /* TODO: add back in after options are functional */
+    {CTRL ('P'),    "   repeat last message",                 TRUE},
+    {ESCAPE,        "   (escape) cancel command",             TRUE},
+    {CTRL ('S'),    "   save game",                           TRUE},
+    {'Q',           "    quit",                                TRUE},
+    {'v',           "    print version number",                TRUE},
     {0,     NULL }
 };

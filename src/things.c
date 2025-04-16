@@ -365,7 +365,7 @@ THING *new_thing(int type)
     case 3:
     {
         int weap = pick_one (weap_info, MAXWEAPONS);
-        while (weap == 0 || weap == 2) /* don't spawn maces or shortbows, he already has one */
+        while (weap == DAGGER || weap == BOW) /* don't spawn daggers or shortbows, she already has one */
         {
             weap = pick_one (weap_info, MAXWEAPONS);
         }
