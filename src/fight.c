@@ -46,19 +46,19 @@ char *m_names[] =       /* strings for missing */
  * adjustments to hit probabilities due to strength
  */
 static int str_plus[] =
-{                                                       //16
-    -7, -6, -5, -4, -3, -2, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4,
-        5, 6, 7, 8, 9, 10, 10, 10, 10, 10, 10, 10,
-    };
+{                                                       
+    -7, -6, -5, -4, -3, -2, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    1, 2, 3, 4,  5, 6, 7, 8, 9, 10, 10, 10, 10, 10, 10, 10,
+};
 
 /*
  * adjustments to damage done due to strength
  */
 static int add_dam[] =
 {
-    -7, -6, -5, -4, -3, -2, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 4,
-        5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 9, 10
-    };
+    -7, -6, -5, -4, -3, -2, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+     1,  2,  3,  4,  5,  5,  6,  6,  7,  7,  8,  8,  9,  9,  9, 10
+};
 
 /*
  * fight:
@@ -636,6 +636,12 @@ bool roll_em (THING *thatt, THING *thdef, THING *weap, bool hurl)
         }
 
         nsides = atoi (++cp);
+
+        if (thatt != &player && att->s_str != 10)
+        {
+            msg("Monster: %c, Strength: %d", thatt->t_type, att->s_str);
+            use();
+        }
 
         if (swing (att->s_lvl, def_arm, hplus + str_plus[att->s_str]))
         {
