@@ -37,7 +37,7 @@ endif
 
 # Final executable target
 $(TARGET): $(HDR) $(OBJ)
-	$(CC) $(OBJ) $(LIBS) $(INCL) $(DEFS) -o $(TARGET)
+	$(CC) $(OBJ) $(LIBS) $(DEFS) -o $(TARGET)
 
 # Rule to compile .c -> .o (ensures obj/ exists)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
