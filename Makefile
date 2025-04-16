@@ -6,9 +6,9 @@ ifeq ($(OS), Windows_NT)
 else
 	UNAME_S := $(shell uname -s)
 
-	ifeq ($(OS), Linux)
+	ifeq ($(UNAME_S), Linux)
 		OS_TYPE := Linux
-	else ifeq ($(OS), Darwin)
+	else ifeq ($(UNAME_S), Darwin)
 		OS_TYPE := MacOS
 	else
 		OS_TYPE := Unknown
