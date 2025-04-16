@@ -207,7 +207,7 @@ int ring_eat (int hand)
         -3, /* R_PROTECT */     -4, /* R_ADDSTR */
          0, /* R_SUSTSTR */     -4, /* R_SEARCH */
          0, /* R_SEEINVIS */     0, /* R_NOP */
-         0, /* R_AGGR */        -4, /* R_ADDHIT */
+         0, /* R_AGGR */        -3, /* R_ADDHIT */
         -3, /* R_ADDDAM */      -2, /* R_REGEN */
         -2, /* R_DIGEST */       0, /* R_TELEPORT */
         -4, /* R_STEALTH */     -5  /* R_SUSTARM */
