@@ -1,5 +1,22 @@
 # Rogue Makefile -- remade by Pierce for Pierce Mod
 
+
+ifeq ($(OS), Windows_NT)
+	OS_TYPE := Windows
+else
+	UNAME_S := $(shell uname -s)
+
+	ifeq ($(OS), Linux)
+		OS_TYPE := Linux
+	else ifeq ($(OS), Darwin)
+		OS_TYPE := MacOS
+	else
+		OS_TYPE := Unknown
+	endif
+endif
+
+$(info Detected OS: $(OS_TYPE))
+
 SRC_DIR := src
 OBJ_DIR := $(SRC_DIR)/obj
 SRC := $(wildcard $(SRC_DIR)/*.c)
@@ -9,12 +26,18 @@ TARGET := rogue
 
 CC := gcc
 CFLAGS := -g -O2
-LIBS := -lcurses
 DEFS := -DHAVE_CONFIG_H
+ifeq ($(OS_TYPE), Windows)
+	MKDIR = if not exist $(subst /,\,$(1)) mkdir $(subst /,\,$(1))
+	LIBS := -lpdcurses -I./include -L./lib
+else
+	MKDIR = mkdir -p $(1)
+	LIBS := -lcurses 
+endif
 
 # Final executable target
 $(TARGET): $(HDR) $(OBJ)
-	$(CC) $(OBJ) $(LIBS) $(DEFS) -o $(TARGET)
+	$(CC) $(OBJ) $(LIBS) $(INCL) $(DEFS) -o $(TARGET)
 
 # Rule to compile .c -> .o (ensures obj/ exists)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
@@ -22,7 +45,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 
 # Create the obj/ directory if it doesn't exist
 $(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+	$(call MKDIR, $(OBJ_DIR))
 
 .PHONY: clean
 clean:
