@@ -29,7 +29,7 @@ CFLAGS := -g -O2
 DEFS := -DHAVE_CONFIG_H
 ifeq ($(OS_TYPE), Windows)
 	MKDIR = if not exist $(subst /,\,$(1)) mkdir $(subst /,\,$(1))
-	LIBS := -lpdcurses -I./include -L./lib
+	LIBS := -lpdcurses -I./include -L./lib -lcurl
 else
 	MKDIR = mkdir -p $(1)
 	LIBS := -lcurses -lcurl
