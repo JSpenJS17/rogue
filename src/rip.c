@@ -68,7 +68,7 @@ TopScore* parse(char *str)
     /* Allocate memory for the top scores */
     TopScore *top_scores = malloc(10 * sizeof(TopScore));
     if (!top_scores) {
-        fprintf(stderr, "Memory allocation failed\n");
+        printf("JSON parsing error: Memory allocation failed\n");
         return NULL;
     }
     memset(top_scores, 0, 10 * sizeof(TopScore));
@@ -76,7 +76,7 @@ TopScore* parse(char *str)
     /* Parse the JSON */
     cJSON *root = cJSON_Parse(str);
     if (!root) {
-        fprintf(stderr, "JSON parsing error: %s\n", cJSON_GetErrorPtr());
+        printf("JSON parsing error: %s\n", cJSON_GetErrorPtr());
         free(top_scores);
         return NULL;
     }
@@ -84,7 +84,7 @@ TopScore* parse(char *str)
     /* Get the hero's placement */
     cJSON *placement_dict = cJSON_GetObjectItem(root, "placement");
     if (!placement_dict || !cJSON_IsNumber(placement_dict)) {
-        fprintf(stderr, "placement missing or not a number\n");
+        printf("JSON parsing error: 'placement' missing or not a number\n");
         cJSON_Delete(root);
         free(placement_dict);
         return NULL;
@@ -93,7 +93,7 @@ TopScore* parse(char *str)
     if (cJSON_IsNumber(placement_dict)) {
         placement = placement_dict->valueint;
     } else {
-        fprintf(stderr, "placement is not a number\n");
+        printf("JSON parsing error: 'placement' value is not a number\n");
         cJSON_Delete(root);
         free(top_scores);
         return NULL;
@@ -102,7 +102,7 @@ TopScore* parse(char *str)
     /* Get the top scores object */
     cJSON *score_dict = cJSON_GetObjectItem(root, "top_scores");
     if (!score_dict || !cJSON_IsObject(score_dict)) {
-        fprintf(stderr, "top_scores missing or not an object\n");
+        printf("JSON parsing error: 'top_scores' missing or not an object\n");
         cJSON_Delete(root);
         free(top_scores);
         return NULL;
@@ -405,29 +405,35 @@ void score (int amount, int flags, char monst)
         }
     }
 
-    /*
-     * Send her to the server (http post using curl.h to piercelane2.ddns.net) if she was the top score
-     */
-    if (sc2 == top_ten) 
+    // Initialize a curl handle
+    CURLcode res;
+    CURL* curl;
+    char json_data[256];
+    char rsn[64];
+    struct curl_slist *headers = NULL;
+
+    /* Set up CURL response buffer */
+    struct ResponseBuffer response;
+    response.data = malloc(1); // initial empty buffer
+    response.size = 0;
+
+    curl = curl_easy_init();
+
+    if (curl) 
     {
-        // Initialize a curl handle
-        CURLcode res;
-        CURL* curl;
-        char json_data[256];
-        char rsn[64];
-        struct curl_slist *headers = NULL;
-
-        /* Set up CURL response buffer */
-        struct ResponseBuffer response;
-        response.data = malloc(1); // initial empty buffer
-        response.size = 0;
-
-        curl = curl_easy_init();
-
-        if (curl) 
+        
+        /* Set up the write function and buffer */
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&response);
+        curl_easy_setopt(curl, CURLOPT_URL, "http://piercelane2.ddns.net:5000/");
+        
+        /*
+         * Send her to the server (http post using curl.h to piercelane2.ddns.net) if she was the top score
+         */
+        if (sc2 == top_ten) 
         {
             /*
-             * Send up our score data
+             * Create our score data
              * JSON Format:
              *  {
              *    "name": [score, end_reason]
@@ -444,54 +450,44 @@ void score (int amount, int flags, char monst)
                 sprintf (rsn, "%s on floor %d.", 
                     reason[sc2->sc_flags], sc2->sc_level);
             }
-            
 
             sprintf(json_data, "{\"%s\": [%d, \"%s\"]}", 
                 sc2->sc_name, sc2->sc_score, rsn);
 
             /* Set up CURL */
             headers = curl_slist_append(headers, "Content-Type: application/json");
-            curl_easy_setopt(curl, CURLOPT_URL, "http://piercelane2.ddns.net:5000/");
             curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_data);
             curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-
-            /* Set up the write function and buffer */
-            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&response);
-
-            /* Do the deed */
-            res = curl_easy_perform(curl);
-
-            // Check for errors
-            if (res != CURLE_OK) 
-            {
-                fprintf(stderr, "Failed to communicate to scoreboard server: %s\n", curl_easy_strerror(res));
-            } 
-            else
-            {
-                TopScore* top_ten = parse(response.data);
-                if (top_ten) 
-                {
-                    printf("\n\nTop Ten Global Scores:\n");
-                    printf("   Score Name\n");
-                    for (int i = 0; i < num_topscores; i++)
-                    {
-                        printf("%2d %5d %s: %s\n", i + 1, top_ten[i].score, top_ten[i].name, top_ten[i].reason);
-                    }
-                    printf("\nYou placed number %d globally.\n\n", placement);
-                    free(top_ten);
-                } 
-                else 
-                {
-                    printf("Failed to parse scores.\n");
-                }
-            }
-
-            // Cleanup
-            curl_slist_free_all(headers);
-            curl_easy_cleanup(curl);
-            free(response.data);
         }
+
+        /* Do the deed */
+        printf("\nGetting leaderboard data...\n");
+        res = curl_easy_perform(curl);
+
+        TopScore* top_ten = parse(response.data);
+        if (top_ten) 
+        {
+            printf("Top Ten Global Scores:\n");
+            printf("   Score Name\n");
+            for (int i = 0; i < num_topscores; i++)
+            {
+                printf("%2d %5d %s: %s\n", i + 1, top_ten[i].score, top_ten[i].name, top_ten[i].reason);
+            }
+            if (placement != -1)
+            {
+                printf("\nYou placed number %d globally.\n\n", placement);
+            }
+        } 
+        else 
+        {
+            printf("Failed to parse global scores.\n");
+        }
+        free(top_ten);
+
+        // Cleanup
+        curl_slist_free_all(headers);
+        curl_easy_cleanup(curl);
+        free(response.data);
     }
 
     /*
