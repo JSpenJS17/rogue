@@ -32,7 +32,7 @@ ifeq ($(OS_TYPE), Windows)
 	LIBS := -lpdcurses -I./include -L./lib
 else
 	MKDIR = mkdir -p $(1)
-	LIBS := -lcurses 
+	LIBS := -lcurses -lcurl
 endif
 
 # Final executable target

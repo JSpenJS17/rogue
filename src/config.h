@@ -60,6 +60,9 @@
 #define HAVE_WORKING_VFORK 1
 #endif
 
+/* Define to 1 if <curl/curl.h> exists */
+#define HAVE_CURL_H 1
+
 /* Define if scorefile is top scores, not top players */
 #define ALLSCORES 1
 
