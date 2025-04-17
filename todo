@@ -5,4 +5,7 @@
 - Add a way to set controls
 - Damage Reduction based on defense (remember lower armor better)
 - Add damage printouts! seems like a good idea
-
+- Print top 10 scores even if we didn't get our top local score
+    - This should print out our current rankings on the leaderboard as well
+    - Need to set up GET requests
+        - Needs a dev server (5001)
