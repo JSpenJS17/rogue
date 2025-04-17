@@ -199,7 +199,7 @@ int ring_eat (int hand)
      * Determines how much food is used by a ring
      *   Positive values mean it uses food
      *   0 values are neutral, no food is used or given
-     *   Negative values have probability of using food (1/-n chance)
+     *   Negative values have probability of using 1 food (1/-n chance)
      *     Except R_DIGEST, which will give food equal to -n
      */
     static int uses[] =
@@ -221,9 +221,10 @@ int ring_eat (int hand)
     if ((eat = uses[ring->o_which]) < 0)
     {
         eat = (rnd (-eat) == 0);
+        // eat is now [0, 1]
     }
 
-    if (ring->o_which == R_DIGEST) // special case, slow digest ring will actually feed you
+    if (ring->o_which == R_DIGEST) // special case, slow digest ring will actually feed you 1/2 of the time
     {
         eat = -eat;
     }

@@ -21,7 +21,7 @@
 static char lvl_mons[] =
 {
     'K', 'E', 'B', 'S', 'H', 'I', 'R', 'O', 'Z', 'L', 'F', 'Q', 'A',
-    'N', 'Y', 'C', 'W', 'P', 'T', 'X', 'U', 'M', 'V', 'G', 'J', 'D'
+    'N', 'Y', 'C', 'W', 'P', 'T', 'X', 'M', 'V', 'U', 'G', 'J', 'D'
 };
 
 static char wand_mons[] =

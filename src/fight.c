@@ -637,17 +637,11 @@ bool roll_em (THING *thatt, THING *thdef, THING *weap, bool hurl)
 
         nsides = atoi (++cp);
 
-        if (thatt != &player && att->s_str != 10)
-        {
-            msg("Monster: %c, Strength: %d", thatt->t_type, att->s_str);
-            use();
-        }
-
         if (swing (att->s_lvl, def_arm, hplus + str_plus[att->s_str]))
         {
             int proll;
 
-            proll = roll (ndice, nsides);
+            proll = roll (ndice, nsides); // can add damage reduction here
 #ifdef MASTER
 
             if (ndice + nsides > 0 && proll <= 0)
