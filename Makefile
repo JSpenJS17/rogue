@@ -22,7 +22,6 @@ OBJ_DIR := $(SRC_DIR)/obj
 SRC := $(wildcard $(SRC_DIR)/*.c)
 OBJ := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
 HDR := $(wildcard $(SRC_DIR)/*.h)
-TARGET := rogue
 
 CC := gcc
 CFLAGS := -g -O2
@@ -30,9 +29,11 @@ DEFS := -DHAVE_CONFIG_H
 ifeq ($(OS_TYPE), Windows)
 	MKDIR = if not exist $(subst /,\,$(1)) mkdir $(subst /,\,$(1))
 	LIBS := -lpdcurses -I./include -L./lib -lcurl
+	TARGET := rogue-win/rogue
 else
 	MKDIR = mkdir -p $(1)
 	LIBS := -lcurses -lcurl
+	TARGET := rogue
 endif
 
 # Final executable target
