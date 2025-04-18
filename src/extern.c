@@ -256,31 +256,31 @@ struct obj_info things[NUMTHINGS] =
 
 struct obj_info arm_info[MAXARMORS] =
 {
-    { "leather armor",       20,     20, NULL, FALSE },
-    { "ring mail",       15,     25, NULL, FALSE },
+    { "leather armor",           20,     20, NULL, FALSE },
+    { "ring mail",               15,     25, NULL, FALSE },
     { "studded leather armor",   15,     20, NULL, FALSE },
-    { "scale mail",      13,     30, NULL, FALSE },
-    { "chain mail",      12,     75, NULL, FALSE },
-    { "splint mail",         10,     80, NULL, FALSE },
-    { "banded mail",         10,     90, NULL, FALSE },
-    { "plate mail",       5,    150, NULL, FALSE },
+    { "scale mail",              13,     30, NULL, FALSE },
+    { "chain mail",              12,     75, NULL, FALSE },
+    { "splint mail",             10,     80, NULL, FALSE },
+    { "banded mail",             10,     90, NULL, FALSE },
+    { "plate mail",               5,    150, NULL, FALSE },
 };
 struct obj_info pot_info[MAXPOTIONS] =
 {
-    { "confusion",       7,   5, NULL, FALSE },
+    { "confusion",           7,   5, NULL, FALSE },
     { "hallucination",       8,   5, NULL, FALSE },
-    { "poison",          8,   5, NULL, FALSE },
+    { "poison",              8,   5, NULL, FALSE },
     { "gain strength",      13, 150, NULL, FALSE },
     { "see invisible",       3, 100, NULL, FALSE },
-    { "healing",        13, 130, NULL, FALSE },
+    { "healing",            13, 130, NULL, FALSE },
     { "monster detection",   6, 130, NULL, FALSE },
     { "magic detection",     6, 105, NULL, FALSE },
     { "raise level",         2, 250, NULL, FALSE },
     { "extra healing",       5, 200, NULL, FALSE },
-    { "haste self",      5, 190, NULL, FALSE },
+    { "haste self",          5, 190, NULL, FALSE },
     { "restore strength",   13, 130, NULL, FALSE },
-    { "blindness",       5,   5, NULL, FALSE },
-    { "levitation",      6,  75, NULL, FALSE },
+    { "blindness",           5,   5, NULL, FALSE },
+    { "levitation",          6,  75, NULL, FALSE },
 };
 struct obj_info ring_info[MAXRINGS] =
 {
@@ -301,14 +301,12 @@ struct obj_info ring_info[MAXRINGS] =
 };
 struct obj_info scr_info[MAXSCROLLS] =
 {
-    { "monster confusion",  7, 140, NULL, FALSE },
+    { "monster confusion",  4, 140, NULL, FALSE },
     { "magic mapping",      4, 150, NULL, FALSE },
     { "hold monster",       2, 180, NULL, FALSE },
     { "sleep",              3,   5, NULL, FALSE },
     { "enchant armor",      7, 160, NULL, FALSE },
-    { "identify",           10, 80, NULL, FALSE }, /* 3x rate for identifty scrolls*/
-    { "identify",           10, 80, NULL, FALSE },
-    { "identify",           6,  80, NULL, FALSE },
+    { "identify",          29,  80, NULL, FALSE }, /* 3x rate for identifty scrolls*/
     { "scare monster",      3, 200, NULL, FALSE },
     { "food detection",     2,  60, NULL, FALSE },
     { "teleportation",      5, 165, NULL, FALSE },
@@ -333,20 +331,20 @@ struct obj_info weap_info[MAXWEAPONS + 1] =
 };
 struct obj_info ws_info[MAXSTICKS] =
 {
-    { "light",          12, 250, NULL, FALSE },
-    { "invisibility",        6,   5, NULL, FALSE },
+    { "light",          20, 250, NULL, FALSE },
+    { "invisibility",    6,   5, NULL, FALSE },
     { "lightning",       3, 330, NULL, FALSE },
     { "fire",            3, 330, NULL, FALSE },
     { "cold",            3, 330, NULL, FALSE },
-    { "polymorph",      15, 310, NULL, FALSE },
-    { "magic missile",      10, 170, NULL, FALSE },
-    { "haste monster",      10,   5, NULL, FALSE },
-    { "slow monster",       11, 350, NULL, FALSE },
+    { "polymorph",       7, 310, NULL, FALSE },
+    { "magic missile",  10, 170, NULL, FALSE },
+    { "haste monster",  10,   5, NULL, FALSE },
+    { "slow monster",   11, 350, NULL, FALSE },
     { "drain life",      9, 300, NULL, FALSE },
     { "nothing",         1,   5, NULL, FALSE },
-    { "teleport away",       6, 340, NULL, FALSE },
-    { "teleport to",         6,  50, NULL, FALSE },
-    { "cancellation",        5, 280, NULL, FALSE },
+    { "teleport away",   6, 340, NULL, FALSE },
+    { "teleport to",     6,  50, NULL, FALSE },
+    { "cancellation",    5, 280, NULL, FALSE },
 };
 /* ("You zap the wand, %s", stick_descs[stick_id]) */
 char* stick_descs[MAXSTICKS] = 
