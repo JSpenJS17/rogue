@@ -104,29 +104,8 @@ void read_scroll(THING* obj)
                             ch++;
                         }
 
-        if (ch)
-        {
-            addmsg ("the monster");
-
-            if (ch > 1)
-            {
-                addmsg ("s around you");
-            }
-
-            addmsg (" freeze");
-
-            if (ch == 1)
-            {
-                addmsg ("s");
-            }
-
-            endmsg();
-            scr_info[S_HOLD].oi_know = TRUE;
-        }
-        else
-        {
-            msg ("you feel a strange sense of loss");
-        }
+        msg ("the monsters around you freeze");
+        scr_info[S_HOLD].oi_know = TRUE;
 
         break;
     case S_SLEEP:
@@ -186,14 +165,16 @@ void read_scroll(THING* obj)
 
         break;
     
-    /* This scroll is 3x likely to occur than any other scroll */
     case S_ID:
         {
             /*
              * Identify, let him figure something out
              */
-            scr_info[obj->o_which].oi_know = TRUE;
-            msg ("this scroll is an identify scroll");
+            // scr_info[obj->o_which].oi_know = TRUE;
+            if (!scr_info[obj->o_which].oi_know == TRUE) 
+            {
+                msg ("this scroll is an identify scroll");
+            }
             // wait for user to hit enter or space
             char ch = 0;
             while (ch != '\n' && ch != ' ' && ch != '\r')
@@ -299,7 +280,7 @@ void read_scroll(THING* obj)
         break;
     case S_FDET:
         /*
-         * Potion of gold detection
+         * Potion of food detection
          */
         ch = FALSE;
         wclear (hw);
@@ -319,7 +300,7 @@ void read_scroll(THING* obj)
         }
         else
         {
-            msg ("your nose tingles");
+            msg ("your nose tingles, you smell no food");
         }
 
         break;
@@ -342,7 +323,7 @@ void read_scroll(THING* obj)
 
         if (cur_weapon == NULL || cur_weapon->o_type != WEAPON)
         {
-            msg ("you feel a strange sense of loss");
+            msg ("your weapon would have glowed %s, but none is equipped", pick_color ("blue"));
         }
         else
         {
@@ -375,7 +356,7 @@ void read_scroll(THING* obj)
         uncurse (cur_ring[LEFT]);
         uncurse (cur_ring[RIGHT]);
         msg (choose_str ("you feel in touch with the Universal Onenes",
-                         "you feel as if somebody is watching over you"));
+                         "you feel all curses lifting"));
         break;
     case S_AGGR:
         /*
@@ -395,7 +376,7 @@ void read_scroll(THING* obj)
         }
         else
         {
-            msg ("you feel a strange sense of loss");
+            msg ("your armor would have shimmered %s, but none is equipped", pick_color ("gold"));
         }
 
 #ifdef MASTER
@@ -409,7 +390,9 @@ void read_scroll(THING* obj)
     look (TRUE);    /* put the result of the scroll on the screen */
     status();
 
-    call_it (&scr_info[obj->o_which]);
+    // call_it (&scr_info[obj->o_which]);
+    /* Just let the poor guy know for next time */
+    scr_info[obj->o_which].oi_know = TRUE;
 
     if (discardit)
     {
