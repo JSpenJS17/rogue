@@ -294,7 +294,7 @@ int get_str (void *vopt, WINDOW *win)
         {
             continue;
         }
-        else if (c == erasechar())      /* process erase character */
+        else if (c == erasechar() || c == CTRL ('A')) /* process erase character (CTRL (A) on linux, not auto-detected) */
         {
             if (sp > buf)
             {
