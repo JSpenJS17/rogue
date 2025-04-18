@@ -203,7 +203,7 @@ void quaff(THING* obj)
         do_pot (P_LSD, TRUE);
         break;
     case P_SEEINVIS:
-        sprintf (prbuf, "this potion tastes like %s juice", fruit);
+        sprintf (prbuf, "this potion tastes like %s juice. You can see everything", fruit);
         show = on (player, CANSEE);
         do_pot (P_SEEINVIS, FALSE);
 
@@ -273,7 +273,7 @@ void quaff(THING* obj)
             add_str (&pstats.s_str, cur_ring[RIGHT]->o_arm);
         }
 
-        msg ("hey, this tastes great.  It make you feel warm all over");
+        msg ("hey, this tastes great.  You feel your strength returning");
         break;
     case P_BLIND:
         do_pot (P_BLIND, TRUE);
@@ -292,7 +292,9 @@ void quaff(THING* obj)
      * Throw the item away
      */
 
-    call_it (&pot_info[obj->o_which]);
+    // call_it (&pot_info[obj->o_which]);
+    /* just let the poor guy know what the potion was */
+    pot_info[obj->o_which].oi_know = TRUE;
 
     if (discardit)
     {
