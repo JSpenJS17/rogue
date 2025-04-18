@@ -54,10 +54,8 @@ void ring_on(THING* obj)
 
     if (cur_ring[LEFT] == NULL && cur_ring[RIGHT] == NULL)
     {
-        if ((ring = gethand()) < 0)
-        {
-            return;
-        }
+        /* just put it on his left hand, don't ask */
+        ring = LEFT;
     }
     else if (cur_ring[LEFT] == NULL)
     {
