@@ -113,8 +113,17 @@ void new_level()
         {
             tp = new_item();
             new_monster (tp, boss_order[i], &stairs, TRUE);
-            attach (tp->t_pack, new_thing(5)); // always drop a ring
-            // lowkey should change this, it's bad :(
+            if (!amulet)
+            {
+                // lowkey should change this
+                attach (tp->t_pack, new_thing(5)); // always drop a ring
+            }
+        }
+        else if (cur_floor > 26) 
+        {
+            // keep spawning the final boss continuously
+            tp = new_item();
+            new_monster(tp, boss_order[NUMBOSSES], &stairs, TRUE);
         }
     }
 
