@@ -188,8 +188,6 @@ void read_scroll(THING* obj)
     
     /* This scroll is 3x likely to occur than any other scroll */
     case S_ID:
-    case S_ID2:
-    case S_ID3:
         {
             /*
              * Identify, let him figure something out

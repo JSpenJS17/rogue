@@ -229,17 +229,15 @@
 #define S_SLEEP     3
 #define S_ARMOR     4
 #define S_ID        5
-#define S_ID2       6
-#define S_ID3       7
-#define S_SCARE     8
-#define S_FDET      9
-#define S_TELEP     10
-#define S_ENCH      11
-#define S_CREATE    12
-#define S_REMOVE    13
-#define S_AGGR      14
-#define S_PROTECT   15
-#define MAXSCROLLS  16
+#define S_SCARE     6
+#define S_FDET      7
+#define S_TELEP     8
+#define S_ENCH      9
+#define S_CREATE    10
+#define S_REMOVE    11
+#define S_AGGR      12
+#define S_PROTECT   13
+#define MAXSCROLLS  14
 
 /*
  * Weapon types
