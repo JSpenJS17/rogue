@@ -90,7 +90,7 @@ bool new_monster (THING *tp, char type, coord *cp, bool boss)
     mp = &monsters[tp->t_type - 'A'];
     
     tp->t_stats.s_lvl = mp->m_stats.s_lvl + lev_add;
-    tp->t_stats.s_maxhp = tp->t_stats.s_hpt = roll (tp->t_stats.s_lvl, 8);
+    tp->t_stats.s_maxhp = tp->t_stats.s_hpt = roll (tp->t_stats.s_lvl, 4) + (tp->t_stats.s_lvl * 4);
     tp->t_stats.s_arm = mp->m_stats.s_arm - lev_add;
     tp->t_stats.s_movespd = mp->m_stats.s_movespd;
     tp->t_stats.s_movectr = mp->m_stats.s_movectr;
