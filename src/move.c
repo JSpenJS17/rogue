@@ -314,6 +314,7 @@ char be_trapped (coord *tc)
     PLACE *pp;
     THING *arrow;
     char tr;
+    bool can_fall = TRUE;
 
     if (on (player, ISLEVIT))
     {
@@ -330,9 +331,23 @@ char be_trapped (coord *tc)
     switch (tr)
     {
     case T_DOOR:
-        cur_floor++;
-        new_level();
-        msg ("you fell into a trap!");
+        /*
+         * Prevent our hero from falling down a trapdoor if there's a boss alive
+         */
+        for (THING* tp = mlist; tp != NULL; tp = next (tp))
+        {
+            if (tp->t_flags & ISBOSS)
+            {
+                msg ("there's a trapdoor here but the boss blocks your way down");
+                can_fall = FALSE;
+            }
+        }
+        if (can_fall)
+        {
+            cur_floor++;
+            new_level();
+            msg ("you fell into a trap!");
+        }
         break;
     case T_BEAR:
         no_move += BEARTIME;
