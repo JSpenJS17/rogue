@@ -92,6 +92,7 @@ char *tr_name[] =           /* Names of the traps */
 int n_objs;             /* # items listed in inventory() call */
 int ntraps;             /* Number of traps on this floor */
 int hungry_state = 0;           /* How hungry is he */
+int equip_state = 0;          /* What is he wearing */
 int inpack = 0;             /* Number of things in pack */
 int inv_type = 0;           /* Type of inventory to use */
 int cur_floor = 1;              /* What floor she is on */

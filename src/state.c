@@ -1194,6 +1194,10 @@ int rs_write_daemons (FILE *savef, struct delayed_action *d_list, int count)
         {
             func = 9;
         }
+        else if (d_list[i].d_func == check_equip)
+        {
+            func = 10;
+        }
         else if (d_list[i].d_func == NULL)
         {
             func = 0;
@@ -1275,6 +1279,10 @@ int rs_read_daemons (FILE *inf, struct delayed_action *d_list, int count)
 
         case 9:
             d_list[i].d_func = sight;
+            break;
+        
+        case 10:
+            d_list[i].d_func = check_equip;
             break;
 
         default:
@@ -2194,6 +2202,7 @@ int rs_save_file (FILE *savef)
     rs_write_int (savef, n_objs);
     rs_write_int (savef, ntraps);
     rs_write_int (savef, hungry_state);
+    rs_write_int (savef, equip_state);
     rs_write_int (savef, inpack);
     rs_write_int (savef, inv_type);
     rs_write_int (savef, cur_floor);
@@ -2325,6 +2334,7 @@ int rs_restore_file (FILE *inf)
     rs_read_int (inf, &n_objs);
     rs_read_int (inf, &ntraps);
     rs_read_int (inf, &hungry_state);
+    rs_read_int (inf, &equip_state);
     rs_read_int (inf, &inpack);
     rs_read_int (inf, &inv_type);
     rs_read_int (inf, &cur_floor);

@@ -170,6 +170,7 @@ int main (int argc, char **argv, char **envp)
     start_daemon (doctor, 0, AFTER);
     fuse (swander, 0, WANDERTIME, AFTER);
     start_daemon (stomach, 0, AFTER);
+    start_daemon (check_equip, 0, AFTER);
     playit();
     return (0);
 }

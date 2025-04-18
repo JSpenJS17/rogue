@@ -219,6 +219,30 @@ void stomach()
 }
 
 /*
+ * check_equip:
+ *  See what we have equipped for status updates
+ */
+void check_equip() 
+{
+    if (cur_armor == NULL && cur_weapon == NULL)
+    {
+        equip_state = 3;
+    }
+    else if (cur_armor == NULL)
+    {
+        equip_state = 2;
+    }
+    else if (cur_weapon == NULL)
+    {
+        equip_state = 1;
+    }
+    else
+    {
+        equip_state = 0;
+    }
+}
+
+/*
  * come_down:
  *  Take the hero down off her acid trip.
  */

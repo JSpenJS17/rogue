@@ -127,6 +127,7 @@ extern FILE *scoreboard;
  */
 
 void    auto_save (int);
+void    check_equip();
 void    come_down();
 void    doctor();
 char    end_line();

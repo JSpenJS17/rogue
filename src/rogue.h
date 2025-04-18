@@ -30,7 +30,7 @@
 #define MAXPASS     13  /* upper limit on number of passages */
 #define NUMLINES    24
 #define NUMCOLS     80
-#define STATLINE    (NUMLINES - 1)
+#define STATLINE    (NUMLINES - 2)
 #define BORE_LEVEL  50
 #define NUMBOSSES   5
 
@@ -482,7 +482,7 @@ extern char dir_ch, file_name[], home[], huh[], *inv_t_name[],
        outbuf[], *p_colors[], *r_stones[], *release, runch,
        *s_names[], take, *tr_name[], *ws_made[], *ws_type[], *stick_descs[];
 
-extern int  a_class[], count, food_left, hungry_state, inpack,
+extern int  a_class[], count, food_left, hungry_state, equip_state, inpack,
        inv_type, lastscore, cur_floor, max_hit, max_floor, mpos,
        n_objs, no_command, no_food, no_move, noscore, ntraps, purse,
        quiet, vf_hit;
