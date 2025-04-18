@@ -93,7 +93,7 @@ void do_rooms()
         /*
          * set room type
          */
-        if (rnd (10) < cur_floor - 1)
+        if (rnd (15) < cur_floor - 1)
         {
             rp->r_flags |= ISDARK;       /* dark room */
             if (rnd (15) == 0)
