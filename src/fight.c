@@ -69,6 +69,7 @@ int fight (coord *mp, THING *weap, bool thrown)
     register THING *tp;
     register bool did_hit = TRUE;
     register char *mname, ch;
+    int damage;
 
     /*
      * Find the monster we want to fight
@@ -117,18 +118,19 @@ int fight (coord *mp, THING *weap, bool thrown)
     mname = set_mname (tp);
     did_hit = FALSE;
     has_hit = (terse && !to_death);
+    damage = roll_em (&player, tp, weap, thrown);
 
-    if (roll_em (&player, tp, weap, thrown))
+    if (damage > 0)
     {
         did_hit = FALSE;
 
         if (thrown)
         {
-            thunk (weap, mname, terse);
+            thunk (weap, mname, damage, terse);
         }
         else
         {
-            hit ((char *) NULL, mname, terse);
+            hit ((char *) NULL, mname, damage, terse);
         }
 
         if (on (player, CANHUH))
@@ -172,6 +174,7 @@ int attack (THING *mp)
 {
     register char *mname;
     register int oldhp;
+    int damage;
 
     /*
      * Since this is an attack, stop running and any healing that was
@@ -199,8 +202,9 @@ int attack (THING *mp)
 
     mname = set_mname (mp);
     oldhp = pstats.s_hpt;
+    damage = roll_em (mp, &player, (THING *) NULL, FALSE);
 
-    if (roll_em (mp, &player, (THING *) NULL, FALSE))
+    if (damage > 0)
     {
         if (mp->t_type != 'I')
         {
@@ -209,7 +213,7 @@ int attack (THING *mp)
                 addmsg (".  ");
             }
 
-            hit (mname, (char *) NULL, FALSE);
+            hit (mname, (char *) NULL, damage, FALSE);
         }
         else if (has_hit)
         {
@@ -534,15 +538,14 @@ int swing (int at_lvl, int op_arm, int wplus)
  * roll_em:
  *  Roll several attacks
  */
-bool roll_em (THING *thatt, THING *thdef, THING *weap, bool hurl)
+int roll_em (THING *thatt, THING *thdef, THING *weap, bool hurl)
 {
     register struct stats *att, *def;
     register char *cp;
     register int ndice, nsides, def_arm;
-    register bool did_hit = FALSE;
     register int hplus;
     register int dplus;
-    register int damage;
+    register int damage = 0;
 
     att = &thatt->t_stats;
     def = &thdef->t_stats;
@@ -641,7 +644,7 @@ bool roll_em (THING *thatt, THING *thdef, THING *weap, bool hurl)
         {
             int proll;
 
-            proll = roll (ndice, nsides); // can add damage reduction here
+            proll = roll (ndice, nsides);
 #ifdef MASTER
 
             if (ndice + nsides > 0 && proll <= 0)
@@ -650,9 +653,8 @@ bool roll_em (THING *thatt, THING *thdef, THING *weap, bool hurl)
             }
 
 #endif
-            damage = dplus + proll + add_dam[att->s_str];
+            damage = dplus + proll + add_dam[att->s_str]; // can add damage reduction here
             def->s_hpt -= max (0, damage);
-            did_hit = TRUE;
         }
 
         if ((cp = strchr (cp, '/')) == NULL)
@@ -663,7 +665,7 @@ bool roll_em (THING *thatt, THING *thdef, THING *weap, bool hurl)
         cp++;
     }
 
-    return did_hit;
+    return damage;
 }
 
 /*
@@ -697,7 +699,7 @@ char *prname (char *mname, bool upper)
  * thunk:
  *  A missile hits a monster
  */
-void thunk (THING *weap, char *mname, bool noend)
+void thunk (THING *weap, char *mname, int damage, bool noend)
 {
     if (to_death)
     {
@@ -714,6 +716,7 @@ void thunk (THING *weap, char *mname, bool noend)
     }
 
     addmsg ("%s", mname);
+    addmsg (" for %d damage", damage);
 
     if (!noend)
     {
@@ -726,7 +729,7 @@ void thunk (THING *weap, char *mname, bool noend)
  *  Print a message to indicate a succesful hit
  */
 
-void hit (char *er, char *ee, bool noend)
+void hit (char *er, char *ee, int damage, bool noend)
 {
     int i;
     char *s;
@@ -760,6 +763,13 @@ void hit (char *er, char *ee, bool noend)
     if (!terse)
     {
         addmsg (prname (ee, FALSE));
+    }
+
+    addmsg (" for %d", damage);
+
+    if (!terse)
+    {
+        addmsg(" damage");
     }
 
     if (!noend)
