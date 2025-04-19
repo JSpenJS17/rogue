@@ -214,7 +214,7 @@ struct monster monsters[26] =
     { "nymph",       100,   0,                { XX,   37,   3,  10, ___, "0x0",            ___,     0,     0} },
     { "orc",          15,   0,                { XX,   15,   1,   7, ___, "1x8/2x8",        ___,     1,     0} },
     { "phantom",       0,   ISINVIS,          { XX,  120,   8,   4, ___, "4x4",            ___,     1,     0} },
-    { "quagga",        0,   ISMEAN,           { XX,   25,   4,   4, ___, "2x4",            ___,     0,     0} },
+    { "quagga",        0,   ISMEAN,           { XX,   25,   4,   6, ___, "3x2",            ___,     0,     0} },
     { "rattlesnake",   0,   ISMEAN,           { XX,   10,   2,   5, ___, "2x6",            ___,     1,     0} },
     { "snake",         0,   ISMEAN,           { XX,    2,   1,   6, ___, "1x4",            ___,     1,     0} },
     { "troll",        15,   ISREGEN | ISMEAN, { XX,   50,   8,   5, ___, "3x8/3x8/5x6",    ___,     2,     0} }, /* boss 2, floor 10 */
