@@ -30,7 +30,7 @@
 #define MAXPASS     13  /* upper limit on number of passages */
 #define NUMLINES    24
 #define NUMCOLS     80
-#define STATLINE    (NUMLINES - 2)
+#define STATLINE    (NUMLINES - 1)
 #define BORE_LEVEL  50
 #define NUMBOSSES   5
 

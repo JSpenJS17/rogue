@@ -161,6 +161,7 @@ void read_scroll(THING* obj)
             obj = new_item();
             // new_monster (obj, randmonster (FALSE), &mp, FALSE);
             spawn_monster (obj, FALSE, &mp, FALSE);
+            msg("a monster appears");
         }
 
         break;
@@ -170,11 +171,8 @@ void read_scroll(THING* obj)
             /*
              * Identify, let him figure something out
              */
-            // scr_info[obj->o_which].oi_know = TRUE;
-            if (!scr_info[obj->o_which].oi_know == TRUE) 
-            {
-                msg ("this scroll is an identify scroll");
-            }
+            scr_info[obj->o_which].oi_know = TRUE;
+            msg ("this scroll is an identify scroll");
             // wait for user to hit enter or space
             char ch = 0;
             while (ch != '\n' && ch != ' ' && ch != '\r')
@@ -317,6 +315,7 @@ void read_scroll(THING* obj)
             {
                 scr_info[S_TELEP].oi_know = TRUE;
             }
+            msg("you've been teleported!");
         }
         break;
     case S_ENCH:
@@ -364,7 +363,7 @@ void read_scroll(THING* obj)
          * floor and sets them running towards the hero
          */
         aggravate();
-        msg ("you hear a high pitched humming noise");
+        msg ("you hear footsteps rapidly approaching");
         break;
     case S_PROTECT:
 
@@ -378,7 +377,12 @@ void read_scroll(THING* obj)
         {
             msg ("your armor would have shimmered %s, but none is equipped", pick_color ("gold"));
         }
-
+        break;
+    
+    default:
+        msg("what a puzzling scroll");
+        break;
+        
 #ifdef MASTER
     otherwise:
         msg ("what a puzzling scroll!");

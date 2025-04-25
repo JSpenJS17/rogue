@@ -78,8 +78,10 @@ void do_zap(THING* obj)
 
     ws_info[obj->o_which].oi_know = TRUE;
     msg("You zap the wand");
-    sprintf(prbuf, "%s", stick_descs[obj->o_which]);
-    msg(prbuf);
+    if (obj->o_which != WS_LIGHT)
+    {
+        msg("%s", stick_descs[obj->o_which]);
+    }
 
     switch (obj->o_which)
     {

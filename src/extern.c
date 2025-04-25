@@ -302,19 +302,19 @@ struct obj_info ring_info[MAXRINGS] =
 };
 struct obj_info scr_info[MAXSCROLLS] =
 {
-    { "monster confusion",  4, 140, NULL, FALSE },
+    { "monster confusion",  6, 140, NULL, FALSE },
     { "magic mapping",      4, 150, NULL, FALSE },
-    { "hold monster",       2, 180, NULL, FALSE },
-    { "sleep",              3,   5, NULL, FALSE },
+    { "hold monster",       5, 180, NULL, FALSE },
+    { "sleep",              5,   5, NULL, FALSE },
     { "enchant armor",      7, 160, NULL, FALSE },
-    { "identify",          29,  80, NULL, FALSE }, /* 3x rate for identifty scrolls*/
+    { "identify",          15,  80, NULL, FALSE }, 
     { "scare monster",      3, 200, NULL, FALSE },
     { "food detection",     2,  60, NULL, FALSE },
     { "teleportation",      5, 165, NULL, FALSE },
     { "enchant weapon",     8, 150, NULL, FALSE },
     { "create monster",     4,  75, NULL, FALSE },
-    { "remove curse",       7, 105, NULL, FALSE },
-    { "aggravate monsters", 3,  20, NULL, FALSE },
+    { "remove curse",      10, 105, NULL, FALSE },
+    { "aggravate monsters", 7,  20, NULL, FALSE },
     { "protect armor",      2, 250, NULL, FALSE },
 };
 struct obj_info weap_info[MAXWEAPONS + 1] =
@@ -362,7 +362,7 @@ char* stick_descs[MAXSTICKS] =
     "you feel your life flowing through it",                /* WS_DRAIN */
     "nothing happens",                                      /* WS_NOP */
     "the space in front of you has been teleported away",   /* WS_TELAWAY */
-    "you teleport forward",                                 /* WS_TELTO */
+    "space folds violently inward toward you",              /* WS_TELTO */
     "the air now seems very ordinary"                       /* WS_CANCEL */
 };
 
